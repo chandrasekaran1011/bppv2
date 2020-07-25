@@ -10,7 +10,7 @@
             </v-card>
         </v-col>
         <v-col :md="4" cols="12">
-            <v-card style="cursor:pointer;background-color: #f9484a;background-image: linear-gradient(315deg, #f9484a 0%, #fbd72b 74%);" class="mx-auto" max-width="300px">
+            <v-card @click="nav(2);" style="cursor:pointer;background-color: #f9484a;background-image: linear-gradient(315deg, #f9484a 0%, #fbd72b 74%);" class="mx-auto" max-width="300px">
                 <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-search</v-icon>
                 <v-card-text class="title white--text">
                     View Partner
@@ -73,9 +73,9 @@ export default {
                     params:{'id':this.type}
                 })
             } else if (val == 2) {
-                // this.$router.push({
-                //     name: 'ActivityGroup'
-                // })
+                 this.$router.push({
+                    name: 'View'
+                })
 
             } else if (val == 3) {
                 this.$router.push({

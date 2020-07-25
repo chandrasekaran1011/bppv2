@@ -24,7 +24,7 @@
 
         <div class="form-group d-flex mt-3">
                 <div class="col-md-6">
-                    <label class="reqFields">Business Partner Name</label>
+                    <label class="reqFields">Name of your Organization</label>
                 </div>        
                 <div class="col-md-6">    
                     <input type="text" class="form-control" name="name" id="name" aria-describedby="name" value="{{old('name',$ethics->name)}}" placeholder="Name of the Business Partner" required='required'>
@@ -337,7 +337,7 @@
                 <label>Provide the last 3 year annual statements<br> (optional ,PDF only (Max 20 MB))</label>
             </div>        
             <div class="col-md-6">    
-                <input type="file" class="form-input" name="statement_file" id="statement_file" aria-describedby="statement_file"  min="1" placeholder="Certificate (PDF Only)" >
+                <input type="file" class="form-input" name="statement_file" accept=".pdf" id="statement_file" aria-describedby="statement_file"  min="1" placeholder="Certificate (PDF Only)" >
                 
             </div>  
         </div>

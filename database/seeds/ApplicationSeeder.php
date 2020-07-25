@@ -17,8 +17,8 @@ class ApplicationSeeder extends Seeder
     {
         
         Permission::create(['name' => 'View All Records','perm_group'=>'Access']);
-        Permission::create(['name' => 'View BU Records','perm_group'=>'Access']);
-        Permission::create(['name' => 'View Project Records','perm_group'=>'Access']);
-        Permission::create(['name' => 'View His Records','perm_group'=>'Access']);
+        Permission::create(['name' => 'View Entity Records','perm_group'=>'Access']);
+        Permission::create(['name' => 'View Own Records','perm_group'=>'Access']);
+        
     }
 }

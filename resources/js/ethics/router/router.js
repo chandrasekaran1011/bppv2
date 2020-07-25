@@ -5,6 +5,7 @@ import VueRouter from "vue-router";
 import Dashboard from "../components/Dashboard.vue";
 import CreatePartner from "../view/CreatePartner.vue";
 import Detail from "../view/Detail.vue";
+import ViewPartner from "../view/ViewPartner.vue";
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,16 @@ const routes = [
         }
     },
     ,
+    {
+        path: "/view",
+        name: "View",
+        component: ViewPartner,
+        beforeEnter(to, from, next) {
+            // store.state.isLoading = true;
+            next();
+        }
+    },
+
     {
         path: "/detail/:id",
         name: "Detail",

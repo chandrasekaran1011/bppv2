@@ -189,7 +189,7 @@
             <div class="col-md-6">    
                 
                 <div class="form-group">
-                    <textarea class="form-control" name="subsidiary"  id="subsidiary" height="90px" aria-describedby="subsidiary" maxlength="60" required="required">{{old('subsidiary')}} </textarea>
+                    <textarea class="form-control" name="subsidiary"  id="subsidiary" placeholder="Subsidiary Companies.(Mention 'NA' if not applicable)" height="90px" aria-describedby="subsidiary" maxlength="60" required="required">{{old('subsidiary')}}</textarea>
 
                 </div>
             </div>
@@ -245,7 +245,7 @@
             <div class="col-md-6">    
                 
                 <div class="form-group">
-                    <textarea class="form-control" name="tp"  id="tp" height="90px" aria-describedby="director" maxlength="60" required="required">{{old('tp')}} </textarea>
+                    <textarea class="form-control" name="tp"  id="tp" height="90px" aria-describedby="third party" maxlength="60" required="required">{{old('tp')}} </textarea>
                     <small class="form-text text-muted">Mention "NA" if not applicable</small>
                 </div>
             </div>
@@ -264,7 +264,7 @@
                     <label class="form-check-label" for="policy_yes">Yes</label>
                 </div>
                 <div class="form-check form-check-inline icheck-danger">
-                    <input class="form-check-input" type="radio" name="policy" id="policy_no" value="0" @if(old('policy')=="0"){{'checked'}}@endif required>
+                    <input class="form-check-input" type="radio" name="policy" id="policy_no" value="0" @if(!old('policy')=="1"){{'checked'}}@endif required>
                     <label class="form-check-label" for="policy_no">No</label>
                 </div>
             </div>
@@ -307,9 +307,7 @@
 
         </script>
            
-     
-        
-        
+          
         <div class="group-policy pl-5"> 
             
             <div class="pl-3 ml-2">
@@ -321,11 +319,11 @@
                 <div class="col-md-6">
                     
                     <div class="form-check form-check-inline icheck-primary">
-                        <input class="form-check-input" type="radio" name="p1" id="p1_yes" value="1">
+                        <input class="form-check-input" type="radio" name="p1" id="p1_yes"   @if(old('p1')=="1"){{'checked'}}@endif  value="1">
                         <label class="form-check-label" for="p1_yes">Yes</label>
                     </div>
                     <div class="form-check form-check-inline icheck-danger">
-                        <input class="form-check-input" type="radio" name="p1" id="p1_no" value="0">
+                        <input class="form-check-input" type="radio" name="p1" id="p1_no"   @if(!old('p1')=="1"){{'checked'}}@endif value="0">
                         <label class="form-check-label" for="p1_no">No</label>
                     </div>
                 </div>
@@ -336,11 +334,11 @@
                 <div class="col-md-6">
                     
                     <div class="form-check form-check-inline icheck-primary">
-                        <input class="form-check-input" type="radio" name="p2" id="p2_yes" value="1">
+                        <input class="form-check-input" type="radio" name="p2" id="p2_yes"  @if(old('p2')=="1"){{'checked'}}@endif value="1">
                         <label class="form-check-label" for="p2_yes">Yes</label>
                     </div>
                     <div class="form-check form-check-inline icheck-danger">
-                        <input class="form-check-input" type="radio" name="p2" id="p2_no" value="0">
+                        <input class="form-check-input" type="radio" name="p2" id="p2_no"   @if(!old('p2')=="1"){{'checked'}}@endif value="0">
                         <label class="form-check-label" for="p2_no">No</label>
                     </div>
                 </div>
@@ -352,11 +350,11 @@
                 <div class="col-md-6">
                     
                     <div class="form-check form-check-inline icheck-primary">
-                        <input class="form-check-input" type="radio" name="p3" id="p3_yes" value="1">
+                        <input class="form-check-input" type="radio" name="p3" id="p3_yes" @if(old('p3')=="1"){{'checked'}}@endif value="1">
                         <label class="form-check-label" for="p3_yes">Yes</label>
                     </div>
                     <div class="form-check form-check-inline icheck-danger">
-                        <input class="form-check-input" type="radio" name="p3" id="p3_no" value="0">
+                        <input class="form-check-input" type="radio" name="p3" id="p3_no" @if(!old('p3')=="1"){{'checked'}} @endif value="0">
                         <label class="form-check-label" for="p3_no">No</label>
                     </div>
                 </div>
@@ -367,11 +365,11 @@
                 <div class="col-md-6">
                     
                     <div class="form-check form-check-inline icheck-primary">
-                        <input class="form-check-input" type="radio" name="p4" id="p4_yes" value="1">
+                        <input class="form-check-input" type="radio" name="p4" id="p4_yes" @if(old('p4')=="1"){{'checked'}}@endif value="1">
                         <label class="form-check-label" for="p4_yes">Yes</label>
                     </div>
                     <div class="form-check form-check-inline icheck-danger">
-                        <input class="form-check-input" type="radio" name="p4" id="p4_no" value="0">
+                        <input class="form-check-input" type="radio" name="p4" id="p4_no" @if(!old('p4')=="1"){{'checked'}}@endif value="0">
                         <label class="form-check-label" for="p4_no">No</label>
                     </div>
                 </div>
@@ -382,11 +380,11 @@
                 <div class="col-md-6">
 
                     <div class="form-check form-check-inline icheck-primary">
-                        <input class="form-check-input" type="radio" name="p5" id="p5_yes" value="1">
+                        <input class="form-check-input" type="radio" name="p5" id="p5_yes" @if(old('p5')=="1"){{'checked'}}@endif value="1">
                         <label class="form-check-label" for="p5_yes">Yes</label>
                     </div>
                     <div class="form-check form-check-inline icheck-danger">
-                        <input class="form-check-input" type="radio" name="p5" id="p5_no" value="0">
+                        <input class="form-check-input" type="radio" name="p5" id="p5_no" @if(!old('p5')=="1"){{'checked'}}@endif value="0">
                         <label class="form-check-label" for="p5_no">No</label>
                     </div>
                     
@@ -398,7 +396,7 @@
                     <label>Attach Relevent Policy/Program Document (optional ,PDF only)</label>
                 </div>        
                 <div class="col-md-6">    
-                    <input type="file" class="form-input" name="policy_file" id="policy_file" aria-describedby="policy_file"  min="1" placeholder="Policy Document (PDF Only)" >
+                    <input type="file" class="form-input" name="policy_file" accept=".pdf" id="policy_file" aria-describedby="policy_file" onchange="Filevalidation('policy_file')"  min="1" placeholder="Policy Document (PDF Only)" >
                     
                 </div>  
             </div>          
@@ -412,11 +410,11 @@
             <div class="col-md-6">
                 
                 <div class="form-check form-check-inline icheck-primary">
-                    <input class="form-check-input" type="radio" name="person" id="person_yes" value="1">
+                    <input class="form-check-input" type="radio" name="person" id="person_yes" @if(old('person')=="1"){{'checked'}}@endif value="1">
                     <label class="form-check-label" for="person_yes">Yes</label>
                 </div>
                 <div class="form-check form-check-inline icheck-danger">
-                    <input class="form-check-input" type="radio" name="person" id="person_no" value="0" checked required>
+                    <input class="form-check-input" type="radio" name="person" id="person_no" @if(!old('person')=="0"){{'checked'}}@endif value="0" checked required>
                     <label class="form-check-label" for="person_no">No</label>
                 </div>
             </div>
@@ -558,7 +556,7 @@
             <div class="col-md-6">    
                 
                 <div class="form-group">
-                    <textarea class="form-control" name="benefit_detail"  id="benefit_detail" height="90px" placeholder="Yes/No. If yes, provide details" aria-describedby="benefit_detail">{{old('benefit_detail')}}</textarea>
+                    <textarea class="form-control" name="benefit_detail"  id="benefit_detail" height="90px" placeholder="Yes/No. If yes, provide details" aria-describedby="benefit_detail" required>{{old('benefit_detail')}}</textarea>
                 </div>
             </div>
         </div>
@@ -574,7 +572,7 @@
             <div class="col-md-6">    
                 
                 <div class="form-group">
-                    <textarea class="form-control" name="r_detail"  id="r_detail" style="height:150px;" aria-describedby="r_detail" placeholder="Yes/No. If yes, provide details">{{old('r_detail')}}</textarea>
+                    <textarea class="form-control" name="r_detail"  id="r_detail" style="height:150px;" aria-describedby="r_detail" placeholder="Yes/No. If yes, provide details" required>{{old('r_detail')}}</textarea>
                 </div>
             </div>
         </div> 
@@ -590,7 +588,7 @@
             <div class="col-md-6">    
                 
                 <div class="form-group">
-                    <textarea class="form-control" name="s_detail"  id="s_detail" style="height:100px;" placeholder="Yes/No. If yes, provide details" aria-describedby="s_detail">{{old('s_detail')}}</textarea>
+                    <textarea class="form-control" name="s_detail"  id="s_detail" style="height:100px;" placeholder="Yes/No. If yes, provide details" aria-describedby="s_detail" required>{{old('s_detail')}}</textarea>
                 </div>
             </div>
         </div> 
@@ -604,11 +602,11 @@
             <div class="col-md-6">
                 
                 <div class="form-check form-check-inline icheck-primary">
-                    <input class="form-check-input" type="radio" name="t" id="t_yes" value="1"  @if(old('t')=="1"){{'checked'}}@endif >
+                    <input class="form-check-input" type="radio" name="t" id="t_yes" value="1"  @if(old('t')=="1"){{'checked'}} @endif >
                     <label class="form-check-label" for="t_yes">Yes</label>
                 </div>
                 <div class="form-check form-check-inline icheck-danger">
-                    <input class="form-check-input" type="radio" name="t" id="t_no" value="0"  @if(old('t')=="0"){{'checked'}}@endif required>
+                    <input class="form-check-input" type="radio" name="t" id="t_no" value="0"  @if(!old('t')=="1"){{'checked'}}@endif required>
                     <label class="form-check-label" for="t_no">No</label>
                 </div>
                 
@@ -620,8 +618,7 @@
                 <label>Attach Certificate if yes (optional ,PDF only)</label>
             </div>        
             <div class="col-md-6">    
-                <input type="file" class="form-input" name="certi_file" id="certi_file" aria-describedby="certi_file"  min="1" placeholder="Certificate (PDF Only)" >
-                
+                <input type="file" class="form-input" name="certi_file" id="certi_file" accept=".pdf" aria-describedby="certi_file" onchange="Filevalidation('certi_file')"  min="1" placeholder="Certificate (PDF Only)" >
             </div>  
         </div> 
 
@@ -636,7 +633,7 @@
                 <label>Provide the last 3 year annual statements<br> (optional ,PDF only)</label>
             </div>        
             <div class="col-md-6">    
-                <input type="file" class="form-input" name="statement_file" id="statement_file" aria-describedby="statement_file"  min="1" placeholder="Certificate (PDF Only)" >
+                <input type="file" class="form-input" name="statement_file" id="statement_file" onchange="Filevalidation('statement_file')"  accept=".pdf" aria-describedby="statement_file"  min="1" placeholder="Certificate (PDF Only)" >
                 
             </div>  
         </div>
@@ -680,28 +677,31 @@
 
 
 
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </div>
 
 
 
+<script> 
+    function Filevalidation(id){ 
+        var fi = document.getElementById(id); 
+        if (fi.files.length > 0) { 
+            for (let i = 0; i <= fi.files.length - 1; i++) { 
+  
+                let fsize = fi.files.item(i).size; 
+                let file = Math.round((fsize / 1024)); 
+                // The size of the file. 
+                console.log(fi);
+                if (file >= 20000) { 
+                    fi.value='';
+                    alert( 
+                      "File too Big, please select a file less than 20MB"); 
+                } 
+            } 
+        } 
+    } 
+</script> 
 
 
 

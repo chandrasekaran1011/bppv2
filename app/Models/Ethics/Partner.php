@@ -23,7 +23,8 @@ class Partner  extends Model implements Auditable
 
     public function ethics()
     {
-        return $this->hasMany('App\Models\Ethics\Ethics', 'partner_id', 'id')->where('active',1)->first();
+        return $this->hasOne('App\Models\Ethics\Ethics', 'partner_id', 'id');
+        // return $this->hasMany('App\Models\Ethics\Ethics', 'partner_id', 'id')->where('active',1)->first();
     }
 
     public function renews()
@@ -98,7 +99,7 @@ class Partner  extends Model implements Auditable
 
 
     public function project(){
-        return $this->belongsTo('App\Models\Admin\Project');
+        return $this->belongsTo('App\Models\Admin\Project')->withTrashed();
     }
 
     public function getStatus(){

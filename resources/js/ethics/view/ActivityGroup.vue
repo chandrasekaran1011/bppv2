@@ -173,7 +173,7 @@ export default {
                 url = window.links.updateActivityGroup;
                 formData.id = pid;
             }
-            console.log(url);
+            
             axios.post(url, formData)
                 .then(res => {
 

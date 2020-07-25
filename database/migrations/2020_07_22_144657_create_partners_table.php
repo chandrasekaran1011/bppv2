@@ -42,6 +42,7 @@ class CreatePartnersTable extends Migration
             $table->boolean('revenue')->default(false);
             $table->boolean('insolvency')->default(false);
 
+            $table->datetime('question_submitted_on')->nullable();
 
             $table->datetime('approved_on')->nullable();
             $table->datetime('due_on')->nullable();

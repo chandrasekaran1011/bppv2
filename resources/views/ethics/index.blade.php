@@ -116,6 +116,7 @@
                     'storePublicForm'=>route('ethics.storePublicForm'),
                     'storeOtherForm'=>route('ethics.storeOtherForm'),
                     'detail'=>route('ethics.detail'),
+                    'view'=>route('ethics.view'),
                 ], true) !!};
             
             window.pTypes={!!$partner!!}; 

@@ -11,7 +11,9 @@
             <img src="/images/systra.jpg" width="200px" style="position: absolute;right: 10px;top: 25px;" height="50px" alt="img">
         </div>
         <v-divider> </v-divider>
-        <basic-detail :data="data" v-if="this.$store.state.loading==false"></basic-detail>
+        <basic-detail :data="data" v-if="!loading"></basic-detail>
+        <question-detail :data="data" v-if="!loading && data.type.value!=1" ></question-detail>
+        <pm-approval v-if="!loading && data.pmApprover"></pm-approval>
     </v-card>
     </div>
 </template>
@@ -58,12 +60,18 @@
 <script>
 import axios from "../axios/axios";
 import Basic from '../components/detail/basic'
+import Question from '../components/detail/questionnaire'
+import PmApproval from '../components/detail/pmApproval'
+
 export default {
     components:{
-        'basic-detail':Basic
+        'basic-detail':Basic,
+        'question-detail':Question,
+        'pm-approval':PmApproval
     },
     data:()=>({
         data:{},
+        loading:true,
     }),
     methods:{
         getData(){
@@ -81,6 +89,7 @@ export default {
                 });
             }).then(()=>{
                 this.$store.state.loading=false;
+                this.loading=false;
                 
             })
         }

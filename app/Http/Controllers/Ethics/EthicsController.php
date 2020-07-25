@@ -53,7 +53,13 @@ class EthicsController extends Controller
 
     public function getFormData(Request $r)
     {
-        $partner = PartnerType::where('id', $r->id)->select('name')->first();
+        if(isset($r->id)){
+            $partner = PartnerType::where('id', $r->id)->select('name')->first();
+        }else{
+            $partner =null;
+        }
+        
+
         $entity = Project::getDataArray();
         $country = Country::getDataArray();
         $flags = RedFlag::allFlagsArray();
@@ -215,10 +221,10 @@ class EthicsController extends Controller
         }
     }
 
-    public function partnerstore($id, IndividualFormRequest $request)
+    public function partnerstore($id, PartnerForm  $request)
     {
         //PartnerForm    
-        dd($request);
+        //dd($request);
 
         $p = Partner::where('uuid', $id)->where('status', 1)->first();
         if ($p) {
@@ -231,8 +237,11 @@ class EthicsController extends Controller
             $p->stock_name = $request->stock_name;
             $p->stock_detail = $request->stock_detail;
             $p->director = $request->director;
+            $p->tp = $request->tp;
 
             $p->status = 2;
+
+            $p->question_submitted_on=Carbon::now();
 
             $p->subsidiary = $request->subsidiary;
             $p->employee = $request->employee;
@@ -266,6 +275,7 @@ class EthicsController extends Controller
             $e->q_detail = $request->q_detail;
             $e->r_detail = $request->r_detail;
             $e->s_detail = $request->s_detail;
+            $e->benefit_detail = $request->benefit_detail;
 
             $e->t = $request->t;
 
@@ -324,7 +334,7 @@ class EthicsController extends Controller
             $p->doi = $request->doi;
 
             $p->status = 2;
-
+            $p->question_submitted_on=Carbon::now();
             $p->revenue = $request->revenue;
             $p->tp = $request->tp;
             $p->license = $request->license;
@@ -379,10 +389,47 @@ class EthicsController extends Controller
         }
     }
 
+    public function view(){
+        $user=Auth::user();
+
+        if($user->isAdmin() || $user->can('View All Records')){
+            $partner=Partner::all();
+        }
+        else if($user->can('View Entity Records')){
+            $partner=Partner::whereIn('project_id',$user->getProjectsIDs())->orWhere('ims_assign',$user->id)->get();
+        }else if($user->can('View Own Records')){
+            $partner=Partner::where('cuser',$user->id)->orWhere('ims_assign',$user->id)->get(); 
+        }else{
+            return response()->json(['message'=>'Error in Permissions'], 500);   
+        }
+
+        if($partner->count()>0){
+            $data=[];
+            $x=1;
+            foreach($partner as $p){
+                $data[]=[
+                    'x'=>$x,
+                    'id'=>$p->uuid,
+                    'name'=>$p->name,
+                    'status'=>$p->getStatus(),
+                    'type'=>$p->type->name,
+                ];
+                $x++;
+            }
+            return response()->json($data, 200);
+
+        }else{
+            return response()->json(['message'=>'No Data Found'], 500);
+        }
+
+
+
+    }
+
     public function detail(Request $request)
     {
-
-        $e = Partner::where('uuid', $request->id)->first();
+        $user=Auth::user();
+        $e = Partner::where('uuid', $request->id)->with('ethics')->first();
 
         $doi = $e->doi == null ? '' : $e->doi->toFormattedDateString();
         $data = [
@@ -393,6 +440,7 @@ class EthicsController extends Controller
             'doi' => $doi,
             'cop_num' => $e->cop_num,
             'cop_juri' => $e->cop_juri,
+            'license' => $e->license,
             'stock' => [
                 'value' => $e->stock,
                 'yn' => $e->yn($e->stock),
@@ -403,9 +451,48 @@ class EthicsController extends Controller
             'subsidiary' => $e->subsidiary,
             'employee' => $e->employee,
             'revenue' => $e->yn($e->revenue),
-            'insolvency' => $e->yn($e->insolvency)
+            'insolvency' => $e->yn($e->insolvency),
+            'tp'=>$e->tp,
 
+            'policy'=>[
+                'value'=>$e->ethics->policy,
+                'yn'=>$e->yn($e->ethics->policy),
+                'file'=>$e->ethics->policy_file,
+                'p1'=>$e->yn($e->ethics->p1),
+                'p2'=>$e->yn($e->ethics->p2),
+                'p3'=>$e->yn($e->ethics->p3),
+                'p4'=>$e->yn($e->ethics->p4),
+                'p5'=>$e->yn($e->ethics->p5),
+            ],
+            'person'=>[
+                'value'=>$e->ethics->person,
+                'yn'=>$e->yn($e->ethics->person),
+                'detail'=>$e->ethics->person_detail,
+            ],
+            'q'=>[
+                'q_detail'=>$e->ethics->q_detail,
+                'q1'=>$e->yn($e->ethics->q1),
+                'q2'=>$e->yn($e->ethics->q2),
+                'q3'=>$e->yn($e->ethics->q1),
+                'q4'=>$e->yn($e->ethics->q1),
+                'q5'=>$e->yn($e->ethics->q1),
+            ],
+            'r_detail'=>$e->ethics->r_detail,
+            'benefit_detail'=>$e->ethics->benefit_detail,
+            's_detail'=>$e->ethics->s_detail,
+            'cert'=>[
+                'yn'=>$e->yn($e->ethics->t),
+                'file'=>$e->ethics->certi_file
+            ],
+            'finance'=>[
+                'file'=>$e->ethics->statement_file
+            ],
+            'p_name'=>$e->ethics->p_name,
+            'p_des'=>$e->ethics->p_des,
+            'submitted_on'=>$e->question_submitted_on,
 
+            'pmApprover'=> $user->can('pmApprove',$e),
+    
         ];
 
         if ($e) {
@@ -414,4 +501,6 @@ class EthicsController extends Controller
             abort(404);
         }
     }
+
+
 }

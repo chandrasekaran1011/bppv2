@@ -28,7 +28,7 @@ class IndividualFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|max:200|string',
+            'name'=>'required|max:50|string',
             'address'=>'required|string',
             'cop_num'=>'required|string|max:50',
             'cop_juri'=>'required|string|max:50',
