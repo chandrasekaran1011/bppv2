@@ -94,6 +94,23 @@ class PartnerPolicy
         elseif($user->isAdmin){
             return true;
         }
+
+        else{
+            return false;
+        }
+
+    }
+
+    public function imsApprove(User $user, Partner $partner)
+    {
+        if($user->id==$partner->ims_assign && $partner->status==3 ){
+
+            return true;
+
+        }
+        elseif($user->isAdmin && $partner->status==3 ){
+            return true;
+        }
         
         else{
             return false;

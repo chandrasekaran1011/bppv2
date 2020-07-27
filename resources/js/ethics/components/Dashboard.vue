@@ -1,32 +1,76 @@
 <template>
 <div>
-    <v-row>
-        <v-col :md="4" cols="12">
-            <v-card @click="dialog=true;" style="cursor:pointer;background-color: #3bb78f;background-image: linear-gradient(315deg, #3bb78f 0%, #0bab64 74%);" class="mx-auto" max-width="300px">
-                <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-plus</v-icon>
-                <v-card-text class="title white--text">
-                    Create Business Partner
-                </v-card-text>
-            </v-card>
+
+    <v-row class="mt-lg-10 pt-lg-10">
+        <v-col cols="12" :sm="12">
+            <v-row :justify="'space-around'">
+                <v-col :md="4" cols="12">
+                    <v-card @click="dialog=true;" style="cursor:pointer;background-color: #a4508b;background-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);" class="mx-auto" max-width="300px">
+                        <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-chart-line</v-icon>
+                        <v-card-text class="title white--text">
+                            Dashboard
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+
+                <v-col :md="4" cols="12">
+                    <v-card @click="dialog=true;" style="cursor:pointer;background-color: #3bb78f;background-image: linear-gradient(315deg, #3bb78f 0%, #0bab64 74%);" class="mx-auto" max-width="300px">
+                        <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-plus</v-icon>
+                        <v-card-text class="title white--text">
+                            Create Business Partner
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+
+                <v-col :md="4" cols="12">
+                    <v-card @click="nav(2);" style="cursor:pointer;background-color: #f9484a;background-image: linear-gradient(315deg, #f9484a 0%, #fbd72b 74%);" class="mx-auto" max-width="300px">
+                        <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-users</v-icon>
+                        <v-card-text class="title white--text">
+                            View Partner
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
         </v-col>
-        <v-col :md="4" cols="12">
-            <v-card @click="nav(2);" style="cursor:pointer;background-color: #f9484a;background-image: linear-gradient(315deg, #f9484a 0%, #fbd72b 74%);" class="mx-auto" max-width="300px">
-                <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-search</v-icon>
-                <v-card-text class="title white--text">
-                    View Partner
-                </v-card-text>
-            </v-card>
+        <v-col class="d-sm-none d-md-block">
+            <img src="/images/systra.jpg" width="250px" height="75px" alt="img">
+            <div class="title">Business Partner Portal</div>
         </v-col>
-        <v-col :md="4" cols="12">
-            <v-badge color="success" class="mx-auto" max-width="300px" content="6" overlap>
-                <v-card @click="nav(3)" style="cursoe:pointer;background-color: #7f53ac;background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);color:white" min-width="300px" max-width="350px">
-                    <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-check</v-icon>
-                    <v-card-text class="title white--text">
-                        Pending Approvals
-                    </v-card-text>
-                </v-card>
-            </v-badge>
+
+        <v-col cols="12" :sm="12">
+            <v-row :justify="'space-around'">
+
+                <v-col :md="4" cols="12">
+
+                    <v-card @click="nav(3)" style="cursor:pointer;background-color: #7f53ac;background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);color:white" class="mx-auto" max-width="300px">
+                        <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-check</v-icon>
+                        <v-card-text class="title white--text">
+                            Pending Approvals
+                        </v-card-text>
+                    </v-card>
+
+                </v-col>
+
+                <v-col :md="4" cols="12">
+                    <v-card @click="nav(2);" style="cursor:pointer;background-color: #bf3a30;background-image: linear-gradient(315deg, #bf3a30 0%, #864ba2 74%);" class="mx-auto" max-width="300px">
+                        <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-file-alt</v-icon>
+                        <v-card-text class="title white--text">
+                            Reports
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+
+                <v-col :md="4" cols="12">
+                    <v-card @click="nav(2);" style="cursor:pointer;background-color: #4dccc6;background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);" class="mx-auto" max-width="300px">
+                        <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-search</v-icon>
+                        <v-card-text class="title white--text">
+                            Search Partner
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
         </v-col>
+
     </v-row>
 
     <v-dialog v-model="dialog" width="500">
@@ -57,23 +101,25 @@
 
 <script>
 export default {
-    data:()=>({
-        dialog:false,
-        type:'',
-        typeList:[],
+    data: () => ({
+        dialog: false,
+        type: '',
+        typeList: [],
     }),
 
     methods: {
 
         nav(val) {
             if (val == 1) {
-                
+
                 this.$router.push({
                     name: 'CreatePartner',
-                    params:{'id':this.type}
+                    params: {
+                        'id': this.type
+                    }
                 })
             } else if (val == 2) {
-                 this.$router.push({
+                this.$router.push({
                     name: 'View'
                 })
 
@@ -88,7 +134,7 @@ export default {
     },
     created() {
         this.$store.state.tabId = 1;
-        this.typeList=window.pTypes;
+        this.typeList = window.pTypes;
         console.log(window.pTypes);
     }
 }

@@ -81,7 +81,7 @@
     }
 </style>
     <link rel="stylesheet" href="{{asset('css/ethics.css')}}">
-    
+   
 
 </head>
 
@@ -92,7 +92,7 @@
             
             <admin-header :home="'{{route('home')}}'"></admin-header>
                 
-            <v-content>
+            <v-content >
                 <v-container>
                     <v-row :align="'start'" :justify="'start'">
                         <v-col cols="12">
@@ -107,6 +107,21 @@
         </v-app>
     </div>
     </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+
+        const myParam = urlParams.get('q');
+
+        if(myParam){
+            window.location.hash=myParam;
+
+            console.log('Redirect Initiated');
+        }
+
+
+
+    </script>
+
     
     <script>
             window.links = {!! json_encode([
@@ -115,7 +130,11 @@
                     'getFormData'=>route('ethics.getFormData'),
                     'storePublicForm'=>route('ethics.storePublicForm'),
                     'storeOtherForm'=>route('ethics.storeOtherForm'),
+                    'storePmForm'=>route('ethics.storePmForm'),
+                    'compForm'=>route('ethics.compForm'),
                     'detail'=>route('ethics.detail'),
+                    'searchResults'=>route('ethics.searchResults'),
+                    'auditResults'=>route('ethics.auditResults'),
                     'view'=>route('ethics.view'),
                 ], true) !!};
             

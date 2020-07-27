@@ -334,7 +334,7 @@
 
         <div class="form-group d-flex mt-3">
             <div class="col-md-6">
-                <label>Provide the last 3 year annual statements<br> (optional ,PDF only (Max 20 MB))</label>
+                <label>Provide the last 3 year Tax Return statements<br> (optional ,PDF only (Max 20 MB))</label>
             </div>        
             <div class="col-md-6">    
                 <input type="file" class="form-input" name="statement_file" accept=".pdf" id="statement_file" aria-describedby="statement_file"  min="1" placeholder="Certificate (PDF Only)" >

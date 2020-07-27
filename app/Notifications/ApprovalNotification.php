@@ -31,7 +31,7 @@ class ApprovalNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = url('/ethics/detail/'.$this->partner->uuid);
+        $url = url('/ethics?q=detail/'.$this->partner->uuid);
         return (new MailMessage)
                     ->greeting('Dear Sir/Madam,')
                     ->line('Business Partner Registration requires your approval.Click on the following link to approve')

@@ -58,7 +58,6 @@
 
     <v-row :justify="'center'" class="mt-2 mb-4  px-4 py-2" no-gutters>
         <v-btn :disabled="$v.$invalid" @click="sumform()" color="success">Create Business Partner</v-btn>
-
     </v-row>
 
 </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Ethics;
+namespace App\Models\Ethics;
 
 use Illuminate\Database\Eloquent\Model;
 

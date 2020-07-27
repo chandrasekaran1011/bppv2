@@ -61,6 +61,7 @@ class CreateEthicsTable extends Migration
             $table->string('screenshot_file')->nullable();
             $table->integer('satis')->nullable();
             $table->integer('practice')->nullable();
+            $table->integer('need')->nullable();
             $table->text('flag')->nullable();
             $table->text('mitigation')->nullable();
 

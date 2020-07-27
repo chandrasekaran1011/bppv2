@@ -126,8 +126,8 @@
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
                         <v-radio-group v-model="need" :error-messages="needErrors" @input="$v.need.$touch()" @blur="$v.need.$touch()" row>
-                            <v-radio label="Yes" color="red" value="1"></v-radio>
-                            <v-radio label="No" color="success" value="0"></v-radio>
+                            <v-radio label="Yes" color="success"  value="1"></v-radio>
+                            <v-radio label="No" color="red" value="0"></v-radio>
 
                         </v-radio-group>
                     </v-col>
@@ -139,8 +139,8 @@
                     </v-col>
                     <v-col cols="12" :md="6">
                         <v-radio-group v-model="search" :error-messages="searchErrors" @input="$v.search.$touch()" @blur="$v.search.$touch()" row>
-                            <v-radio label="Yes" color="red" value="1"></v-radio>
-                            <v-radio label="No" color="success" value="0"></v-radio>
+                            <v-radio label="Yes" color="success"  value="1"></v-radio>
+                            <v-radio label="No" color="red"  value="0"></v-radio>
                             <v-radio label="n.a. (Ref cf.3.1)" color="success" value="2"></v-radio>
                         </v-radio-group>
                     </v-col>
@@ -161,8 +161,8 @@
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
                         <v-radio-group v-model="satis" :error-messages="satisErrors" @input="$v.satis.$touch()" @blur="$v.satis.$touch()" row>
-                            <v-radio label="Yes" color="red" value="1"></v-radio>
-                            <v-radio label="No" color="success" value="0"></v-radio>
+                            <v-radio label="Yes" color="success"  value="1"></v-radio>
+                            <v-radio label="No" color="red"  value="0"></v-radio>
 
                         </v-radio-group>
                     </v-col>
@@ -174,8 +174,8 @@
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
                         <v-radio-group v-model="practice" :error-messages="practiceErrors" @input="$v.practice.$touch()" @blur="$v.practice.$touch()" row>
-                            <v-radio label="Yes" color="red" value="1"></v-radio>
-                            <v-radio label="No" color="success" value="0"></v-radio>
+                            <v-radio label="Yes" color="success"  value="1"></v-radio>
+                            <v-radio label="No" color="red"  value="0"></v-radio>
 
                         </v-radio-group>
                     </v-col>
@@ -222,7 +222,7 @@
                 </v-row>
 
                 <v-row :justify="'center'" class="mt-2 mb-4  px-4 py-2" no-gutters>
-                    <v-btn :disabled="$v.$invalid" color="success">Approve Business Partner</v-btn>
+                    <v-btn :disabled="$v.$invalid" @click="sumform()" color="success">Approve Business Partner</v-btn>
 
                 </v-row>
 
@@ -243,6 +243,12 @@ import {
 
 } from 'vuelidate/lib/validators';
 export default {
+    props: {
+        id: {
+            required: true,
+            type: String,
+        }
+    },
     data: () => ({
         nowDate: new Date().toISOString().slice(0, 10),
         datepicker: false,
@@ -317,6 +323,73 @@ export default {
                 this.dataLoading = false;
                 this.pmDialog = true;
             })
+        },
+        sumform() {
+            
+            if (this.$store.state.loading == true) return;
+            this.$store.state.loading = true;
+
+            let formData = new FormData();
+            formData.append('_token', document.getElementById('csrf').content);
+            formData.append('unique', this.id)
+            formData.append('scope', this.scope)
+            formData.append('contract', this.contract)
+            formData.append('phase', this.phase)
+            formData.append('pcountry', this.projectCountry)
+            formData.append('pcpi', this.pcpi)
+            formData.append('cdo', this.cdo)
+            formData.append('dcdo', this.cdo_date)
+            formData.append('mutual', this.mutual)
+            formData.append('recomm', this.recomm)
+            formData.append('search', this.search)
+
+            formData.append('need', this.need);
+
+            formData.append('screenshot_file', this.screenshot_file)
+            formData.append('satis', this.satis)
+            formData.append('practice', this.practice)
+            formData.append('flag', this.redflags)
+            formData.append('mitigations', this.mitigations)
+            formData.append('ims_assign', this.approver)
+
+             console.log(window.links.storePmForm);   
+            axios.post(window.links.storePmForm, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            }).then((resp) => {
+                this.$store.commit('snackNotify', {
+                    type: 'success',
+                    msg: resp.data.message
+                });
+
+            }).catch((err) => {
+                let errText = '';
+                if (err.response) {
+                    console.log(err.response);
+                    if (err.response.status = 422) {
+                        Object.values(err.response.data.errors).forEach(val => {
+                            errText += val + '\n';
+                        });
+                        this.$store.commit('snackNotify', {
+                            type: 'error',
+                            msg: errText
+                        });
+                    } else {
+                        console.log(err.response);
+                        this.$store.commit('snackNotify', {
+                            type: 'error',
+                            msg: err.response.data.message
+                        });
+
+                    }
+                }
+            }).then(() => {
+                this.$store.state.loading = false;
+                this.pmDialog = false;
+                this.$emit('reset');
+            })
+
         }
     },
 

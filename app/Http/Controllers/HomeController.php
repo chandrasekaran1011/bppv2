@@ -20,9 +20,9 @@ class HomeController extends Controller
     {
         $user=Auth::user();
        
-        $apps=Application::getApplicationAccess();
-
+       
+        return redirect()->route('ethics.index');
         
-        return view('home')->with('apps',$apps);
+        //return redirect view('home')->with('apps',$apps);
     }
 }

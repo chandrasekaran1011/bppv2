@@ -1,24 +1,106 @@
 <template>
-    <div>
-        <v-card class="mx-auto mb-4" color="white" elevation-3 width="95%" max-width="1200px" height="100%" min-height="400px">
+<div>
+    <v-card class="transparent mx-auto text-right" width="95%" max-width="1200px" v-if="!loading">
+        <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn color="primary" dark v-bind="attrs" v-on="on">
+                    Options
+                </v-btn>
+            </template>
+
+            <v-list>
+                <v-list-item v-if="data.searches>0" @click="searchResults()">
+                    <v-list-item-title>View Search Results</v-list-item-title>
+                </v-list-item>
+                <v-list-item v-if="data.audit_trial>0" @click="auditResults()">
+                    <v-list-item-title>View Audit Trial</v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
+    </v-card>
+    <v-card id="printableArea" class="mx-auto mb-4" color="white" elevation-3 width="95%" max-width="1200px" height="100%" min-height="400px">
+
         <div class="text-left">
 
             <h1 class="font-weight-bold py-5 my-2 px-3 d-inline-block display-1 text-left basil--text">
-            <span >Business Partner Form</span>
-            
+                <span>Business Partner Form</span>
+
             </h1>
             <v-spacer></v-spacer>
             <img src="/images/systra.jpg" width="200px" style="position: absolute;right: 10px;top: 25px;" height="50px" alt="img">
         </div>
         <v-divider> </v-divider>
-        <basic-detail :data="data" v-if="!loading"></basic-detail>
-        <question-detail :data="data" v-if="!loading && data.type.value!=1" ></question-detail>
-        <pm-approval v-if="!loading && data.pmApprover"></pm-approval>
+        <div v-if="!loading">
+            <header-detail :data="data"></header-detail>
+            <basic-detail :data="data"></basic-detail>
+            <question-detail class="mybreak" :data="data" v-if="data.type.value!=1 && data.status>1"></question-detail>
+            <pm-approval class="mybreak" v-if="data.pmApprover && data.status==2" :id="data.unique" @reset="getData()"></pm-approval>
+            <pm-detail class="mybreak" v-if="data.status>2" :data="data"></pm-detail>
+            <ims-approval class="mybreak" v-if="data.imsApprover && data.status==3" :id="data.unique" @reset="getData()"></ims-approval>
+            <ims-detail class="mybreak" v-if="data.status>3" :data="data"></ims-detail>
+
+        </div>
+
     </v-card>
-    </div>
+
+    <v-dialog v-model="searchBar" fullscreen hide-overlay transition="dialog-bottom-transition">
+
+        <v-card>
+            <v-toolbar dark color="primary">
+                <v-btn icon dark @click="searchBar = false">
+                    <v-icon>fas fa-times</v-icon>
+                </v-btn>
+                <v-toolbar-title>Search Results</v-toolbar-title>
+            </v-toolbar>
+            <v-card  class="mx-auto mt-3 mb-4" color="white" elevation-3 width="95%" max-width="1200px" height="100%" min-height="400px">
+                <v-row>
+                    <v-col cols="12" :sm="12" class="pa-0" :md="4" :offset-md="8">
+                        <v-text-field v-model="findSearchResults" placeholder="Search in results"></v-text-field>
+                    </v-col>
+                </v-row>
+            <v-data-table :search="findSearchResults"  :headers="searchTableHeaders" :items="searchData" sort-by="id" class="elevation-1">
+                <template v-slot:item.link="{ item }">
+                    <a :href="item.href" target="_blank" rel="noopener noreferrer">{{item.link}}</a>
+                </template>
+
+            </v-data-table>
+            </v-card>
+        </v-card>
+    </v-dialog>
+
+     <v-dialog v-model="auditBar" fullscreen hide-overlay transition="dialog-bottom-transition">
+
+        <v-card>
+            <v-toolbar dark color="primary">
+                <v-btn icon dark @click="auditBar = false">
+                    <v-icon>fas fa-times</v-icon>
+                </v-btn>
+                <v-toolbar-title>Audit Trial</v-toolbar-title>
+            </v-toolbar>
+            <v-card  class="mx-auto mt-3 mb-4 pa-3" color="white" elevation-3 width="95%" max-width="1200px" height="100%" min-height="400px">
+                <v-row>
+                    <v-col cols="12" :sm="12" class="pa-0" :md="4" :offset-md="8">
+                        <v-text-field v-model="findAuditResults" placeholder="Search in results"></v-text-field>
+                    </v-col>
+                </v-row>
+            <v-data-table :search="findAuditResults"  :headers="auditTableHeaders" :items="auditData" sort-by="id" class="elevation-1">
+
+            </v-data-table>
+            </v-card>
+        </v-card>
+    </v-dialog>
+
+</div>
 </template>
 
 <style>
+.transparent {
+    background-color: white !important;
+    opacity: 0.65;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
 .grad {
     color: white;
     background-color: rgb(222, 51, 20);
@@ -38,23 +120,25 @@
     text-align: left;
 }
 
-.tble{
+.tble {
     width: 100%;
     max-width: 100%;
     margin-bottom: 1rem;
     background-color: transparent;
 }
+
 .table-bordered {
     border: 1px solid #dee2e6;
 }
 
-.tble td, .tble th {
+.tble td,
+.tble th {
     padding: .75rem;
     vertical-align: middle;
-    border-top: 1px solid #dee2e6;
-    text-align:left;
+    /* border-top: 1px solid #dee2e6; */
+    text-align: left;
+    border: 1px solid #dee2e6;
 }
-
 </style>
 
 <script>
@@ -62,39 +146,150 @@ import axios from "../axios/axios";
 import Basic from '../components/detail/basic'
 import Question from '../components/detail/questionnaire'
 import PmApproval from '../components/detail/pmApproval'
+import ImsApproval from '../components/detail/imsApproval'
+import PmDetail from '../components/detail/pmDetail'
+import ImsDetail from '../components/detail/imsDetail'
+import HeaderDetail from '../components/detail/headerDetail'
 
 export default {
-    components:{
-        'basic-detail':Basic,
-        'question-detail':Question,
-        'pm-approval':PmApproval
+    components: {
+        'basic-detail': Basic,
+        'question-detail': Question,
+        'pm-approval': PmApproval,
+        'pm-detail': PmDetail,
+        'ims-approval': ImsApproval,
+        'ims-detail': ImsDetail,
+        'header-detail': HeaderDetail,
+
     },
-    data:()=>({
-        data:{},
-        loading:true,
+    data: () => ({
+        data: {},
+        loading: true,
+        searchBar: false,
+        searchData: [],
+        findSearchResults:'',
+        searchTableHeaders: [{
+                text: 'S.no',
+                value: 'id',
+
+            },
+            {
+                text: 'Keyword',
+                value: 'kw',
+
+            },
+            {
+                text: 'Search Result',
+                value: 'link'
+            },
+            {
+                text: 'Search Time',
+                value: 'date'
+            },
+
+        ],
+        auditBar: false,
+        auditData: [],
+        findAuditResults:'',
+        auditTableHeaders: [{
+                text: 'S.no',
+                value: 'id',
+
+            },
+            {
+                text: 'User',
+                value: 'user',
+
+            },
+            {
+                text: 'Action',
+                value: 'action'
+            },
+            {
+                text: 'Date time',
+                value: 'date'
+            },
+
+        ],
+
     }),
-    methods:{
-        getData(){
-            this.$store.state.loading=true;
+    methods: {
+        getData() {
+            this.$store.state.loading = true;
             let formData = {};
             formData._token = document.getElementById('csrf').content;
             formData.id = this.$route.params.id;
-                axios.post(window.links.detail,formData).then((resp) => {
-                    this.data=resp.data;
-                    console.log(resp.data);
+            axios.post(window.links.detail, formData).then((resp) => {
+                this.data = resp.data;
+
             }).catch(() => {
                 this.$store.commit('snackNotify', {
                     type: 'error',
                     msg: 'Error Fetching Data'
                 });
-            }).then(()=>{
-                this.$store.state.loading=false;
-                this.loading=false;
-                
+            }).then(() => {
+                this.$store.state.loading = false;
+                this.loading = false;
+                console.log(this.data.audit_trial);
+
             })
+        },
+        printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        },
+
+        searchResults() {
+
+            this.$store.state.loading = true;
+            let formData = {};
+            formData._token = document.getElementById('csrf').content;
+            formData.id = this.$route.params.id;
+            axios.post(window.links.searchResults, formData).then((resp) => {
+                this.searchData = resp.data;
+
+            }).catch(() => {
+                this.$store.commit('snackNotify', {
+                    type: 'error',
+                    msg: 'Error Fetching Data'
+                });
+            }).then(() => {
+                this.$store.state.loading = false;
+                this.searchBar = true;
+
+            })
+
+        },
+        auditResults() {
+
+            this.$store.state.loading = true;
+            let formData = {};
+            formData._token = document.getElementById('csrf').content;
+            formData.id = this.$route.params.id;
+            axios.post(window.links.auditResults, formData).then((resp) => {
+                this.auditData = resp.data;
+
+            }).catch(() => {
+                this.$store.commit('snackNotify', {
+                    type: 'error',
+                    msg: 'Error Fetching Data'
+                });
+            }).then(() => {
+                this.$store.state.loading = false;
+                this.auditBar = true;
+
+            })
+
         }
+
     },
-    created(){
+    created() {
         this.getData();
     }
 }

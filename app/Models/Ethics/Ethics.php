@@ -2,6 +2,7 @@
 
 namespace App\Models\Ethics;
 
+use App\Models\Admin\Country;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,37 +17,65 @@ use App\Models\Traits\Uuid;
 
 class Ethics  extends Model implements Auditable
 {
-    use  \OwenIt\Auditing\Auditable, SoftDeletes  ;
+    use  \OwenIt\Auditing\Auditable, SoftDeletes;
 
-    protected $dates=['pm_at','ims_at','cdo_date'];
+    protected $dates = ['pm_at', 'ims_at', 'cdo_date'];
 
-    public function getphase(){
-        $arr=['Bid','Project','Others'];
+    public function getphase()
+    {
+        if (!is_null($this->phase)) {
+        $arr = ['Bid', 'Project', 'Others'];
         return $arr[$this->phase];
+        }
+        return null;
     }
 
-    public function pm(){
-       $user= User::find($this->pm_by);
-       return $user->name;
+    public function pm()
+    {
+        if (!is_null($this->pm_by)) {
+            $user = User::find($this->pm_by);
+            return $user->name;
+        }
+        return null;
     }
 
-    public function complaince_by(){
-        $user= User::find($this->ims_by);
-        return $user->name;
-     }
+    public function complaince_by()
+    {
+        if (!is_null($this->ims_by)){
+            $user = User::find($this->ims_by);
+            return $user->name;
+        }
+        return null;
 
-     public function getdecision(){
-        $val=$this->decision;
+    }
 
-        if($val==1){
-            return 'Approved';
+    public function getdecision()
+    {
+        $val = $this->decision;
+        if (!is_null($val)) {
+
+            if ($val == 1) {
+                return 'Approved';
+            } elseif ($val == 2) {
+                return 'Approved with Condition';
+            } else {
+                return 'Declined';
+            }
         }
-        elseif($val==2){
-            return 'Approved with Condition';
+
+        return null;
+    }
+
+    public function getProjectCountry()
+    {
+
+        if (!is_null($this->pcountry)) {
+            $val = $this->pcountry;
+
+            $country = Country::where('id', $val)->select('name')->first();
+
+            return $country->name;
         }
-        else{
-            return 'Declined';
-        }
-        
-     }
+        return null;
+    }
 }
