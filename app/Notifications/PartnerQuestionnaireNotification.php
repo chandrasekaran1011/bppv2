@@ -44,12 +44,13 @@ class PartnerQuestionnaireNotification extends Notification implements ShouldQue
     public function toMail($notifiable)
     {
         //$url = url('/ethics/partnerQuestionForm/'.$this->partner->uuid);
-        $url =URL::temporarySignedRoute('partnerQuestionForm',now()->addMinutes(120),['id'=>$this->partner->uuid]);
+        $url =URL::temporarySignedRoute('partnerQuestionForm',now()->addMinutes(config('ethics.registration_validity')),['id'=>$this->partner->uuid]);
         return (new MailMessage)
 
                     ->greeting('Dear Sir/Madam,')
                     ->line('Please fill the Business Partner Questionnaire in the following link at earliest .')
                     ->action('Click here', $url)
+                    ->line('This link will expire in.'.config('ethics.registration_validity').' hours')
                     ->line('This is an automatically generated mail from Business Partner Portal.');
     }
 

@@ -6,7 +6,7 @@
 
             <tr>
                 <td colspan="2" style="background-color:#dee2e6;max-width:50%;min-width:50%;width:70%">Does your organization have policies and a programme to ensure ethical business practices and prevent bribery and corruption ?</td>
-                <td colspan="2" style="vertical-align: middle;">{{data.policy.yn}}</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.policy.yn}}<span class="ml-3" v-if="data.files.policy_file!==''"><a :href="data.files.policy_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
 
             </tr>
 
@@ -79,13 +79,13 @@
 
             <tr>
                 <td colspan="2" style="background-color:#dee2e6;">Does your organization have external certifications regarding ethics? (e.g. ISO 37001)</td>
-                <td colspan="2" style="vertical-align: middle;">{{data.cert.yn}}</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.cert.yn}}<span class="ml-3" v-if="data.files.cert_file!==''"><a :href="data.files.cert_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
 
             </tr>
 
             <tr>
-                <td colspan="2" style="background-color:#dee2e6;"> Annual Statement</td>
-                <td colspan="2" style="vertical-align: middle;"> </td>
+                <td colspan="2" style="background-color:#dee2e6;">Last 3 years Annual Statement</td>
+                <td colspan="2" style="vertical-align: middle;"> <span class="ml-3" v-if="data.files.statement_file!==''"><a :href="data.files.statement_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
             </tr>
 
             <tr>
@@ -115,7 +115,6 @@
                         - A Public Official?<br>
                         - An employee of SYSTRA Group? <br>
                         - A Relevant Person? <br>
-                        - Family member or personal or professional associate of one of the above?<br>
                         - A person subject to any international sanction?<br>
 
                     </div>
@@ -125,7 +124,7 @@
                     {{data.q.q1}}<br>
                     {{data.q.q2}}<br>
                     {{data.q.q3}}<br>
-                    {{data.q.q4}}<br>
+
                     {{data.q.q5}}<br>
                     Additional Infromation (if any):{{data.q.q_detail}}
                 </td>
@@ -150,7 +149,7 @@
 
             <tr>
                 <td colspan="2" style="background-color:#dee2e6;"> Tax Return Statement</td>
-                <td colspan="2" style="vertical-align: middle;"> </td>
+                <td colspan="2" style="vertical-align: middle;"><span class="ml-3" v-if="data.files.statement_file!==''"><a :href="data.files.statement_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span> </td>
             </tr>
 
             <tr>

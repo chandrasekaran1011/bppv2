@@ -15,7 +15,7 @@
                                         </v-btn>
 
                                     </template>
-                                    <v-card>
+                                    <v-card :disabled="loading" :loading="loading">
                                         <v-progress-linear :active="loading" :indeterminate="true" absolute top color="deep-purple accent-4"></v-progress-linear>
                                         <v-card-title>
                                             <span class="headline">Add Entity</span>
@@ -40,7 +40,7 @@
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
 
-                                            <v-btn v-if="formMode=='create'" color="blue darken-1" text @click="subform()">Save</v-btn>
+                                            <v-btn v-if="formMode=='create'" color="blue darken-1" text @click="subform()" :disabled="$v.$invalid">Save</v-btn>
                                             <v-btn v-if="formMode=='update'" color="blue darken-1" text @click="updateform()">Update</v-btn>
                                             <v-btn color="blue darken-1" text @click="formdialog = false">Close</v-btn>
                                         </v-card-actions>
@@ -241,10 +241,11 @@ export default {
                     this.loading = false;
                 })
 
-            this.loading = false;
+           
         },
 
         getProjects() {
+            this.$store.state.loading = true;
             axios.get(window.links.projectIndex).then((response) => {
                 const dt = response.data.projects;
 
@@ -256,7 +257,9 @@ export default {
                 (error) => {
                     console.log("Project Ajax error logged");
                 }
-            )
+            ).then(()=>{
+                this.$store.state.loading = false;
+            })
         },
         editItem(item) {
             this.name = item.name;
@@ -368,9 +371,9 @@ export default {
     },
 
     created() {
-        
-        this.getProjects();
         this.$store.state.loading = false;
+        this.getProjects();
+        
         
     }
 }

@@ -146,7 +146,7 @@ export default {
                 link = window.links.updateRole;
                 formData.oldName = this.oldName;
             }
-            console.log(link);
+ 
             axios.post(link, formData)
                 .then(() => {
                     this.$store.commit('snackNotify', {
@@ -168,7 +168,9 @@ export default {
 
         },
         getRoles() {
+            this.$store.state.loading = true;
             var formData = {};
+
             axios.post(window.links.getRoles, formData)
                 .then((res) => {
                     this.permissionItem = res.data.permission;
@@ -178,6 +180,8 @@ export default {
                 })
                 .catch(() => {
                     alert('Something went wrong.Report Admin')
+                }).then(()=>{
+                    this.$store.state.loading = false;
                 })
         },
         createRole() {
@@ -271,9 +275,10 @@ export default {
         }
     },
     created() {
+        this.$store.state.loading = false;
         this.getRoles();
         this.$store.state.tabId=1;
-        this.$store.state.loading = false;
+        
     }
 }
 </script>

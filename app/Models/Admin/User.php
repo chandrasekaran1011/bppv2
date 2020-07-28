@@ -77,6 +77,18 @@ class User extends Authenticatable
           }
           return $permissions;
       }
+
+      public static function getApprover($permission){
+        $imsUsers = User::permission($permission)->select(['id', 'name'])->get();  
+        $userData = [];
+        foreach ($imsUsers as $u) {
+            $userData[] = [
+                'unique' => $u->id,
+                'name' => $u->name
+            ];
+        }
+        return $userData;
+      }
     
 
  

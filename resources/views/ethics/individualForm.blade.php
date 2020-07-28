@@ -6,6 +6,15 @@
     <strong>BUSINESS PARTNER QUESTIONNAIRE - {{$ethics->type->name}}</strong> 
        <img class="float-right" width="150px" height="50px" src="{{asset('images/systra.jpg')}}"  alt="systra">
     </div>
+
+    <div class="p-3" style="border:2px solid red">
+        In the frame of anti-bribery and anti-corruption laws and of our internal process, we require our business
+        partners to complete this questionnaire. We thank you to provide the information requested below to the best of
+        your knowledge and belief.
+        <a href="#" class="text-primary" data-toggle="modal" data-target="#exampleModal">Guidelines</a>
+    </div>
+
+
     <form action="{{route('individualStore',['id'=>$ethics->uuid])}}" method="post" enctype="multipart/form-data">
         @csrf()
         @if ($errors->any())
@@ -180,7 +189,7 @@
 
 
             <div class="form-group d-flex mt-3">
-                <label for="" class="col-md-6 form-label"> <i class="fas fa-chevron-right mr-2"></i>Public Official, whose mission could have repercussions on SYSTRA Group business?</label>
+                <label for="" class="col-md-6 form-label"> <i class="fas fa-chevron-right mr-2"></i>A Public Official?</label>
                 <div class="col-md-6">
                     
                     <div class="form-check form-check-inline icheck-primary">
@@ -195,7 +204,7 @@
             </div>
 
             <div class="form-group d-flex mt-3">
-                <label for="" class="col-md-6 form-label"> <i class="fas fa-chevron-right mr-2"></i>Systra Group employee ?</label>
+                <label for="" class="col-md-6 form-label"> <i class="fas fa-chevron-right mr-2"></i>An employee of SYSTRA Group ?</label>
                 <div class="col-md-6">
                     
                     <div class="form-check form-check-inline icheck-primary">
@@ -211,7 +220,7 @@
             </div>
 
             <div class="form-group d-flex mt-3">
-                <label for="" class="col-md-6 form-label"> <i class="fas fa-chevron-right mr-2"></i>Relevant Person ?</label>
+                <label for="" class="col-md-6 form-label"> <i class="fas fa-chevron-right mr-2"></i>A Relevant Person ?</label>
                 <div class="col-md-6">
                     
                     <div class="form-check form-check-inline icheck-primary">
@@ -226,7 +235,7 @@
                 </div>
             </div>
 
-            <div class="form-group d-flex mt-3">
+            <div class="form-group d-none mt-3" >
                 <label for="" class="col-md-6 form-label"> <i class="fas fa-chevron-right mr-2"></i>Family member or personal or professional associate of one of the above?</label>
                 <div class="col-md-6">
                     
@@ -243,7 +252,7 @@
             </div>
 
             <div class="form-group d-flex mt-3">
-                <label for="" class="col-md-6 form-label"> <i class="fas fa-chevron-right mr-2"></i>Person subject to any international sanctions ?</label>
+                <label for="" class="col-md-6 form-label"> <i class="fas fa-chevron-right mr-2"></i>A Person subject to any international sanctions ?</label>
                 <div class="col-md-6">
                     
                     <div class="form-check form-check-inline icheck-primary">
@@ -373,8 +382,68 @@
 
         <div class="text-center mt-3 mb-3">
         <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-        </div>           
+        </div>  
+        
+        <div class="p-3 mt-4 mb-4" style="border:2px solid red">
+            <strong>Any modification of the information contained in this questionnaire shall be notified to SYSTRA at the latest thirty (30) days after the day on which the modification occurred.</strong> 
+            <br><br>
+            <strong>Personal Data Information:</strong>  SYSTRA’s collection of personal data is limited to data that are proportionate and necessary to evaluate the integrity of its business partners. SYSTRA applies technical and organizational measures to protect your personal data. You have the right to access your personal data and to rectify data that are inaccurate. In the cases provided for by law (UE General Data Protection Regulation), you have also the right to erasure, the right to data portability, the right to object and the right to restriction of processing. To exercise your rights, please contact SYSTRA’s DPO: <a style="text-decorations:none;color:blue;" href="mailto:personaldata@systra.com">personaldata@systra.com</a> . You also have the right to file a complaint with the competent supervisory authority. 
+        </div>
       
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="h4">Definitions</div>
+                <hr>
+                <p class="text-dark"><strong>“Systra Group” </strong> means Systra, company registered in France before
+                    the “Registre du Commerce et des Sociétés” of Paris under the number 387 949 530 RCS and/or its
+                    subsidiaries all over the world.</p>
+
+                <p class="text-dark"><strong>“Client”</strong> means any person which is Systra Group actual or intended
+                    client.</p>
+                <p class="text-dark"><strong>“Principals” </strong>means, in relation to any legal entity:
+                    <ul class="ml-4 pl-3">
+                        <li>Any (actual or former) owner, officer or director, or</li>
+                        <li>Any employee or other representative who has authority to make or influence decisions or
+                            recommendations regarding the relationship with Systra Group.</li>
+                    </ul>
+                </p>
+                <p class="text-dark"><strong>“Public Officials” </strong> include the following:
+                    <ul class="ml-4 pl-3">
+                        <li>Officers and employees of any national, regional, local or other governmental entity or
+                            legislative assembly, including elected officials;</li>
+                        <li>Officers and employees of companies in which a government owns an interest</li>
+                        <li>Members of a national supreme court or an international court.</li>
+                        <li>Members of an administrative or management board of a central bank.</li>
+                        <li>Ambassadors and high-ranking officers in the armed forces.</li>
+                        <li>Candidates for political office at any level.</li>
+                        <li>Officers of political parties.</li>
+                        <li>Officers, employees or official representatives of international organizations, such as the
+                            World Bank, United Nations, International Monetary Fund, etc.</li>
+                        <li>Any private person acting temporarily in an official capacity for or on behalf of any such
+                            public entity or a company in which a government owns an interest, including expert or
+                            consultant retained by a public entity or state owned company in a bidding process</li>
+
+                    </ul>
+
+
+                </p>
+
+
+                <p class="text-dark"><strong>“Relevant Person” </strong> means any Client, or any Principal of any
+                    Client.</p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 </form>

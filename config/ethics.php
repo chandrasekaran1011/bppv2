@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'registration_validity'=>24
+    'registration_validity'=>72
 ];

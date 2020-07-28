@@ -108,7 +108,41 @@ class PartnerPolicy
             return true;
 
         }
-        elseif($user->isAdmin && $partner->status==3 ){
+        elseif($user->isAdmin() && $partner->status==3 ){
+            return true;
+        }
+        
+        else{
+            return false;
+        }
+
+    }
+
+    public function l1Approve(User $user, Partner $partner)
+    {
+        if($user->id==$partner->l1_assign && $partner->status==8 ){
+
+            return true;
+
+        }
+        elseif($user->isAdmin() && $partner->status==8 ){
+            return true;
+        }
+        
+        else{
+            return false;
+        }
+
+    }
+
+    public function l2Approve(User $user, Partner $partner)
+    {
+        if($user->id==$partner->l2_assign && $partner->status==9 ){
+
+            return true;
+
+        }
+        elseif($user->isAdmin() && $partner->status==9 ){
             return true;
         }
         

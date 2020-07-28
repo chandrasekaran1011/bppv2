@@ -112,6 +112,9 @@ class Partner  extends Model implements Auditable
         
         elseif($this->status==6){$stat='Partner Expired';}
         elseif($this->status==7){$stat='Partner Blacklisted';}
+
+        elseif($this->status==8){$stat='Approval Pending with Group Head';}
+        elseif($this->status==9){$stat='Approval Pending with Ethics Committee';}
                        
         return $stat;
     }

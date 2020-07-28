@@ -9,12 +9,12 @@
             </tr>
 
             <tr>
-                <td colspan="2" style="background-color:#dee2e6">Type of Partner</td>
+                <td colspan="2" style="background-color:#dee2e6">Organization type </td>
                 <td colspan="2">{{data.type.name}}</td>
             </tr>
 
             <tr>
-                <td colspan="2" style="background-color:#dee2e6">Address</td>
+                <td colspan="2" style="background-color:#dee2e6">Registered address</td>
                 <td colspan="2">{{data.address}}</td>
             </tr>
 
@@ -90,7 +90,7 @@
             </tr>
 
             <tr>
-                <td colspan="2" style="background-color:#dee2e6">Type of Partner</td>
+                <td colspan="2" style="background-color:#dee2e6">Position</td>
                 <td colspan="2">{{data.type.name}}</td>
             </tr>
 

@@ -3,11 +3,17 @@
 namespace App\Listeners\Ethics;
 
 use App\Events\Ethics\PublicPartnerRegistrationInitiated;
+use App\Models\Admin\User;
+use App\Models\Ethics\Audit;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
-use App\Models\Audit;
+use Notification;
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\ApprovalNotification;
+
+
 class PublicPartnerRegistrationInitiatedListener implements ShouldQueue
 {
     /**
@@ -36,6 +42,12 @@ class PublicPartnerRegistrationInitiatedListener implements ShouldQueue
             $a->user_id=$event->partner->cuser;
             $a->action="Registration Initiated";
         $a->save();
+
+        $user=User::where('id',$event->partner->ethics->ims_assign)->first();
+        if($user){
+            Notification::route('mail',$user->email)->notify(new ApprovalNotification($event->partner));
+        }    
+           
 
         Log::info('New Public Client Registration Initiated: '.$event->partner->name);
     }

@@ -135,6 +135,8 @@
                     'detail'=>route('ethics.detail'),
                     'searchResults'=>route('ethics.searchResults'),
                     'auditResults'=>route('ethics.auditResults'),
+                    'escalationForm'=>route('ethics.escalationForm'),
+                    'resendNotification'=>route('ethics.resendNotification'),
                     'view'=>route('ethics.view'),
                 ], true) !!};
             

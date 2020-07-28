@@ -1,19 +1,19 @@
 <template>
 <div>
-    <div class="title grad text-left pa-3 ">Basic Information</div>
+    <div class="title grad text-center pa-3 ">Part -A</div>
 
     <v-row :justify="'center'" class="mt-2 py-2  px-4" no-gutters>
         <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Business Partner Name</div>
+            <div class="title1 text-left reqFields" for="name">Public Client Name</div>
         </v-col>
         <v-col cols="12" :md="6">
-            <v-text-field label="Business Partner Name" :error-messages="nameErrors" @input="$v.name.$touch()" @blur="$v.name.$touch()" name="name" id="name" v-model="name"></v-text-field>
+            <v-text-field label="Public Client Name" :error-messages="nameErrors" @input="$v.name.$touch()" @blur="$v.name.$touch()" name="name" id="name" v-model="name"></v-text-field>
         </v-col>
     </v-row>
 
     <v-row :justify="'center'" class=" px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
-            <div class="title1 text-left" for="name">Type of Partner</div>
+            <div class="title1 text-left" for="name">Position</div>
         </v-col>
         <v-col cols="12" :md="6">
             <div class="red--text font-weight-bold">{{data.partnerType}}</div>
@@ -22,171 +22,28 @@
 
     <v-row :justify="'center'" class="px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Address</div>
+            <div class="title1 text-left reqFields" for="name">Business Partner Country</div>
         </v-col>
         <v-col cols="12" :md="6">
-            <v-textarea outlined label="Address" name="address" :error-messages="addressErrors" @input="$v.address.$touch()" @blur="$v.address.$touch()" v-model="address" hint="Full Address of the Partner"></v-textarea>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" class="px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Country of the Firm</div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-autocomplete v-model="partnerCountry" :items="data.countryList" :error-messages="partnerCountryErrors" @input="$v.partnerCountry.$touch()" @blur="$v.partnerCountry.$touch()" item-text="name" item-value="unique" label="Country of the Firm" placeholder="Start typing to Search" prepend-icon="fas fa-flag"></v-autocomplete>
+            <v-autocomplete v-model="partnerCountry" :items="data.countryList" :error-messages="partnerCountryErrors" @input="$v.partnerCountry.$touch()" @blur="$v.partnerCountry.$touch()" item-text="name" item-value="unique" label="Business Partner Country" placeholder="Start typing to Search" prepend-icon="fas fa-flag"></v-autocomplete>
         </v-col>
     </v-row>
 
     <v-row :justify="'center'" class="  px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
-            <div class="title1 mt-2 text-left reqFields" for="name">CPI Score</div>
+            <div class="title1 mt-2 text-left reqFields" for="name">Country Score</div>
         </v-col>
         <v-col cols="12" :md="6">
-            <v-text-field label="CPI Score" name="cpi" :error-messages="cpiErrors" @input="$v.cpi.$touch()" @blur="$v.cpi.$touch()" v-model="cpi"></v-text-field>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left" for="name">Incorporation number</div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-text-field label="Incorporation number" name="cop_num" v-model="cop_num"></v-text-field>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left" for="name">Jurisdiction of incorporation</div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-text-field label="Jurisdiction of incorporation" name="cop_juri" v-model="cop_juri"></v-text-field>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left" for="name">Date of incorporation</div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-menu v-model="datepicker" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="290px">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-text-field v-model="doi" label="Date of Incorporation" placeholder="click to select date" persistent-hint prepend-icon="fa fa-calendar" readonly v-on="on" v-bind="attrs"></v-text-field>
-                </template>
-                <v-date-picker v-model="doi" no-title :max="nowDate" @input="datepicker = false"></v-date-picker>
-            </v-menu>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6" style="margin-top:16px;">
-            <div class="title1 text-left" for="name">Listed in stock exchange</div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-checkbox v-model="stock" label="Yes" color="success" :error-messages="stockErrors" @input="$v.stock.$touch()" @blur="$v.stock.$touch()" true-value="1" false-value="0" hide-details></v-checkbox>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" v-if="stock==1" class="mt-2  px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Stock Exchange</div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-text-field label="Stock Exchange" hint="BSE,NYSE etc.,." name="stock_name" :error-messages="stock_nameErrors" @input="$v.stock_name.$touch()" @blur="$v.stock_name.$touch()" v-model="stock_name"></v-text-field>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" v-if="stock==1" class="px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Direct shareholders <br> (please list only known interests over 10%)</div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-textarea outlined label="Direct shareholders" name="stock_detail" id="stock_detail" :error-messages="stock_detailErrors" @input="$v.stock_detail.$touch()" @blur="$v.stock_detail.$touch()" v-model="stock_detail"></v-textarea>
+            <v-text-field label="Partner Country CPI Score" name="cpi" :error-messages="cpiErrors" @input="$v.cpi.$touch()" @blur="$v.cpi.$touch()" v-model="cpi"></v-text-field>
         </v-col>
     </v-row>
 
     <v-row :justify="'center'" class="px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Names of directors and senior management:<br>(separated by comma)</div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-textarea outlined label="Names of Directors and Senior Management" name="director" id="director" :error-messages="directorErrors" @input="$v.director.$touch()" @blur="$v.director.$touch()" v-model="director"></v-textarea>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" class="px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Please identify any main affiliated companies:<br>(separated by comma)</div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-textarea outlined label="Affiliated companies" name="company" id="company" :error-messages="companyErrors" @input="$v.company.$touch()" @blur="$v.company.$touch()" v-model="company"></v-textarea>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Number of Employees <br> (Minimum:2)</div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-text-field label="Number of Employees" type="number" name="employee" :error-messages="employeeErrors" @input="$v.employee.$touch()" @blur="$v.employee.$touch()" v-model="employee"></v-text-field>
-        </v-col>
-    </v-row>
-
-    <div class="title grad text-left pa-3 ">Bid Manager CheckPoints</div>
-
-    <v-row :justify="'center'" class="px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Scope of work</div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-textarea outlined label="Scope of work" name="scope" id="scope" :error-messages="scopeErrors" @input="$v.scope.$touch()" @blur="$v.scope.$touch()" v-model="scope"></v-textarea>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" class="px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Entity</div>
+            <div class="title1 text-left reqFields" for="name">SYSTRA’s Group Contract concerned</div>
         </v-col>
         <v-col cols="12" :md="6">
             <v-autocomplete v-model="entity" :items="data.entityList" item-text="name" item-value="unique" :error-messages="entityErrors" @input="$v.entity.$touch()" @blur="$v.entity.$touch()" label="Entity" placeholder="Start typing to Search"></v-autocomplete>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left" for="name">Project/Contract Concern </div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-text-field label="Project Concern" :error-messages="contractErrors" @input="$v.contract.$touch()" @blur="$v.contract.$touch()" name="contract" v-model="contract"></v-text-field>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left mt-2" for="name">Contract phase </div>
-        </v-col>
-        <v-col cols="12" :md="6">
-
-            <v-select v-model="phase" :items="phaseList" item-text="name" item-value="id" label="Contract Phase" :error-messages="phaseErrors" @input="$v.phase.$touch()" @blur="$v.phase.$touch()"></v-select>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" class="px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Country of Project</div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-autocomplete v-model="projectCountry" :items="data.countryList" item-text="name" :error-messages="projectCountryErrors" @input="$v.projectCountry.$touch()" @blur="$v.projectCountry.$touch()" item-value="unique" label="Country of the Project" placeholder="Start typing to Search" prepend-icon="fas fa-flag"></v-autocomplete>
-        </v-col>
-    </v-row>
-
-    <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
-        <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Project CPI Score</div>
-        </v-col>
-        <v-col cols="12" :md="6">
-            <v-text-field label="CPI Score" name="pcpi" :error-messages="pcpiErrors" @input="$v.pcpi.$touch()" @blur="$v.pcpi.$touch()" v-model="pcpi"></v-text-field>
         </v-col>
     </v-row>
 
@@ -213,7 +70,44 @@
         </v-col>
     </v-row>
 
+    <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left" for="name">Project/Contract Concern </div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-text-field label="Project/Contract Concern" :error-messages="contractErrors" @input="$v.contract.$touch()" @blur="$v.contract.$touch()" name="contract" v-model="contract"></v-text-field>
+        </v-col>
+    </v-row>
+
+    <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left mt-2" for="name">Contract phase </div>
+        </v-col>
+        <v-col cols="12" :md="6">
+
+            <v-select v-model="phase" :items="phaseList" item-text="name" item-value="id" label="Contract Phase" :error-messages="phaseErrors" @input="$v.phase.$touch()" @blur="$v.phase.$touch()"></v-select>
+        </v-col>
+    </v-row>
+
+    <v-row :justify="'center'" class="px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left reqFields" for="name">Project's Country</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-autocomplete v-model="projectCountry" :items="data.countryList" item-text="name" :error-messages="projectCountryErrors" @input="$v.projectCountry.$touch()" @blur="$v.projectCountry.$touch()" item-value="unique" label="Country of the Project" placeholder="Start typing to Search" prepend-icon="fas fa-flag"></v-autocomplete>
+        </v-col>
+    </v-row>
+
     <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left reqFields" for="name">Project's Country CPI Score</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-text-field label="CPI Score" name="pcpi" :error-messages="pcpiErrors" @input="$v.pcpi.$touch()" @blur="$v.pcpi.$touch()" v-model="pcpi"></v-text-field>
+        </v-col>
+    </v-row>
+
+    <!-- <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
             <div class="title1 text-left reqFields mt-3" for="name">Method of selection of the Business Partner</div>
         </v-col>
@@ -235,7 +129,115 @@
                 <v-radio label="No" color="success" value="0"></v-radio>
             </v-radio-group>
         </v-col>
+    </v-row> -->
+
+    <div class="title grad text-center pa-3 "> Part-B</div>
+
+    <v-row :justify="'center'" class="px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left reqFields" for="name">Registered Address</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-textarea outlined label="Address" name="address" :error-messages="addressErrors" @input="$v.address.$touch()" @blur="$v.address.$touch()" v-model="address" hint="Full Address of the Partner"></v-textarea>
+        </v-col>
     </v-row>
+
+    <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left" for="name">Incorporation number</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-text-field label="Incorporation number" name="cop_num" v-model="cop_num"></v-text-field>
+        </v-col>
+    </v-row>
+
+    <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left" for="name">Date of incorporation</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-menu v-model="datepicker" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="290px">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-text-field v-model="doi" label="Date of Incorporation" placeholder="click to select date" persistent-hint prepend-icon="fa fa-calendar" readonly v-on="on" v-bind="attrs"></v-text-field>
+                </template>
+                <v-date-picker v-model="doi" no-title :max="nowDate" @input="datepicker = false"></v-date-picker>
+            </v-menu>
+        </v-col>
+    </v-row>
+
+    <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left" for="name">Jurisdiction of incorporation</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-text-field label="Jurisdiction of incorporation" name="cop_juri" v-model="cop_juri"></v-text-field>
+        </v-col>
+    </v-row>
+
+    <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6" style="margin-top:16px;">
+            <div class="title1 text-left" for="name">Listed in stock exchange</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-checkbox v-model="stock" label="Yes" color="success" :error-messages="stockErrors" @input="$v.stock.$touch()" @blur="$v.stock.$touch()" true-value="1" false-value="0" hide-details></v-checkbox>
+        </v-col>
+    </v-row>
+
+    <v-row :justify="'center'" v-if="stock==1" class="mt-2  px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left reqFields" for="name">Stock Exchange Listed</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-text-field label="Stock Exchange" hint="BSE,NYSE etc.,." name="stock_name" :error-messages="stock_nameErrors" @input="$v.stock_name.$touch()" @blur="$v.stock_name.$touch()" v-model="stock_name"></v-text-field>
+        </v-col>
+    </v-row>
+
+    <v-row :justify="'center'" v-if="stock==1" class="px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left reqFields" for="name">Direct shareholders</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-textarea outlined label="Direct shareholders" name="stock_detail" id="stock_detail" :error-messages="stock_detailErrors" @input="$v.stock_detail.$touch()" @blur="$v.stock_detail.$touch()" v-model="stock_detail"></v-textarea>
+        </v-col>
+    </v-row>
+
+    <v-row :justify="'center'" class="px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left reqFields" for="name">Names of main directors</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-textarea outlined label="Names of Directors and Senior Management" name="director" id="director" :error-messages="directorErrors" @input="$v.director.$touch()" @blur="$v.director.$touch()" v-model="director"></v-textarea>
+        </v-col>
+    </v-row>
+
+    <v-row :justify="'center'" class="px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left reqFields" for="name">Please identify any main affiliated companies:<br>(separated by comma)</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-textarea outlined label="Affiliated companies" name="company" id="company" :error-messages="companyErrors" @input="$v.company.$touch()" @blur="$v.company.$touch()" v-model="company"></v-textarea>
+        </v-col>
+    </v-row>
+
+    <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left reqFields" for="name">Number of Employees <br> (Minimum:2)</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-text-field label="Number of Employees" type="number" name="employee" :error-messages="employeeErrors" @input="$v.employee.$touch()" @blur="$v.employee.$touch()" v-model="employee"></v-text-field>
+        </v-col>
+    </v-row>
+
+    <!-- <div class="title grad text-left pa-3 ">Bid Manager CheckPoints</div> -->
+
+    <!-- <v-row :justify="'center'" class="px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left reqFields" for="name">Scope of work</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-textarea outlined label="Scope of work" name="scope" id="scope" :error-messages="scopeErrors" @input="$v.scope.$touch()" @blur="$v.scope.$touch()" v-model="scope"></v-textarea>
+        </v-col>
+    </v-row> -->
 
     <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
@@ -267,6 +269,7 @@
             <v-radio-group v-model="policy" :error-messages="policyErrors" @input="$v.policy.$touch()" @blur="$v.policy.$touch()" row>
                 <v-radio label="Yes" color="success" value="1"></v-radio>
                 <v-radio label="No" color="red" value="0"></v-radio>
+                <v-radio label="No Info Found" color="red" value="2"></v-radio>
 
             </v-radio-group>
         </v-col>
@@ -372,6 +375,16 @@
             </v-radio-group>
         </v-col>
     </v-row>
+
+    <v-row :justify="'center'" v-if="practice==1" class="px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left reqFields" for="name">Provide more information</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-textarea outlined label="Information on non ethical practices" :error-messages="practice_detailErrors" @input="$v.practice_detail.$touch()" @blur="$v.practice_detail.$touch()" v-model="practice_detail"></v-textarea>
+        </v-col>
+    </v-row>
+
     <div class="title grad text-left pa-3 ">Red Flags</div>
     <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
 
@@ -414,7 +427,7 @@
 
     <v-row :justify="'center'" class="mt-2 mb-4  px-4 py-2" no-gutters>
         <v-btn :disabled="$v.$invalid" @click="sumform()" color="success">Create Business Partner</v-btn>
-        
+
     </v-row>
 
 </div>
@@ -503,6 +516,7 @@ export default {
         p5: '0',
         policy_file: null,
         practice: '0',
+        practice_detail: '',
 
         selectedflags: [],
         otherflags: '',
@@ -522,7 +536,7 @@ export default {
         }
     },
     methods: {
-        log(){
+        log() {
             console.log(this.$v);
         },
         sumform() {
@@ -544,7 +558,7 @@ export default {
             formData.append('director', this.director)
             formData.append('subsidiary', this.company)
             formData.append('employee', this.employee)
-            formData.append('scope', this.scope)
+            // formData.append('scope', this.scope)
             formData.append('project_id', this.entity)
             formData.append('contract', this.contract)
             formData.append('phase', this.phase)
@@ -552,8 +566,8 @@ export default {
             formData.append('pcpi', this.pcpi)
             formData.append('cdo', this.cdo)
             formData.append('dcdo', this.cdo_date)
-            formData.append('mutual', this.mutual)
-            formData.append('recomm', this.recomm)
+            // formData.append('mutual', this.mutual)
+            // formData.append('recomm', this.recomm)
             formData.append('search', this.search)
             formData.append('policy', this.policy)
             formData.append('p1', this.p1)
@@ -563,6 +577,7 @@ export default {
             formData.append('p5', this.p5)
 
             formData.append('practice', this.practice)
+            formData.append('practice_detail', this.practice_detail)
             formData.append('flag', this.redflags)
             formData.append('mitigations', this.mitigations)
             formData.append('ims_assign', this.approver)
@@ -637,7 +652,16 @@ export default {
                 this.p5 = '0';
                 this.policy_file = '';
 
-            } else {
+            } else if(val=='2'){
+                this.p1 = '2';
+                this.p2 = '2';
+                this.p3 = '2';
+                this.p4 = '2';
+                this.p5 = '2';
+                this.policy_file = '';
+            }
+            
+            else {
                 this.p1 = '1';
                 this.p2 = '1';
                 this.p3 = '1';
@@ -712,9 +736,9 @@ export default {
             required,
             integer
         },
-        scope: {
-            required
-        },
+        // scope: {
+        //     required
+        // },
         entity: {
             required
         },
@@ -740,12 +764,12 @@ export default {
                 return this.cdo == '1'
             })
         },
-        mutual: {
-            required
-        },
-        recomm: {
-            required
-        },
+        // mutual: {
+        //     required
+        // },
+        // recomm: {
+        //     required
+        // },
         search: {
             required
         },
@@ -770,6 +794,12 @@ export default {
         practice: {
             required
         },
+        practice_detail: {
+            required: requiredIf(function () {
+                return this.practice == '1'
+            })
+        },
+
         redflags: {
             required
         },
@@ -916,18 +946,18 @@ export default {
 
             return errors
         },
-        scopeErrors() {
-            const errors = []
-            if (!this.$v.scope.$dirty) {
-                return errors
-            }
+        // scopeErrors() {
+        //     const errors = []
+        //     if (!this.$v.scope.$dirty) {
+        //         return errors
+        //     }
 
-            if (!this.$v.scope.required) {
-                errors.push('Scope of work is required.')
-            }
+        //     if (!this.$v.scope.required) {
+        //         errors.push('Scope of work is required.')
+        //     }
 
-            return errors
-        },
+        //     return errors
+        // },
         entityErrors() {
             const errors = []
             if (!this.$v.entity.$dirty) {
@@ -1017,28 +1047,28 @@ export default {
             }
             return errors
         },
-        mutualErrors() {
-            const errors = []
-            if (!this.$v.mutual.$dirty) {
-                return errors
-            }
+        // mutualErrors() {
+        //     const errors = []
+        //     if (!this.$v.mutual.$dirty) {
+        //         return errors
+        //     }
 
-            if (!this.$v.mutual.required) {
-                errors.push('Field is required.')
-            }
-            return errors
-        },
-        recommErrors() {
-            const errors = []
-            if (!this.$v.recomm.$dirty) {
-                return errors
-            }
+        //     if (!this.$v.mutual.required) {
+        //         errors.push('Field is required.')
+        //     }
+        //     return errors
+        // },
+        // recommErrors() {
+        //     const errors = []
+        //     if (!this.$v.recomm.$dirty) {
+        //         return errors
+        //     }
 
-            if (!this.$v.recomm.required) {
-                errors.push('Field is required.')
-            }
-            return errors
-        },
+        //     if (!this.$v.recomm.required) {
+        //         errors.push('Field is required.')
+        //     }
+        //     return errors
+        // },
         searchErrors() {
             const errors = []
             if (!this.$v.search.$dirty) {
@@ -1122,6 +1152,17 @@ export default {
             }
 
             if (!this.$v.practice.required) {
+                errors.push('Field is required.')
+            }
+            return errors
+        },
+                practice_detailErrors() {
+            const errors = []
+            if (!this.$v.practice_detail.$dirty) {
+                return errors
+            }
+
+            if (!this.$v.practice_detail.required) {
                 errors.push('Field is required.')
             }
             return errors

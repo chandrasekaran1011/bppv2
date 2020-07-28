@@ -20,7 +20,7 @@
                                     <v-toolbar-title>{{dialogTitle}}</v-toolbar-title>
                                     <v-spacer></v-spacer>
                                     <v-toolbar-items>
-                                        <v-btn dark text :disabled="$v.$invalid || $store.state.loading" @click.prevent="submitForm()">Save</v-btn>
+                                        <v-btn dark text :disabled="$v.$invalid || $store.state.loading" @click.prevent="submitForm()" >Save</v-btn>
                                     </v-toolbar-items>
                                 </v-toolbar>
                                 <v-container style="text-align:start">
@@ -264,6 +264,7 @@ export default {
             
         },
         getUser() {
+            this.$store.state.loading = true;
             var formData = {};
             axios.post(window.links.getUser, formData)
                 .then((res) => {
@@ -272,6 +273,8 @@ export default {
                 })
                 .catch(() => {
                     console.log('Something went wrong with getting Users');
+                }).then(()=>{
+                    this.$store.state.loading = false;
                 })
         },
         getRoles() {
@@ -440,10 +443,11 @@ export default {
         }
     },
     created() {
+        this.$store.state.loading = false;
         this.getRoles();
         this.getUser();
         this.$store.state.tabId = 2;
-        this.$store.state.loading = false;
+        
     }
 }
 </script>

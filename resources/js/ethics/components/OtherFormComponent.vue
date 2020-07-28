@@ -13,7 +13,7 @@
 
         <v-row :justify="'center'" class="px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Entity</div>
+            <div class="title1 text-left reqFields" for="name">SYSTRA’s Group Contract concerned</div>
         </v-col>
         <v-col cols="12" :md="6">
             <v-autocomplete v-model="entity" :items="data.entityList" item-text="name" item-value="unique" :error-messages="entityErrors" @input="$v.entity.$touch()" @blur="$v.entity.$touch()" label="Entity" placeholder="Start typing to Search"></v-autocomplete>
@@ -22,7 +22,7 @@
 
     <v-row :justify="'center'" class=" px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
-            <div class="title1 text-left" for="name">Type of Partner</div>
+            <div class="title1 text-left" for="name">Position</div>
         </v-col>
         <v-col cols="12" :md="6">
             <div class="red--text font-weight-bold">{{data.partnerType}}</div>
@@ -31,7 +31,7 @@
 
     <v-row :justify="'center'" class="px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Country of the Firm</div>
+            <div class="title1 text-left reqFields" for="name">Business Partner’s Country</div>
         </v-col>
         <v-col cols="12" :md="6">
             <v-autocomplete v-model="partnerCountry" :items="data.countryList" :error-messages="partnerCountryErrors" @input="$v.partnerCountry.$touch()" @blur="$v.partnerCountry.$touch()" item-text="name" item-value="unique" label="Country of the Firm" placeholder="Start typing to Search" prepend-icon="fas fa-flag"></v-autocomplete>
@@ -40,7 +40,7 @@
 
     <v-row :justify="'center'" class="  px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
-            <div class="title1 mt-2 text-left reqFields" for="name">CPI Score</div>
+            <div class="title1 mt-2 text-left reqFields" for="name">Business Partner’s Country Score</div>
         </v-col>
         <v-col cols="12" :md="6">
             <v-text-field label="CPI Score" name="cpi" :error-messages="cpiErrors" @input="$v.cpi.$touch()" @blur="$v.cpi.$touch()" v-model="cpi"></v-text-field>
@@ -49,7 +49,7 @@
 
     <v-row :justify="'center'" class="mt-2 py-2  px-4" no-gutters>
         <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields" for="name">Partner Email Address</div>
+            <div class="title1 text-left reqFields" for="name">Business Partner’s Email Address</div>
         </v-col>
         <v-col cols="12" :md="6">
             <v-text-field label="Partner Email Address" :error-messages="emailErrors" @input="$v.email.$touch()" @blur="$v.email.$touch()" v-model="email"></v-text-field>

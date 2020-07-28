@@ -39,7 +39,7 @@ class PartnerQuestionnaireSubmittedListener
         $a->save();
 
 
-        $u=User::find($event->partner->cuser)->first();
+        $u=User::where('id',$event->partner->cuser)->first();
 
         Notification::route('mail',$u->email)->notify(new ApprovalNotification($event->partner));
 

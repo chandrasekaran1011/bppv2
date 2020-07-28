@@ -2,7 +2,7 @@
 <div>
     <div class="text-center my-3">
         <v-btn class="ma-2" :loading="dataLoading" :disabled="dataLoading" color="success" @click="imsDialog=true">
-            Compliance Approval
+            Approve
             <template v-slot:loader>
                 <span class="custom-loader">
                     <v-icon light>fas fa-sync</v-icon>
@@ -23,55 +23,7 @@
 
             <v-card class="mx-auto" color="white" elevation-3 width="100%" max-width="900px" min-width="600px" height="100%" min-height="400px">
                 <div class="title grad text-left mt-3 pa-3">Compliance Manager Approval Form</div>
-                <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
-                    <v-col cols="12" :md="6">
-                        <div class="title1 text-left reqFields mt-3" for="name">Enhanced integrity review performed? </div>
-                    </v-col>
-                    <v-col cols="12" :md="6">
-                        <v-radio-group v-model="integrity" :error-messages="integrityErrors" @input="$v.integrity.$touch()" @blur="$v.integrity.$touch()" row>
-                            <v-radio label="Yes" color="success" value="1"></v-radio>
-                            <v-radio label="No" color="red" value="0"></v-radio>
-                        </v-radio-group>
-                    </v-col>
-                </v-row>
-
-                <v-row :justify="'center'" class=" px-4 py-2" no-gutters>
-                    <v-col cols="12" :md="6">
-                        <div class="title1 text-left reqFields  mt-3" for="name"> Attach Lexis Document</div>
-                    </v-col>
-                    <v-col cols="12" :md="6" class="pl-md-3">
-                        <v-file-input :rules="rules" v-model="lexis_file" accept=".pdf" placeholder="Attach Lexis Document" prepend-icon="fas fa-file" label="Lexis Document"></v-file-input>
-                    </v-col>
-                </v-row>
-
-                <v-row :justify="'center'" class="px-4 py-2" no-gutters>
-                    <v-col cols="12" :md="12">
-                        <div class="title1 text-left " for="name">Red flag identified by Bid Manager:</div>
-                    </v-col>
-                    <v-col cols="12" :md="12">
-                        <v-textarea outlined label="Red Flags aand Mitigation plan"  v-model="flag"></v-textarea>
-                    </v-col>
-                </v-row>
-
-                <v-row :justify="'center'" class="px-4 py-2" no-gutters>
-                    <v-col cols="12" :md="12">
-                        <div class="title1 text-left " for="name">Mitigations identified by Bid Manager:</div>
-                    </v-col>
-                    <v-col cols="12" :md="12">
-                        <v-textarea outlined label="Red Flags aand Mitigation plan" v-model="mitigation"></v-textarea>
-                    </v-col>
-                </v-row>
-
-                <v-row :justify="'center'" class="px-4 py-2" no-gutters>
-                    <v-col cols="12" :md="12">
-                        <div class="title1 text-left reqFields" for="name">Red flag identified from the enhanced integrity review and mitigating actions proposed: <br>
-                            Amended action plan, if any </div>
-                    </v-col>
-                    <v-col cols="12" :md="12">
-                        <v-textarea outlined label="Action plan" name="action" id="action" :error-messages="actionErrors" @input="$v.action.$touch()" @blur="$v.action.$touch()" v-model="action"></v-textarea>
-                    </v-col>
-                </v-row>
-
+                
                 <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
                     <v-col cols="12" :md="4">
                         <div class="title1 text-left reqFields mt-3" for="name">Decision</div>
@@ -115,17 +67,16 @@
                 </v-row>
 
                 
-                <v-row v-if="decision=='0'" :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
+                <v-row v-if="decision=='0' && data.status==8" :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
-                        <div class="title1 text-left reqFields mt-3" for="name">Group Ethics Head Approval</div>
+                        <div class="title1 text-left reqFields mt-3" for="name">Escalated Approval</div>
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
-                        <v-autocomplete v-model="approver" :error-messages="approverErrors" @input="$v.approver.$touch()" @blur="$v.approver.$touch()" :items="data.groupUsers" item-text="name" item-value="unique" label="Compliance Approval Manager" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>
+                        <v-autocomplete v-model="approver" :error-messages="approverErrors" @input="$v.approver.$touch()" @blur="$v.approver.$touch()" :items="data.status==3?data.groupUsers:data.committeUsers" item-text="name" item-value="unique" label="Compliance Approval Manager" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>
                     </v-col>
                 </v-row>
                 <v-row :justify="'center'" class="mt-2 mb-4  px-4 py-2" no-gutters>
                     <v-btn :disabled="$v.$invalid" @click="sumform()" color="success">Submit</v-btn>
-
                 </v-row>
 
             </v-card>
@@ -161,15 +112,11 @@ export default {
         ],
         imsDialog: false,
         dataLoading: false,
-        integrity: '1',
-        action: '',
+        
         decision: '',
         condition: '',
         reason: '',
         add: '',
-        lexis_file: null,
-        flag:'',
-        mitigation:'',
         approver:''
 
     }),
@@ -183,20 +130,15 @@ export default {
             let formData = new FormData();
             formData.append('_token', document.getElementById('csrf').content);
             formData.append('unique', this.id)
-            formData.append('integrity', this.integrity)
-            formData.append('flag_action', this.action)
+
             formData.append('decision', this.decision)
             formData.append('condition', this.condition)
-
-            formData.append('flag', this.flag)
-            formData.append('mitigation', this.mitigation)
-
             formData.append('reason', this.reason)
             formData.append('add', this.add)
             formData.append('approver', this.approver)
-            formData.append('lexis_file', this.lexis_file)
 
-            axios.post(window.links.compForm, formData, {
+
+            axios.post(window.links.escalationForm, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -205,6 +147,11 @@ export default {
                     type: 'success',
                     msg: resp.data.message
                 });
+                this.decision= '';
+                this.condition= '';
+                this.reason= '';
+                this.add= '';
+                this.approver='';
 
             }).catch((err) => {
                 let errText = '';
@@ -237,12 +184,7 @@ export default {
     },
 
     validations: {
-        integrity: {
-            required
-        },
-        action: {
-            required
-        },
+
         decision: {
             required
         },
@@ -256,35 +198,15 @@ export default {
         },
         approver: {
             required: requiredIf(function () {
-                return this.decision == '0'
+                return this.decision == '0' && this.data.status==8
             })
         },
 
     },
     computed: {
-        integrityErrors() {
-            const errors = []
-            if (!this.$v.integrity.$dirty) {
-                return errors
-            }
 
-            if (!this.$v.integrity.required) {
-                errors.push('Field is required.')
-            }
-            return errors
-        },
-        actionErrors() {
-            const errors = []
-            if (!this.$v.action.$dirty) {
-                return errors
-            }
-
-            if (!this.$v.action.required) {
-                errors.push('Field is required.')
-            }
-            return errors
-        },
-                approverErrors() {
+        
+        approverErrors() {
             const errors = []
             if (!this.$v.approver.$dirty) {
                 return errors
@@ -330,8 +252,7 @@ export default {
         },
     },
     created(){
-        this.flag=this.data.flag;
-        this.mitigation=this.data.mitigation;
+
     }
 
 }

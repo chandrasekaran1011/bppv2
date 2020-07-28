@@ -17,7 +17,7 @@ class CreateEthicsTable extends Migration
             $table->id();
             $table->integer('partner_id');
             $table->boolean('active')->default(true);
-            $table->boolean('policy')->nullable();
+            $table->integer('policy')->nullable();
             $table->integer('p1')->nullable();
             $table->integer('p2')->nullable();
             $table->integer('p3')->nullable();
@@ -61,16 +61,21 @@ class CreateEthicsTable extends Migration
             $table->string('screenshot_file')->nullable();
             $table->integer('satis')->nullable();
             $table->integer('practice')->nullable();
+            $table->text('practice_detail')->nullable();
             $table->integer('need')->nullable();
             $table->text('flag')->nullable();
             $table->text('mitigation')->nullable();
-
 
             $table->integer('pm_by')->nullable();
             $table->datetime('pm_at')->nullable();
             $table->integer('ims_by')->nullable();
             $table->datetime('ims_at')->nullable();
             $table->integer('ims_assign')->nullable();
+
+            $table->integer('ims_decision')->nullable();
+            $table->text('ims_reason')->nullable();
+            $table->text('ims_condition')->nullable();
+            $table->text('ims_add')->nullable();
 
             $table->boolean('integrity')->nullable();
             $table->text('flag_action')->nullable();
@@ -83,9 +88,19 @@ class CreateEthicsTable extends Migration
             $table->datetime('l1_at')->nullable();
             $table->integer('l1_assign')->nullable();
 
+            $table->integer('l1_decision')->nullable();
+            $table->text('l1_reason')->nullable();
+            $table->text('l1_condition')->nullable();
+            $table->text('l1_add')->nullable();
+
             $table->integer('l2_by')->nullable();
             $table->datetime('l2_at')->nullable();
             $table->integer('l2_assign')->nullable();
+
+            $table->integer('l2_decision')->nullable();
+            $table->text('l2_reason')->nullable();
+            $table->text('l2_condition')->nullable();
+            $table->text('l2_add')->nullable();
 
 
             $table->SoftDeletes();

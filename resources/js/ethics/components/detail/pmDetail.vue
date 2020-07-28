@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="title grad text-left pa-3 ">BID Manager Approval</div>
+   
 
     <table class="tble table-bordered mt-2" style="width:100%">
         <tbody>
@@ -24,25 +24,25 @@
 
             <tr>
                 <td colspan="2">Project Concern</td>
-                <td colspan="2" style="vertical-align: middle;">{{data.contract}}(Phase - {{data.phase}})</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.contract}}&nbsp;(Phase - {{data.phase}})</td>
 
             </tr>
 
             <tr>
                 <td colspan="2">Project Country (CPI)</td>
-                <td colspan="2" style="vertical-align: middle;">{{data.pcountry}} ({{data.pcpi}})</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.pcountry}}&nbsp; ({{data.pcpi}})</td>
 
             </tr>
 
             <tr>
                 <td colspan="2">Business Partner Country (CPI)</td>
-                <td colspan="2" style="vertical-align: middle;">{{data.country}}({{data.cpi}})</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.country}}&nbsp;({{data.cpi}})</td>
 
             </tr>
 
             <tr>
                 <td colspan="2">CDO</td>
-                <td colspan="2" style="vertical-align: middle;">{{data.cdo.yn}} <span v-if="data.cdo.value">{{data.cdo.date}}</span> </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.cdo.yn}} <span v-if="data.cdo.value">, {{data.cdo.date}}</span> </td>
 
             </tr>
 
@@ -67,7 +67,7 @@
 
             <tr>
                 <td colspan="2" >Has a basic integrity review of the Business Partner by way of an internet search been performed according to the Procedure</td>
-                <td colspan="2" style="vertical-align: middle;">{{data.search}}</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.search}}<span class="ml-3" v-if="!data.files.screenshot_file!==''"><a :href="data.files.screenshot_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
             </tr>
 
             <tr v-if="data.type.value==1">
@@ -113,8 +113,11 @@
             </tr>
 
             <tr v-if="data.type.value!=1">
-                <td colspan="2" >Has the Business Partner or its Principal been condemned for non-ethical practices or current investigation is in progress?:</td>
-                <td colspan="2" style="vertical-align: middle;">{{data.practice}}</td>
+                <td colspan="2" >Has the Business Partner or its Principal been condemned for non-ethical practices or current investigation is in progress?</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.practice}}
+                      <br>      
+                        <span v-if="data.practice_detail!=null">{{data.practice_detail}}</span>
+                </td>
             </tr>
             <tr>
                 <td colspan="4" ><strong>Identified Red Flags</strong> <br><span style="white-space:pre-wrap">{{data.flag}}</span> </td>

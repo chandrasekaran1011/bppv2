@@ -34,6 +34,30 @@
                     </v-col>
                 </v-row>
 
+                                <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
+                    <v-col cols="12" :md="6">
+                        <div class="title1 text-left reqFields" for="name">CDO</div>
+                    </v-col>
+                    <v-col cols="12" :md="6">
+                        <v-checkbox v-model="cdo" true-value="1" false-value="0" :error-messages="cdoErrors" @input="$v.cdo.$touch()" @blur="$v.cdo.$touch()" label="Yes" color="success" hide-details></v-checkbox>
+                    </v-col>
+                </v-row>
+
+                <v-row :justify="'center'" v-if="cdo==1" class="mt-2  px-4 py-2" no-gutters>
+                    <v-col cols="12" :md="6">
+                        <div class="title1 text-left" for="name">CDO Date</div>
+                    </v-col>
+                    <v-col cols="12" :md="6">
+                        <v-menu v-model="datepicker2" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="290px">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-text-field v-model="cdo_date" label="CDO Date" :error-messages="cdo_dateErrors" @input="$v.cdo_date.$touch()" @blur="$v.cdo_date.$touch()" placeholder="click to select date" persistent-hint prepend-icon="fa fa-calendar" readonly v-on="on" v-bind="attrs"></v-text-field>
+                            </template>
+                            <v-date-picker v-model="cdo_date" no-title :min="nowDate" @input="datepicker2 = false"></v-date-picker>
+                        </v-menu>
+                    </v-col>
+                </v-row>
+
+
                 <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
                         <div class="title1 text-left" for="name">Project/Contract Concern </div>
@@ -71,28 +95,6 @@
                     </v-col>
                 </v-row>
 
-                <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
-                    <v-col cols="12" :md="6">
-                        <div class="title1 text-left reqFields" for="name">CDO</div>
-                    </v-col>
-                    <v-col cols="12" :md="6">
-                        <v-checkbox v-model="cdo" true-value="1" false-value="0" :error-messages="cdoErrors" @input="$v.cdo.$touch()" @blur="$v.cdo.$touch()" label="Yes" color="success" hide-details></v-checkbox>
-                    </v-col>
-                </v-row>
-
-                <v-row :justify="'center'" v-if="cdo==1" class="mt-2  px-4 py-2" no-gutters>
-                    <v-col cols="12" :md="6">
-                        <div class="title1 text-left" for="name">CDO Date</div>
-                    </v-col>
-                    <v-col cols="12" :md="6">
-                        <v-menu v-model="datepicker2" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="290px">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="cdo_date" label="CDO Date" :error-messages="cdo_dateErrors" @input="$v.cdo_date.$touch()" @blur="$v.cdo_date.$touch()" placeholder="click to select date" persistent-hint prepend-icon="fa fa-calendar" readonly v-on="on" v-bind="attrs"></v-text-field>
-                            </template>
-                            <v-date-picker v-model="cdo_date" no-title :min="nowDate" @input="datepicker2 = false"></v-date-picker>
-                        </v-menu>
-                    </v-col>
-                </v-row>
 
                 <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
@@ -178,6 +180,15 @@
                             <v-radio label="No" color="red"  value="0"></v-radio>
 
                         </v-radio-group>
+                    </v-col>
+                </v-row>
+
+                <v-row :justify="'center'" v-if="practice==1" class="px-4 py-2" no-gutters>
+                    <v-col cols="12" :md="6">
+                        <div class="title1 text-left reqFields" for="name">Provide more information</div>
+                    </v-col>
+                    <v-col cols="12" :md="6">
+                        <v-textarea outlined label="Information on non ethical practices"  :error-messages="practice_detailErrors" @input="$v.practice_detail.$touch()" @blur="$v.practice_detail.$touch()" v-model="practice_detail"></v-textarea>
                     </v-col>
                 </v-row>
 
@@ -287,6 +298,7 @@ export default {
         search: '1',
         screenshot_file: null,
         practice: '0',
+        practice_detail:'',
         satis: '0',
         need: '0',
 
@@ -342,6 +354,8 @@ export default {
             formData.append('mutual', this.mutual)
             formData.append('recomm', this.recomm)
             formData.append('search', this.search)
+
+            formData.append('practice_detail',this.practice_detail)
 
             formData.append('need', this.need);
 
@@ -430,6 +444,11 @@ export default {
         },
         practice: {
             required
+        },
+        practice_detail:{
+            required: requiredIf(function () {
+                return this.practice == '1'
+            })
         },
         satis: {
             required
@@ -578,6 +597,17 @@ export default {
             }
 
             if (!this.$v.practice.required) {
+                errors.push('Field is required.')
+            }
+            return errors
+        },
+        practice_detailErrors(){
+            const errors = []
+            if (!this.$v.practice_detail.$dirty) {
+                return errors
+            }
+
+            if (!this.$v.practice_detail.required) {
                 errors.push('Field is required.')
             }
             return errors

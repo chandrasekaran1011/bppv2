@@ -38,7 +38,7 @@ class PmApprovedListener
         $a->action="Approved by BID / Project Manager";
         $a->save();
 
-        $user=User::find($event->partner->ethics->ims_assign)->first();
+        $user=User::where('id',$event->partner->ethics->ims_assign)->first();
 
         Log::info('PM/Bid Manager Approved: '.$event->partner->name);
 
