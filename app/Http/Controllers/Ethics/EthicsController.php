@@ -410,9 +410,9 @@ class EthicsController extends Controller
         if ($user->isAdmin() || $user->can('View All Records')) {
             $partner = Partner::orderBy('created_at','desc')->take(300)->get();
         } else if ($user->can('View Entity Records')) {
-            $partner = Partner::whereIn('project_id', $user->getProjectsIDs())->orWhere('ims_assign', $user->id)->orderBy('created_at','desc')->take(300)->get();
+            $partner = Partner::whereIn('project_id', $user->getProjectsIDs())->orderBy('created_at','desc')->take(300)->get();
         } else if ($user->can('View Own Records')) {
-            $partner = Partner::where('cuser', $user->id)->orWhere('ims_assign', $user->id)->orderBy('created_at','desc')->take(300)->get();
+            $partner = Partner::where('cuser', $user->id)->orderBy('created_at','desc')->take(300)->get();
         } else {
             return response()->json(['message' => 'Error in Permissions'], 500);
         }

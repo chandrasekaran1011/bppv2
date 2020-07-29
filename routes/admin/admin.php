@@ -1,11 +1,13 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+
 Route::get('/admin', 'AdminController@index')->name('home');
 
-Route::get('/logout', function () {
+Route::get('/logout',function(){
     Auth::logout();
-    return redirect()->route('home');
-})->name('logout');
+    return redirect('/logout/azure');
+ })->name('logout');
 
 Route::post('createRole', 'RoleController@create')->name('createRole');
 Route::post('updateRole', 'RoleController@update')->name('updateRole');

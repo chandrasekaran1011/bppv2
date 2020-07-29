@@ -13,16 +13,16 @@
                     </v-card>
                 </v-col>
 
-                <v-col :md="4" cols="12">
+                <v-col :md="4" cols="12" v-if="$can('Create Partner')">
                     <v-card @click="dialog=true;" style="cursor:pointer;background-color: #3bb78f;background-image: linear-gradient(315deg, #3bb78f 0%, #0bab64 74%);" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-plus</v-icon>
-                        <v-card-text class="title white--text">
+                        <v-card-text class="title white--text" >
                             Create Business Partner
                         </v-card-text>
                     </v-card>
                 </v-col>
 
-                <v-col :md="4" cols="12">
+                <v-col :md="4" cols="12" v-if="$can('View Partner')">
                     <v-card @click="nav(2);" style="cursor:pointer;background-color: #f9484a;background-image: linear-gradient(315deg, #f9484a 0%, #fbd72b 74%);" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-users</v-icon>
                         <v-card-text class="title white--text">
@@ -135,7 +135,7 @@ export default {
     created() {
         this.$store.state.tabId = 1;
         this.typeList = window.pTypes;
-        console.log(window.pTypes);
+       // console.log(this.$can);
     }
 }
 </script>

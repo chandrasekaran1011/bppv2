@@ -15,7 +15,7 @@ class EthicsPermissionSeeder extends Seeder
         Permission::create(['name' => 'Create Partner','perm_group'=>'Functions']);
         Permission::create(['name' => 'View Partner','perm_group'=>'Functions']);
         Permission::create(['name' => 'View Search Results','perm_group'=>'Functions']);
-        Permission::create(['name' => 'View Audit Trial','perm_group'=>'Functions']);
+        Permission::create(['name' => 'View Audit','perm_group'=>'Functions']);
 
 
         Permission::create(['name' => 'Compliance Approver','perm_group'=>'Compliance']);

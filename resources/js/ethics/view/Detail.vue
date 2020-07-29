@@ -9,11 +9,11 @@
             </template>
 
             <v-list>
-                <v-list-item v-if="data.searches>0" @click="searchResults()">
+                <v-list-item v-if="data.searches>0 &&  $can('View Search Results')" @click="searchResults()">
                     <v-list-item-title>View Search Results</v-list-item-title>
                 </v-list-item>
 
-                <v-list-item v-if="data.audit_trial>0" @click="auditResults()">
+                <v-list-item v-if="data.audit_trial>0 && $can('View Audit')" @click="auditResults()">
                     <v-list-item-title>View Audit Trial</v-list-item-title>
                 </v-list-item>
 

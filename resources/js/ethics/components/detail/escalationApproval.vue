@@ -69,7 +69,7 @@
                 
                 <v-row v-if="decision=='0' && data.status==8" :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
-                        <div class="title1 text-left reqFields mt-3" for="name">Escalated Approval</div>
+                        <div class="title1 text-left reqFields mt-3" for="name">Approver</div>
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
                         <v-autocomplete v-model="approver" :error-messages="approverErrors" @input="$v.approver.$touch()" @blur="$v.approver.$touch()" :items="data.status==3?data.groupUsers:data.committeUsers" item-text="name" item-value="unique" label="Compliance Approval Manager" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>

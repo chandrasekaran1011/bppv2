@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Auth\User;
-use App\Models\Partner;
+use App\Models\Admin\User;
+use App\Models\Ethics\Partner;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PartnerPolicy
@@ -91,7 +91,7 @@ class PartnerPolicy
             return true;
 
         }
-        elseif($user->isAdmin){
+        elseif($user->isAdmin()){
             return true;
         }
 
