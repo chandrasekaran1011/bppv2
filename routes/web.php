@@ -18,15 +18,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Auth::routes(['register' => false,'login'=>false]);
+Auth::routes(['register' => false,'login'=>false]);
 
-Route::get('/login',function(){
-    return redirect('/login/azure');
-})->name('login');
+// Route::get('/login',function(){
+//     return redirect('/login/azure');
+// })->name('login');
 
-Route::get('/login/azure', '\App\Http\Middleware\AppAzure@azure');
-Route::get('/login/azurecallback', '\App\Http\Middleware\AppAzure@azurecallback');
-Route::get('/logout/azure', '\App\Http\Middleware\AppAzure@azurelogout');
+// Route::get('/login/azure', '\App\Http\Middleware\AppAzure@azure');
+// Route::get('/login/azurecallback', '\App\Http\Middleware\AppAzure@azurecallback');
+// Route::get('/logout/azure', '\App\Http\Middleware\AppAzure@azurelogout');
 
 
 

@@ -25,3 +25,6 @@ Route::get('/getfile/', 'EthicsController@file')->name('file');
 
 Route::post('/resendNotification/', 'EthicsController@resendNotification')->name('resendNotification');
 
+Route::post('entityData','EthicsController@entityData')->name('entityData');
+
+Route::post('searchResult','SearchController@searchResult')->name('searchResult');

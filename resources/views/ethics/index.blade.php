@@ -145,6 +145,9 @@
                     'escalationForm'=>route('ethics.escalationForm'),
                     'resendNotification'=>route('ethics.resendNotification'),
                     'view'=>route('ethics.view'),
+                    'entityData'=>route('ethics.entityData'),
+                    'searchResult'=>route('ethics.searchResult'),
+
                 ], true) !!};
             
             window.pTypes={!!$partner!!}; 

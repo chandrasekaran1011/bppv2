@@ -1,7 +1,7 @@
 <template>
 <div>
 
-    <v-row class="mt-lg-10 pt-lg-10">
+    <v-row class="mt-lg-6 pt-lg-6">
         <v-col cols="12" :sm="12">
             <v-row :justify="'space-around'">
                 <v-col :md="4" cols="12">
@@ -61,7 +61,7 @@
                 </v-col>
 
                 <v-col :md="4" cols="12">
-                    <v-card @click="nav(2);" style="cursor:pointer;background-color: #4dccc6;background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);" class="mx-auto" max-width="300px">
+                    <v-card @click="nav(4);" style="cursor:pointer;background-color: #4dccc6;background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-search</v-icon>
                         <v-card-text class="title white--text">
                             Search Partner
@@ -126,6 +126,11 @@ export default {
             } else if (val == 3) {
                 this.$router.push({
                     name: 'RfiApprovals'
+                })
+
+            }else if (val == 4) {
+                this.$router.push({
+                    name: 'SearchPartner'
                 })
 
             }

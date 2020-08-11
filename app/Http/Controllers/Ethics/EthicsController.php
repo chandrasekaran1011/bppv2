@@ -723,7 +723,7 @@ class EthicsController extends Controller
                 if ($request->decision == 1 || $request->decision == 2) {
                     $e->status = 4;
                     $e->approved_on = Carbon::now();
-                    $e->due_on = Carbon::now()->addMonths(config('ethics.registration_validity'));
+                    $e->due_on = Carbon::now()->addMonths(24);
                     $e->approved_by = Auth::id();
                 } else {
                     $e->status = 8;
@@ -823,7 +823,7 @@ class EthicsController extends Controller
                 if ($request->decision == 1 || $request->decision == 2) {
                     $e->status = 4;
                     $e->approved_on = Carbon::now();
-                    $e->due_on = Carbon::now()->addMonths(config('ethics.registration_validity'));
+                    $e->due_on = Carbon::now()->addMonths(24);
                     $e->approved_by = Auth::id();
                 } else {
                     if($e->status == 8){
@@ -1007,7 +1007,7 @@ class EthicsController extends Controller
 
         $p = Partner::where('uuid', $request->id)->where('status', 1)->first();
         if($p){
-            Notification::route('mail', $request->email)->notify(new PartnerQuestionnaireNotification($p));
+            Notification::route('mail', $p->email)->notify(new PartnerQuestionnaireNotification($p));
 
             return response()->json(['success' => true, 'message' => 'Notification Resent.'], 200);
         }
@@ -1056,4 +1056,12 @@ class EthicsController extends Controller
         
         return Storage::disk('myDisk')->download($request->input('file'),$name.'.'.$ext,$headers);
     }
+
+    public function entityData(){
+        $entity = Project::getDataArray();
+
+        return response()->json($entity, 200);
+    }
+
+
 }
