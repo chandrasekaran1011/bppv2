@@ -30,6 +30,7 @@ class PartnerForm extends FormRequest
     {
         return [
             'name'=>'required|max:50|string',
+            'org_type'=>'required|max:50|string',
             'address'=>'required|string',
             'cop_num'=>'required|string|max:50',
             'cop_juri'=>'required|string|max:50',
@@ -66,14 +67,16 @@ class PartnerForm extends FormRequest
             'p_name'=>'required|string',
             'p_des'=>'required|string',
 
-            'policy_file'=>'sometimes|file|mimes:pdf|max:20000',
-            'certi_file'=>'sometimes|file|mimes:pdf|max:20000',
+            'policy_file'=>'required_if:policy,==,1|file|mimes:pdf|max:20000',
+            'certi_file'=>'required_if:t,==,1|file|mimes:pdf|max:20000',
             'statement_file'=>'sometimes|file|mimes:pdf|max:20000',
+            'signature'=>'required'
         ];
     }
 
     public function attributes(){
         return [
+            'org_type'=>'Organisation Type',
             'cop_num'=>'Incorporation number',
             'cop_juri'=>'Jurisdiction of incorporation',
             'doi'=>'Date of incorporation',
@@ -107,7 +110,7 @@ class PartnerForm extends FormRequest
             'p_des'=>'Designation',
 
             'statement_file'=>'Financial statement file',
-            'policy_file'=>'Policy File',
+            'policy_file'=>'Policy Document',
             'certi_file'=>'Certificate File',
         ];
     }
@@ -115,7 +118,10 @@ class PartnerForm extends FormRequest
     public function messages()
     {
         return [
-            'person_detail.required_if'=>'Provide more info on "Are you a Public offical"'
+            'person_detail.required_if'=>'Provide more info on "Are you a Public offical"',
+            'policy_file.required_if'=>'Policy file is required',
+            'certi_file'=>'ISO Certificate is required'
+
         ];
     }
 }

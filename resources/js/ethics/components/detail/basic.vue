@@ -8,12 +8,13 @@
                 <td colspan="2">{{data.name}}</td>
             </tr>
 
-            <tr>
-                <td colspan="2" style="background-color:#dee2e6">Organization type </td>
-                <td colspan="2">{{data.type.name}}</td>
+
+            <tr v-if="data.status>1">
+                <td colspan="2" style="background-color:#dee2e6">Organisational Type</td>
+                <td colspan="2">{{data.org_type}}</td>
             </tr>
 
-            <tr>
+            <tr v-if="data.status>1">
                 <td colspan="2" style="background-color:#dee2e6">Registered address</td>
                 <td colspan="2">{{data.address}}</td>
             </tr>
@@ -50,7 +51,7 @@
 
             <tr  v-if="data.status>1">
                 <td colspan="2" style="background-color:#dee2e6">Names of directors and senior management </td>
-                <td colspan="2" style="white-space:pre">{{data.director}}</td>
+                <td colspan="2" style="white-space:pre-wrap">{{data.director}}</td>
             </tr>
 
             <tr  v-if="data.status>1">
@@ -89,10 +90,10 @@
                 <td colspan="2">{{data.name}}</td>
             </tr>
 
-            <tr>
+            <!-- <tr>
                 <td colspan="2" style="background-color:#dee2e6">Position</td>
                 <td colspan="2">{{data.type.name}}</td>
-            </tr>
+            </tr> -->
 
             <tr>
                 <td colspan="2" style="background-color:#dee2e6">Resident address</td>
@@ -137,7 +138,7 @@
 </template>
 <style>
     .spacing{
-        white-space: pre;
+        white-space: pre-wrap;
     }
 </style>
 <script>

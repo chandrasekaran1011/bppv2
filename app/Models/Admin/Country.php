@@ -3,11 +3,16 @@
 namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Model;
+use Cache;
 
 class Country extends Model
 {
     public static function getArray(){
-        $country=Country::select(['id','name'])->get();
+
+        $country=Cache::remember('allCountries', 860000, function () {
+            return Country::select(['id','name'])->get();
+        });
+        
 
         $data=[];
         foreach($country as $c){
@@ -21,7 +26,10 @@ class Country extends Model
     }
 
     public static function getDataArray(){
-        $countries=Country::all();
+
+        $countries=Cache::remember('allCountries', 860000, function () {
+            return Country::all();
+        });
         
         $data=[];
         $x=1;

@@ -284,7 +284,7 @@ export default {
             this.deldialog = true;
         },
         delproject() {
-            console.log(this.pid);
+            
             let url = window.links.deleteProject ;
             let formData={};
             formData.id=this.pid;

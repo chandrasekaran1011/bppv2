@@ -29,6 +29,7 @@ class CreatePartnersTable extends Migration
             
             $table->text('tp')->nullable();
             $table->text('license')->nullable();
+            
 
             $table->text('cop_num')->nullable();
             $table->text('cop_juri')->nullable();

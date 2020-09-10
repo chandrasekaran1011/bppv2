@@ -19,13 +19,13 @@ class Ethics  extends Model implements Auditable
 {
     use  \OwenIt\Auditing\Auditable, SoftDeletes;
 
-    protected $dates = ['pm_at', 'ims_at', 'cdo_date','l1_at','l2_at'];
+    protected $dates = ['pm_at', 'ims_at', 'cdo_date','l1_at','l2_at','finance_approved_on','renew_pm_at','renew_ims_at'];
 
     public function getphase()
     {
         if (!is_null($this->phase)) {
-        $arr = ['Bid', 'Project', 'Others'];
-        return $arr[$this->phase];
+        $arr = ['Bid', 'Project', 'Miscellaneous'];
+        return $arr[(int)($this->phase)-1];
         }
         return null;
     }
@@ -49,11 +49,18 @@ class Ethics  extends Model implements Auditable
 
     }
 
-    public function getdecision()
+    public function getDecision($id=null)
     {
-        $val = $this->decision;
-        if (!is_null($val)) {
+        
+        if($id==null){
+            $val = $this->decision;
 
+        }else{
+            $val=$id;
+        }
+        
+        if (!is_null($val)) {
+            
             if ($val == 1) {
                 return 'Approved';
             } elseif ($val == 2) {

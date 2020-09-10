@@ -11,8 +11,13 @@
             </tr>
 
             <tr>
-                <td colspan="2" style="width:70%">Scope</td>
-                <td colspan="2" style="width:30%;vertical-align: middle;">{{data.scope}}</td>
+                <td colspan="2" >Position </td>
+                <td colspan="2">{{data.type.name}}</td>
+            </tr>
+
+            <tr>
+                <td colspan="2" style="width:50%">Scope to be performed by Business Partner</td>
+                <td colspan="2" style="width:50%;vertical-align: middle;">{{data.scope}}</td>
 
             </tr>
 
@@ -62,12 +67,19 @@
 
             <tr v-if="data.type.value>2">
                 <td colspan="2" >Has the need to contract with the Business Partner been validated? </td>
-                <td colspan="2" style="vertical-align: middle;">{{data.need}}</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.need}}<span class="ml-3" v-if="data.files.need_file!==''"><a :href="data.files.need_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
             </tr>
 
+            <tr v-if="data.type.value>1">
+                <td colspan="2" >Has the Business Partner returned the Business Partner Questionnaire? </td>
+                <td colspan="2" v-if="data.q_submission" style="vertical-align: middle;">Yes</td>
+                <td colspan="2" v-if="!data.q_submission" style="vertical-align: middle;">No</td>
+            </tr>
+            
+
             <tr>
-                <td colspan="2" >Has a basic integrity review of the Business Partner by way of an internet search been performed according to the Procedure</td>
-                <td colspan="2" style="vertical-align: middle;">{{data.search}}<span class="ml-3" v-if="!data.files.screenshot_file!==''"><a :href="data.files.screenshot_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
+                <td colspan="2" >Has a basic integrity review of the Business Partner by way of an internet search been performed according to the Procedure?</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.search}}<span class="ml-3" v-if="data.files.screenshot_file!=''"><a :href="data.files.screenshot_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
             </tr>
 
             <tr v-if="data.type.value==1">
@@ -108,7 +120,7 @@
             </tr>
 
             <tr v-if="data.type.value!=1">
-                <td colspan="2" >Has the Business Partner a satisfactory ethics program*</td>
+                <td colspan="2" >Has the Business Partner a satisfactory ethics program?</td>
                 <td colspan="2" style="vertical-align: middle;">{{data.satis}}</td>
             </tr>
 
@@ -133,10 +145,128 @@
                 <td colspan="2" style="vertical-align: middle;">Date: &nbsp;{{data.pm_at}}</td>
             </tr>
 
+            
+            <tr v-if="data.status>3">
+                 <td colspan="4" class="text-center" ><strong>COMPLIANCE OFFICER/MANAGER APPROVAL</strong></td>
+            </tr>
+
+            <tr v-if="data.comp_by!=null">
+                <td colspan="2" >Name of the Compliance Officer/Manager</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.comp_by}}</td>
+            </tr>
+
+            <tr v-if="data.comp_by!=null">
+                <td colspan="2" >Date</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.comp_at}}</td>
+            </tr>
+
+            <tr v-if="data.status>3">
+                <td colspan="2" >Enhanced integrity review performed? </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.integrity}}<span class="ml-3" v-if="data.files.lexis_file!=''"><a :href="data.files.lexis_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
+            </tr>
+
+            <tr v-if="data.status>3">
+                <td colspan="4" ><strong>Red flag identified from the enhanced integrity review and mitigating actions proposed:
+                Amended action plan, if any</strong> <br><span style="white-space:pre-wrap">{{data.flag_action}}</span> </td>
+            </tr>
+
+            <tr v-if="data.status>3">
+                <td colspan="2" >Decision</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.ims_decision.yn}}</td>
+            </tr>
 
 
+            <tr v-if="data.status>3">
+                <td colspan="2" >Reason for this Decision </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.ims_reason}}</td>
+            </tr>
+
+            <tr v-if="data.status>3 && data.ims_condition!=null">
+                <td colspan="2" >Condition </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.ims_condition}}</td>
+            </tr>
+
+            
+            <tr v-if="data.remarks!=null">
+                <td colspan="2"  >Additional information </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.ims_add}}</td>
+            </tr>
+
+            <!-- Group Compliance Manager -->
+
+            <tr v-if="Object.keys(data.l1).length!=0">
+                 <td colspan="4" class="text-center" ><strong>GROUP COMPLIANCE MANAGER APPROVAL</strong></td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l1).length!=0">
+                <td colspan="2" >Name of the Group Compliance Manager</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_by}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l1).length!=0">
+                <td colspan="2" >Date</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_at}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l1).length!=0">
+                <td colspan="2" >Decision</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_decision.yn}}</td>
+            </tr>
 
 
+            <tr v-if="Object.keys(data.l1).length!=0">
+                <td colspan="2" >Reason for this Decision </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_reason}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l1).length!=0 && data.l1.l1_condition!=null">
+                <td colspan="2" >Condition </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_condition}}</td>
+            </tr>
+
+            
+            <tr v-if="data.remarks!=null">
+                <td colspan="2"  >Additional information </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_add}}</td>
+            </tr>
+
+            <!-- Ethics Committe -->
+
+                        <tr v-if="Object.keys(data.l2).length!=0">
+                 <td colspan="4" class="text-center" ><strong>ETHICS COMMITTEE APPROVAL</strong></td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l2).length!=0">
+                <td colspan="2" >Name of the Group Compliance Manager</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_by}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l2).length!=0">
+                <td colspan="2" >Date</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_at}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l2).length!=0">
+                <td colspan="2" >Decision</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_decision.yn}}</td>
+            </tr>
+
+
+            <tr v-if="Object.keys(data.l2).length!=0">
+                <td colspan="2" >Reason for this Decision </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_reason}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l2).length!=0 && data.l2.l2_condition!=null">
+                <td colspan="2" >Condition </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_condition}}</td>
+            </tr>
+
+            
+            <tr v-if="data.remarks!=null">
+                <td colspan="2"  >Additional information </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_add}}</td>
+            </tr>
 
             </tbody>
     </table>
@@ -146,7 +276,7 @@
 
 <style>
 .spacing {
-    white-space: pre;
+    white-space: pre-wrap;
 }
 </style>
 

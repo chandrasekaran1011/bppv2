@@ -22,29 +22,29 @@
                 <td  style="vertical-align: middle;"> {{data.status_name}} </td>
             </tr>
 
-            <tr v-if="data.status==4">
+            <tr v-if="data.status>3">
                 <td  style="width:50%;"><strong>Registration Valid till</strong> </td>
                 <td  style="vertical-align: middle;"> {{data.validity}} </td>
             </tr>
 
-            <!-- <tr v-if="data.status==7">
+            <tr v-if="data.status==7">
                 <td  style="width:50%;"><strong>Blacklisted Reason</strong> </td>
-                <td  style="vertical-align: middle;">  </td>
+                <td  style="vertical-align: middle;"> {{data.blacklistDetail.blacklist_reason}} </td>
             </tr> 
-            <tr>
-                <td  style="width:50%;"><strong>Blacklisted Till</strong> </td>
-                <td  style="vertical-align: middle;">  </td>
+            <tr v-if="data.status==7">
+                <td  style="width:50%;"><strong>Blacklisted up to</strong> </td>
+                <td  style="vertical-align: middle;">{{data.blacklistDetail.blacklist_till}}  </td>
             </tr>
 
-            <tr>
+            <tr v-if="data.status==7">
                 <td  style="width:50%;"><strong>Blacklisted By</strong> </td>
-                <td  style="vertical-align: middle;">  </td>
+                <td  style="vertical-align: middle;"> {{data.blacklistDetail.blacklist_by}} </td>
             </tr>
 
-            <tr>
+            <tr v-if="data.status==7">
                 <td  style="width:50%;"><strong>Blacklisted On</strong> </td>
-                <td  style="vertical-align: middle;"></td>
-            </tr>-->
+                <td  style="vertical-align: middle;">{{data.blacklistDetail.blacklist_on}}</td>
+            </tr>
 
 
         </tbody>
@@ -55,7 +55,7 @@
 
 <style>
 .spacing {
-    white-space: pre;
+    white-space: pre-wrap;
 }
 </style>
 

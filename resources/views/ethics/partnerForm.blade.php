@@ -8,9 +8,7 @@
     </div>
 
     <div class="p-3" style="border:2px solid red">
-        In the frame of anti-bribery and anti-corruption laws and of our internal process, we require our business
-        partners to complete this questionnaire. We thank you to provide the information requested below to the best of
-        your knowledge and belief.
+        In the frame of anti-bribery and anti-corruption laws and of our internal process, we require our business partners to complete this questionnaire. We thank you to provide the information requested below to the best of your knowledge and belief.
         <a href="#" class="text-primary" data-toggle="modal" data-target="#exampleModal">Guidelines</a>
     </div>
 
@@ -39,6 +37,18 @@
             <div class="col-md-6">
                 <input type="text" class="form-control" name="name" id="name" aria-describedby="name"
                     value="{{old('name',$ethics->name)}}" placeholder="Name of your organization" required='required'>
+
+            </div>
+        </div>
+
+        <div class="form-group d-flex mt-3">
+            <div class="col-md-6">
+                <label class="reqFields">Organization Type</label><br>
+                <small>(i.e. Private, Public, Partnership, Charity,etc)</small>
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" name="org_type" id="org_type" aria-describedby="org_type"
+                    value="{{old('org_type',$ethics->org_type)}}" placeholder="Organization Type" required='required'>
 
             </div>
         </div>
@@ -81,8 +91,8 @@
             </div>
         </div>
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <link rel="stylesheet" href="{{asset('/assets/css/flatpickr.min.css')}}">
+        <script src="{{asset('/assets/js/flatpicker.js')}}"></script>
 
         <script>
             $(".form_date1").flatpickr({
@@ -203,7 +213,7 @@
         <div class="form-group d-flex mt-3">
             <div class="col-md-6">
                 <label>
-                    Specify subsidiaries:
+                    Identify your subsidiaries:
                     <br>
                     (separated by comma)
                 </label>
@@ -235,7 +245,7 @@
 
         <div class="form-group d-flex mt-3">
             <label for="" class="col-md-6 form-label reqFields">Does 20% or more of your anticipated annual revenue come
-                from your business with companies from Systra Group? </label>
+                from your business with companies from <a href="#" class="text-primary" data-toggle="modal" data-target="#exampleModal"> Systra Group? </a> </label>
             <div class="col-md-6">
 
                 <div class="form-check form-check-inline icheck-primary">
@@ -272,16 +282,15 @@
         <div class="form-group d-flex mt-3">
             <div class="col-md-6">
                 <label class="reqFields">
-                    Do you intend to use third parties to perform the services covered by the contract with Systra? If
-                    yes do you have evaluated the third party integrity?
+                    Does your organization intend to use third parties to perform the services covered by the contract with Systra? If yes do you have evaluated the third party integrity?
                 </label>
             </div>
             <div class="col-md-6">
 
                 <div class="form-group">
                     <textarea class="form-control" name="tp" id="tp" height="90px" aria-describedby="third party"
-                        maxlength="60" required="required">{{old('tp')}} </textarea>
-                    <small class="form-text text-muted">Mention "NA" if not applicable</small>
+                        maxlength="60" required="required" placeholder="Yes/No,Provide details if yes">{{old('tp')}} </textarea>
+                    
                 </div>
             </div>
         </div>
@@ -447,7 +456,7 @@
 
             <div class="form-group d-flex mt-3">
                 <div class="col-md-6">
-                    <label>Attach Relevent Policy/Program Document (optional ,PDF only)</label>
+                    <label>Attach Relevent Policy/Program Document (PDF only)</label>
                 </div>
                 <div class="col-md-6">
                     <input type="file" class="form-input" name="policy_file" accept=".pdf" id="policy_file"
@@ -462,8 +471,8 @@
         <hr class="m-0">
 
         <div class="form-group d-flex mt-3">
-            <label for="" class="col-md-6 form-label reqFields">2) Does any government entity, Public Official or
-                Relevant Person own an interest in, or exert control over your organization? </label>
+            <label for="" class="col-md-6 form-label reqFields">2) Does any government entity, <a href="#" class="text-primary" data-toggle="modal" data-target="#exampleModal">Public Official or
+                Relevant Person </a> own an interest in, or exert control over your organization? </label>
             <div class="col-md-6">
 
                 <div class="form-check form-check-inline icheck-primary">
@@ -502,7 +511,7 @@
         <hr class="m-0">
 
         <div class="ml-2 mt-3">
-            <label for="" class="col-md-6 form-label reqFields">3) Is any of your organization Principals (as defined
+            <label for="" class="col-md-6 form-label reqFields">3) Is any of your organization <a href="#" class="text-primary" data-toggle="modal" data-target="#exampleModal"> Principals </a> (as defined
                 above) a </label>
         </div>
 
@@ -727,12 +736,11 @@
 
         <div class="form-group d-flex mt-3">
             <div class="col-md-6">
-                <label>Provide the last 3 year annual statements<br> (optional ,PDF only)</label>
+                <label>Provide the last 3 year annual statements<br> (PDF only)</label>
             </div>
             <div class="col-md-6">
                 <input type="file" class="form-input" name="statement_file" id="statement_file"
-                    onchange="Filevalidation('statement_file')" accept=".pdf" aria-describedby="statement_file" min="1"
-                    placeholder="Certificate (PDF Only)">
+                    onchange="Filevalidation('statement_file')" accept=".pdf" aria-describedby="statement_file" min="1" placeholder="Certificate (PDF Only)">
 
             </div>
         </div>
@@ -760,13 +768,82 @@
 
         <div class="form-group d-flex mt-3">
             <div class="col-md-6">
-                <label class="reqFields">Designation</label>
+                <label class="reqFields">Job Title</label>
             </div>
             <div class="col-md-6">
                 <input type="text" class="form-control" name="p_des" id="p_des" aria-describedby="p_des"
                     value="{{old('p_des')}}" placeholder="Your Designation" required='required'>
             </div>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+
+        <div class="form-group d-flex mt-3">
+            <div class="col-md-6">
+                <label class="reqFields">Signature</label>
+            </div>        
+            <div class="col-md-6">    
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#signModal">
+                    Signature
+                </button>
+                <img src="" id="sign-img" width="150px" height="100px" alt="signature image">
+            </div>  
+        </div>
+        <!-- Button trigger modal -->
+
+        
+        <!-- Modal -->
+        <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Signature</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        <canvas id="signature-pad" class="signature-pad" width=400 height=200></canvas>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="sign-clear" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" id="save-png" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" id="signature" name="signature" value="" required>
+
+        
+
+        <script>
+                var canvas = document.getElementById('signature-pad');
+            
+                var signaturePad = new SignaturePad(canvas, {
+                    backgroundColor: 'rgb(255, 255, 255)' 
+                });
+
+                document.getElementById('save-png').addEventListener('click', function () {
+                    if (signaturePad.isEmpty()) {
+                        return alert("Please provide a signature first.");
+                    }
+                    
+                    var data = signaturePad.toDataURL('image/png');
+                        console.log(data);
+                        $('#sign-img').attr('src',data);
+                        $('#signature').val(data);
+                        $('#signModal').modal('hide');
+                    });
+
+                    $(document).on('click','#sign-clear',function(){
+                        signaturePad.clear();
+                    });
+
+                    
+
+
+        </script>
 
         <div class="text-center mt-3 mb-3">
             <button type="submit" class="btn btn-primary btn-lg">Submit</button>
@@ -775,7 +852,7 @@
         <div class="p-3 mt-4 mb-4" style="border:2px solid red">
             <strong>Any modification of the information contained in this questionnaire shall be notified to SYSTRA at the latest thirty (30) days after the day on which the modification occurred.</strong> 
             <br><br>
-            <strong>Personal Data Information:</strong>  SYSTRA’s collection of personal data is limited to data that are proportionate and necessary to evaluate the integrity of its business partners. SYSTRA applies technical and organizational measures to protect your personal data. You have the right to access your personal data and to rectify data that are inaccurate. In the cases provided for by law (UE General Data Protection Regulation), you have also the right to erasure, the right to data portability, the right to object and the right to restriction of processing. To exercise your rights, please contact SYSTRA’s DPO: <a style="text-decorations:none;color:blue;" href="mailto:personaldata@systra.com">personaldata@systra.com</a> . You also have the right to file a complaint with the competent supervisory authority. 
+            <strong>Personal Data Information:</strong> SYSTRA’s collection of personal data is limited to data that are proportionate and necessary to evaluate the integrity of its business partners, and limited to the duration necessary to this purpose or provided by law. SYSTRA applies technical and organizational measures to protect personal data. The individuals concerned by this processing have the right to access their personal data and to rectify data that are inaccurate. In the cases provided for by law (UE General Data Protection Regulation), such individuals have also the right to erasure, the right to data portability, the right to object, the right to restriction of processing and the right to file a complaint with the competent supervisory authority. To exercise these rights, please contact SYSTRA’s DPO:  <a style="text-decorations:none;color:blue;" href="mailto:personaldata@systra.com">personaldata@systra.com</a>
         </div>
 
 </div>
@@ -803,7 +880,7 @@
                             recommendations regarding the relationship with Systra Group.</li>
                     </ul>
                 </p>
-                <p class="text-dark"><strong>“Public Officials” </strong> include the following:
+                <p class="text-dark"><strong>“Public Officials” </strong>  includes the persons exercising, or having exercised within the last year, one of the following functions:
                     <ul class="ml-4 pl-3">
                         <li>Officers and employees of any national, regional, local or other governmental entity or
                             legislative assembly, including elected officials;</li>

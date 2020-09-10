@@ -27,19 +27,23 @@
 
                 <v-row :justify="'center'" class="px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
-                        <div class="title1 text-left reqFields" for="name">Scope of work</div>
+                        <div class="title1 text-left reqFields" for="name">Scope to be performed by Business Partner</div>
                     </v-col>
                     <v-col cols="12" :md="6">
                         <v-textarea outlined label="Scope of work" name="scope" id="scope" :error-messages="scopeErrors" @input="$v.scope.$touch()" @blur="$v.scope.$touch()" v-model="scope"></v-textarea>
                     </v-col>
                 </v-row>
 
-                                <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
+                <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
                         <div class="title1 text-left reqFields" for="name">CDO</div>
                     </v-col>
                     <v-col cols="12" :md="6">
-                        <v-checkbox v-model="cdo" true-value="1" false-value="0" :error-messages="cdoErrors" @input="$v.cdo.$touch()" @blur="$v.cdo.$touch()" label="Yes" color="success" hide-details></v-checkbox>
+                        <v-radio-group v-model="cdo" row :error-messages="cdoErrors" @change="$v.cdo.$touch()" @blur="$v.cdo.$touch()">
+                            <v-radio label="Yes" value="1"></v-radio>
+                            <v-radio label="No" value="0"></v-radio>
+                        </v-radio-group>
+                        <!-- <v-checkbox v-model="cdo" true-value="1" false-value="0" :error-messages="cdoErrors" @input="$v.cdo.$touch()" @blur="$v.cdo.$touch()" label="Yes" color="success" hide-details></v-checkbox> -->
                     </v-col>
                 </v-row>
 
@@ -56,7 +60,6 @@
                         </v-menu>
                     </v-col>
                 </v-row>
-
 
                 <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
@@ -95,7 +98,6 @@
                     </v-col>
                 </v-row>
 
-
                 <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
                         <div class="title1 text-left reqFields mt-3" for="name">Method of selection of the Business Partner</div>
@@ -128,10 +130,18 @@
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
                         <v-radio-group v-model="need" :error-messages="needErrors" @input="$v.need.$touch()" @blur="$v.need.$touch()" row>
-                            <v-radio label="Yes" color="success"  value="1"></v-radio>
+                            <v-radio label="Yes" color="success" value="1"></v-radio>
                             <v-radio label="No" color="red" value="0"></v-radio>
-
                         </v-radio-group>
+                    </v-col>
+                </v-row>
+
+                <v-row v-if="need==1" :justify="'center'" class=" px-4 py-2" no-gutters>
+                    <v-col cols="12" :md="6">
+                        <div class="title1 text-left reqFields  mt-3" for="name"> Attach Relevent Need Validation Document (PDF only)</div>
+                    </v-col>
+                    <v-col cols="12" :md="6" class="pl-md-3">
+                        <v-file-input :rules="rules" :error-messages="need_fileErrors" @input="$v.need_file.$touch()" @blur="$v.need_file.$touch()" v-model="need_file" accept=".pdf" placeholder="Need Validation Document" prepend-icon="fas fa-file" label="Need Validation Document"></v-file-input>
                     </v-col>
                 </v-row>
 
@@ -141,8 +151,8 @@
                     </v-col>
                     <v-col cols="12" :md="6">
                         <v-radio-group v-model="search" :error-messages="searchErrors" @input="$v.search.$touch()" @blur="$v.search.$touch()" row>
-                            <v-radio label="Yes" color="success"  value="1"></v-radio>
-                            <v-radio label="No" color="red"  value="0"></v-radio>
+                            <v-radio label="Yes" color="success" value="1"></v-radio>
+                            <v-radio label="No" color="red" value="0"></v-radio>
                             <v-radio label="n.a. (Ref cf.3.1)" color="success" value="2"></v-radio>
                         </v-radio-group>
                     </v-col>
@@ -163,8 +173,8 @@
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
                         <v-radio-group v-model="satis" :error-messages="satisErrors" @input="$v.satis.$touch()" @blur="$v.satis.$touch()" row>
-                            <v-radio label="Yes" color="success"  value="1"></v-radio>
-                            <v-radio label="No" color="red"  value="0"></v-radio>
+                            <v-radio label="Yes" color="success" value="1"></v-radio>
+                            <v-radio label="No" color="red" value="0"></v-radio>
 
                         </v-radio-group>
                     </v-col>
@@ -176,8 +186,8 @@
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
                         <v-radio-group v-model="practice" :error-messages="practiceErrors" @input="$v.practice.$touch()" @blur="$v.practice.$touch()" row>
-                            <v-radio label="Yes" color="success"  value="1"></v-radio>
-                            <v-radio label="No" color="red"  value="0"></v-radio>
+                            <v-radio label="Yes" color="success" value="1"></v-radio>
+                            <v-radio label="No" color="red" value="0"></v-radio>
 
                         </v-radio-group>
                     </v-col>
@@ -188,7 +198,7 @@
                         <div class="title1 text-left reqFields" for="name">Provide more information</div>
                     </v-col>
                     <v-col cols="12" :md="6">
-                        <v-textarea outlined label="Information on non ethical practices"  :error-messages="practice_detailErrors" @input="$v.practice_detail.$touch()" @blur="$v.practice_detail.$touch()" v-model="practice_detail"></v-textarea>
+                        <v-textarea outlined label="Information on non ethical practices" :error-messages="practice_detailErrors" @input="$v.practice_detail.$touch()" @blur="$v.practice_detail.$touch()" v-model="practice_detail"></v-textarea>
                     </v-col>
                 </v-row>
 
@@ -199,7 +209,7 @@
                         <v-autocomplete multiple v-model="selectedflags" :items="data.flags" label="PreListed Red Flags"></v-autocomplete>
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
-                        <v-textarea outlined label="Other Red Flags (Optional)" v-model="otherflags"></v-textarea>
+                        <v-textarea outlined label="Other Red Flags" v-model="otherflags"></v-textarea>
                     </v-col>
                     <v-col cols="12" :md="12" class="pl-md-3">
 
@@ -215,7 +225,7 @@
                         <v-autocomplete multiple v-model="selectedmiti" :items="data.mitigations" label="PreListed Mitigation Action"></v-autocomplete>
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
-                        <v-textarea outlined label="Other Mitigation Actions (Optional)" v-model="othermiti"></v-textarea>
+                        <v-textarea outlined label="Other Mitigation Actions" v-model="othermiti"></v-textarea>
                     </v-col>
                     <v-col cols="12" :md="12" class="pl-md-3">
                         <v-textarea outlined label="Identified Mitigation Actions" :readonly="true" :error-messages="mitigationsErrors" @input="$v.mitigations.$touch()" @blur="$v.mitigations.$touch()" v-model="mitigations"></v-textarea>
@@ -229,6 +239,15 @@
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
                         <v-autocomplete v-model="approver" :error-messages="approverErrors" @input="$v.approver.$touch()" @blur="$v.approver.$touch()" :items="data.approverList" item-text="name" item-value="unique" label="Compliance Approval Manager" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>
+                    </v-col>
+                </v-row>
+
+                <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
+                    <v-col cols="12" :md="6">
+                        <div class="title1 text-left mt-3" for="name">Name of Finance Reviewer:</div>
+                    </v-col>
+                    <v-col cols="12" :md="6" class="pl-md-3">
+                        <v-autocomplete v-model="fin_approver" :items="data.fin_approverList" item-text="name" item-value="unique" label="Finance Manager" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>
                     </v-col>
                 </v-row>
 
@@ -271,18 +290,24 @@ export default {
         ],
         data: {
             approverList: [],
+            fin_approverList: [],
             countryList: [],
             flags: [],
             mitigations: [],
 
         },
         phaseList: [{
-            name: 'Bid',
-            id: 1
-        }, {
-            name: 'Project',
-            id: 2
-        }],
+                name: 'Bid',
+                id: 1
+            }, {
+                name: 'Project',
+                id: 2
+            },
+            {
+                name: 'Miscellaneous',
+                id: 3
+            }
+        ],
 
         scope: '',
         contract: '',
@@ -296,11 +321,13 @@ export default {
         recomm: '0',
 
         search: '1',
-        screenshot_file: null,
+        screenshot_file: [],
+
         practice: '0',
-        practice_detail:'',
+        practice_detail: '',
         satis: '0',
         need: '0',
+        need_file: [],
 
         selectedflags: [],
         otherflags: '',
@@ -311,6 +338,7 @@ export default {
         mitigations: '',
 
         approver: '',
+        fin_approver: '',
     }),
     methods: {
         loadData() {
@@ -326,6 +354,7 @@ export default {
                 this.data.approverList = resp.data.approver;
                 this.data.flags = resp.data.flags;
                 this.data.mitigations = resp.data.mitigations;
+                this.data.fin_approverList = resp.data.finance_approvers;
             }).catch(() => {
                 this.$store.commit('snackNotify', {
                     type: 'error',
@@ -337,8 +366,23 @@ export default {
             })
         },
         sumform() {
-            
+
             if (this.$store.state.loading == true) return;
+            if (this.need == 1 && this.need_file.length == 0) {
+                this.$store.commit('snackNotify', {
+                    type: 'error',
+                    msg: "Please Upload Need Validation Document"
+                });
+                return;
+            }
+
+            if (this.search == 1 && this.screenshot_file.length == 0) {
+                this.$store.commit('snackNotify', {
+                    type: 'error',
+                    msg: "Please Upload Screenshot Document"
+                });
+                return;
+            }
             this.$store.state.loading = true;
 
             let formData = new FormData();
@@ -355,18 +399,19 @@ export default {
             formData.append('recomm', this.recomm)
             formData.append('search', this.search)
 
-            formData.append('practice_detail',this.practice_detail)
+            formData.append('practice_detail', this.practice_detail)
 
             formData.append('need', this.need);
-
+            formData.append('need_file', this.need_file)
             formData.append('screenshot_file', this.screenshot_file)
             formData.append('satis', this.satis)
             formData.append('practice', this.practice)
             formData.append('flag', this.redflags)
             formData.append('mitigations', this.mitigations)
             formData.append('ims_assign', this.approver)
+            formData.append('fm_assign', this.fin_approver)
 
-             console.log(window.links.storePmForm);   
+            console.log(window.links.storePmForm);
             axios.post(window.links.storePmForm, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
@@ -445,7 +490,7 @@ export default {
         practice: {
             required
         },
-        practice_detail:{
+        practice_detail: {
             required: requiredIf(function () {
                 return this.practice == '1'
             })
@@ -455,6 +500,11 @@ export default {
         },
         need: {
             required
+        },
+        need_file: {
+            required: requiredIf(function () {
+                return this.need == '1'
+            })
         },
         redflags: {
             required
@@ -468,6 +518,18 @@ export default {
 
     },
     computed: {
+        need_fileErrors() {
+            const errors = []
+            if (!this.$v.need_file.$dirty) {
+                return errors
+            }
+
+            if (!this.$v.need_file.required) {
+                errors.push('Need Validation file is required.')
+            }
+
+            return errors
+        },
         scopeErrors() {
             const errors = []
             if (!this.$v.scope.$dirty) {
@@ -601,7 +663,7 @@ export default {
             }
             return errors
         },
-        practice_detailErrors(){
+        practice_detailErrors() {
             const errors = []
             if (!this.$v.practice_detail.$dirty) {
                 return errors

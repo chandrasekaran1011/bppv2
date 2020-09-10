@@ -52,7 +52,11 @@
             <div class="title1 text-left reqFields" for="name">CDO</div>
         </v-col>
         <v-col cols="12" :md="6">
-            <v-checkbox v-model="cdo" true-value="1" false-value="0" :error-messages="cdoErrors" @input="$v.cdo.$touch()" @blur="$v.cdo.$touch()" label="Yes" color="success" hide-details></v-checkbox>
+            <v-radio-group v-model="cdo" row :error-messages="cdoErrors" @change="$v.cdo.$touch()" @blur="$v.cdo.$touch()">
+                <v-radio label="Yes" value="1"></v-radio>
+                <v-radio label="No" value="0"></v-radio>
+            </v-radio-group>
+            <!-- <v-checkbox v-model="cdo" true-value="1" false-value="0" :error-messages="cdoErrors" @input="$v.cdo.$touch()" @blur="$v.cdo.$touch()" label="Yes" color="success" hide-details></v-checkbox> -->
         </v-col>
     </v-row>
 
@@ -392,7 +396,7 @@
             <v-autocomplete multiple v-model="selectedflags" :items="data.flags" label="PreListed Red Flags"></v-autocomplete>
         </v-col>
         <v-col cols="12" :md="6" class="pl-md-3">
-            <v-textarea outlined label="Other Red Flags (Optional)" v-model="otherflags"></v-textarea>
+            <v-textarea outlined label="Other Red Flags" v-model="otherflags"></v-textarea>
         </v-col>
         <v-col cols="12" :md="12" class="pl-md-3">
 
@@ -408,7 +412,7 @@
             <v-autocomplete multiple v-model="selectedmiti" :items="data.mitigations" label="PreListed Mitigation Action"></v-autocomplete>
         </v-col>
         <v-col cols="12" :md="6" class="pl-md-3">
-            <v-textarea outlined label="Other Mitigation Actions (Optional)" v-model="othermiti"></v-textarea>
+            <v-textarea outlined label="Other Mitigation Actions" v-model="othermiti"></v-textarea>
         </v-col>
         <v-col cols="12" :md="12" class="pl-md-3">
             <v-textarea outlined label="Identified Mitigation Actions" :readonly="true" :error-messages="mitigationsErrors" @input="$v.mitigations.$touch()" @blur="$v.mitigations.$touch()" v-model="mitigations"></v-textarea>
@@ -471,12 +475,16 @@ export default {
             value => !value || value.size < 20000000 || 'File size should be less than 20 MB!',
         ],
         phaseList: [{
-            name: 'Bid',
-            id: 1
-        }, {
-            name: 'Project',
-            id: 2
-        }],
+                name: 'Bid',
+                id: 1
+            }, {
+                name: 'Project',
+                id: 2
+            },
+            {
+                name: 'Miscellaneous',
+                id: 3
+            }],
         nowDate: new Date().toISOString().slice(0, 10),
         datepicker: false,
         datepicker2: false,
@@ -652,16 +660,14 @@ export default {
                 this.p5 = '0';
                 this.policy_file = '';
 
-            } else if(val=='2'){
+            } else if (val == '2') {
                 this.p1 = '2';
                 this.p2 = '2';
                 this.p3 = '2';
                 this.p4 = '2';
                 this.p5 = '2';
                 this.policy_file = '';
-            }
-            
-            else {
+            } else {
                 this.p1 = '1';
                 this.p2 = '1';
                 this.p3 = '1';
@@ -1156,7 +1162,7 @@ export default {
             }
             return errors
         },
-                practice_detailErrors() {
+        practice_detailErrors() {
             const errors = []
             if (!this.$v.practice_detail.$dirty) {
                 return errors

@@ -11,6 +11,8 @@
         "php": "^7.2.5",
         "altek/accountant": "^2.0",
         "arcanedev/log-viewer": "7.x",
+        "barryvdh/laravel-dompdf": "^0.8.6",
+        "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
@@ -19,10 +21,13 @@
         "laravel/ui": "^2.0",
         "maatwebsite/excel": "^3.1",
         "owen-it/laravel-auditing": "^10.0",
+        "predis/predis": "^1.1",
         "ramsey/uuid": "^4.0",
         "rootinc/laravel-azure-middleware": "^0.9.6",
         "spatie/laravel-permission": "^3.13",
-        "yadahan/laravel-authentication-log": "^1.2"
+        "spatie/laravel-web-tinker": "^1.7",
+        "yadahan/laravel-authentication-log": "^1.2",
+        "zanysoft/laravel-zip": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",

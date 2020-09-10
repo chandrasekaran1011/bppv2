@@ -45,6 +45,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Ethics\PartnerRenewed' => [
             'App\Listeners\Ethics\PartnerRenewedListener',
         ],
+        'App\Events\Ethics\PartnerRenewalInitiated' => [
+            'App\Listeners\Ethics\PartnerRenewalInitiatedListener',
+        ],
+        'App\Events\Ethics\GoogleSearchTrigger' => [
+            'App\Listeners\Ethics\GoogleSearchTriggerListener',
+        ],
     ];
 
     /**

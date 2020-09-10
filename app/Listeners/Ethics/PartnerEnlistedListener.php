@@ -2,11 +2,11 @@
 
 namespace App\Listeners\Ethics;
 
-use App\Events\Ethics\PartnerEnlisted;
+use App\Models\Ethics\Audit;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
-use App\Models\Audit;
+
 
 class PartnerEnlistedListener implements ShouldQueue
 {
@@ -26,8 +26,9 @@ class PartnerEnlistedListener implements ShouldQueue
      * @param  PartnerEnlisted  $event
      * @return void
      */
-    public function handle(PartnerEnlisted $event)
+    public function handle($event)
     {
+        
         $a=new Audit;
         $a->partner_id=$event->partner->id;
         $a->user_id=$event->partner->approved_by;

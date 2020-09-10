@@ -33,13 +33,14 @@
 
         <div class="form-group d-flex mt-3">
                 <div class="col-md-6">
-                    <label class="reqFields">Name of your Organization</label>
+                    <label class="reqFields">Name, Forename</label>
                 </div>        
                 <div class="col-md-6">    
                     <input type="text" class="form-control" name="name" id="name" aria-describedby="name" value="{{old('name',$ethics->name)}}" placeholder="Name of the Business Partner" required='required'>
                     
                 </div>  
         </div>
+
 
         <div class="form-group d-flex mt-3">
             <div class="col-md-6">
@@ -48,7 +49,7 @@
             <div class="col-md-6">    
                 
                 <div class="form-group">
-                    <textarea class="form-control" name="address" required id="address" height="90px"  placeholder="Address (If available, provide an extract of the commercial registry not older than 3-months.)">{{old('address')}}</textarea>
+                    <textarea class="form-control" name="address" required id="address" height="90px"  placeholder="Address">{{old('address')}}</textarea>
                 </div>
             </div>
         </div> 
@@ -85,8 +86,8 @@
             </div>  
         </div>
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <link rel="stylesheet" href="{{asset('/assets/css/flatpickr.min.css')}}">
+        <script src="{{asset('/assets/js/flatpicker.js')}}"></script>
 
         <script>
                 $(".form_date1").flatpickr({
@@ -134,7 +135,7 @@
             <div class="col-md-6">    
                 
                 <div class="form-group">
-                    <textarea class="form-control" name="tp"  id="tp" height="90px" aria-describedby="director" maxlength="60" required="required">{{old('tp')}} </textarea>
+                    <textarea class="form-control" name="tp"  id="tp" height="90px" aria-describedby="director" maxlength="60" placeholder="Yes/No.if yes provide details." required="required">{{old('tp')}} </textarea>
                     <small class="form-text text-muted">Mention "NA" if not applicable</small>
                 </div>
             </div>
@@ -147,7 +148,7 @@
 
   
         <div class="form-group d-flex mt-3">
-            <label for="" class="col-md-6 form-label reqFields">1)Are you a Public Official?  </label>
+            <label for="" class="col-md-6 form-label reqFields">1)Are you a <a href="#" class="text-primary" data-toggle="modal" data-target="#exampleModal"> Public Official </a>?  </label>
             <div class="col-md-6">
                 
                 <div class="form-check form-check-inline icheck-primary">
@@ -307,7 +308,7 @@
         <div class="form-group d-flex mt-3">
             <div class="col-md-6">
                 <label class="reqFields">
-                4) Have you been, during the five past years, the subject of investigations, proceedings, convictions, debarments and/or professional suspensions related to (or have otherwise been involved in) corruption, anticompetitive practices, fraud, money-laundering, violation of international sanctions or related offences?
+                4) Have you been, during the five past years, the subject of investigations, proceedings, convictions, debarments and/or professional suspensions related to (or have you otherwise been involved in) corruption, anticompetitive practices, fraud, money-laundering, violation of international sanctions or related offences?
                 </label>
             </div>        
             <div class="col-md-6">    
@@ -343,7 +344,7 @@
 
         <div class="form-group d-flex mt-3">
             <div class="col-md-6">
-                <label>Provide the last 3 year Tax Return statements<br> (optional ,PDF only (Max 20 MB))</label>
+                <label>Provide the last 3 year Tax Return statements<br>PDF only (Max 20 MB)</label>
             </div>        
             <div class="col-md-6">    
                 <input type="file" class="form-input" name="statement_file" accept=".pdf" id="statement_file" aria-describedby="statement_file"  min="1" placeholder="Certificate (PDF Only)" >
@@ -364,21 +365,81 @@
 
         <div class="form-group d-flex mt-3">
             <div class="col-md-6">
-                <label class="reqFields">Name</label>
+                <label class="reqFields">Name, Forename</label>
             </div>        
             <div class="col-md-6">    
                 <input type="text" class="form-control" name="p_name" id="p_name" aria-describedby="p_name" value="{{old('p_name')}}" placeholder="Your Name" required='required'>
             </div>  
         </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+
         <div class="form-group d-flex mt-3">
             <div class="col-md-6">
-                <label class="reqFields">Designation</label>
+                <label class="reqFields">Signature</label>
             </div>        
             <div class="col-md-6">    
-                <input type="text" class="form-control" name="p_des" id="p_des" aria-describedby="p_des" value="{{old('p_des')}}" placeholder="Your Designation" required='required'>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#signModal">
+                    Signature
+                </button>
+                <img src="" id="sign-img" width="150px" height="100px" alt="signature image">
             </div>  
         </div>
+        <!-- Button trigger modal -->
+
+        
+        <!-- Modal -->
+        <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Signature</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        <canvas id="signature-pad" class="signature-pad" width=400 height=200></canvas>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="sign-clear" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" id="save-png" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" id="signature" name="signature" value="" required>
+
+        
+
+        <script>
+                var canvas = document.getElementById('signature-pad');
+            
+                var signaturePad = new SignaturePad(canvas, {
+                    backgroundColor: 'rgb(255, 255, 255)' 
+                });
+
+                document.getElementById('save-png').addEventListener('click', function () {
+                    if (signaturePad.isEmpty()) {
+                        return alert("Please provide a signature first.");
+                    }
+                    
+                    var data = signaturePad.toDataURL('image/png');
+                        console.log(data);
+                        $('#sign-img').attr('src',data);
+                        $('#signature').val(data);
+                        $('#signModal').modal('hide');
+                    });
+
+                    $(document).on('click','#sign-clear',function(){
+                        signaturePad.clear();
+                    });
+
+                    
+
+
+        </script>
 
         <div class="text-center mt-3 mb-3">
         <button type="submit" class="btn btn-primary btn-lg">Submit</button>
@@ -387,7 +448,7 @@
         <div class="p-3 mt-4 mb-4" style="border:2px solid red">
             <strong>Any modification of the information contained in this questionnaire shall be notified to SYSTRA at the latest thirty (30) days after the day on which the modification occurred.</strong> 
             <br><br>
-            <strong>Personal Data Information:</strong>  SYSTRA’s collection of personal data is limited to data that are proportionate and necessary to evaluate the integrity of its business partners. SYSTRA applies technical and organizational measures to protect your personal data. You have the right to access your personal data and to rectify data that are inaccurate. In the cases provided for by law (UE General Data Protection Regulation), you have also the right to erasure, the right to data portability, the right to object and the right to restriction of processing. To exercise your rights, please contact SYSTRA’s DPO: <a style="text-decorations:none;color:blue;" href="mailto:personaldata@systra.com">personaldata@systra.com</a> . You also have the right to file a complaint with the competent supervisory authority. 
+            <strong>Personal Data Information:</strong> SYSTRA’s collection of personal data is limited to data that are proportionate and necessary to evaluate the integrity of its business partners, and limited to the duration necessary to this purpose or provided by law. SYSTRA applies technical and organizational measures to protect personal data. The individuals concerned by this processing have the right to access their personal data and to rectify data that are inaccurate. In the cases provided for by law (UE General Data Protection Regulation), such individuals have also the right to erasure, the right to data portability, the right to object, the right to restriction of processing and the right to file a complaint with the competent supervisory authority. To exercise these rights, please contact SYSTRA’s DPO:  <a style="text-decorations:none;color:blue;" href="mailto:personaldata@systra.com">personaldata@systra.com</a>
         </div>
       
 </div>
@@ -413,7 +474,7 @@
                             recommendations regarding the relationship with Systra Group.</li>
                     </ul>
                 </p>
-                <p class="text-dark"><strong>“Public Officials” </strong> include the following:
+                <p class="text-dark"><strong>“Public Officials” </strong>  includes the persons exercising, or having exercised within the last year, one of the following functions:
                     <ul class="ml-4 pl-3">
                         <li>Officers and employees of any national, regional, local or other governmental entity or
                             legislative assembly, including elected officials;</li>

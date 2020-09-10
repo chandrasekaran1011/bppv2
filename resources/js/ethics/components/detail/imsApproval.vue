@@ -35,7 +35,7 @@
                     </v-col>
                 </v-row>
 
-                <v-row :justify="'center'" class=" px-4 py-2" no-gutters>
+                <v-row :justify="'center'" class=" px-4 py-2" no-gutters v-if="integrity==1">
                     <v-col cols="12" :md="6">
                         <div class="title1 text-left reqFields  mt-3" for="name"> Attach Lexis Document</div>
                     </v-col>
@@ -98,16 +98,16 @@
 
                 <v-row :justify="'center'" class="px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
-                        <div class="title1 text-left reqFields" for="name">Reason for Decision </div>
+                        <div class="title1 text-left reqFields" for="name">Reason of this Decision </div>
                     </v-col>
                     <v-col cols="12" :md="6">
-                        <v-textarea outlined label="Reason for Decision" name="reason" id="reason" :error-messages="reasonErrors" @input="$v.reason.$touch()" @blur="$v.reason.$touch()" v-model="reason"></v-textarea>
+                        <v-textarea outlined label="Reason of this Decision" name="reason" id="reason" :error-messages="reasonErrors" @input="$v.reason.$touch()" @blur="$v.reason.$touch()" v-model="reason"></v-textarea>
                     </v-col>
                 </v-row>
 
                 <v-row :justify="'center'" class="px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
-                        <div class="title1 text-left " for="name">Additional Remarks </div>
+                        <div class="title1 text-left " for="name">Additional Information </div>
                     </v-col>
                     <v-col cols="12" :md="6">
                         <v-textarea outlined label="Remarks" name="add" id="add" v-model="add"></v-textarea>
@@ -167,7 +167,7 @@ export default {
         condition: '',
         reason: '',
         add: '',
-        lexis_file: null,
+        lexis_file: [],
         flag:'',
         mitigation:'',
         approver:''
@@ -178,6 +178,16 @@ export default {
         sumform() {
 
             if (this.$store.state.loading == true) return;
+            
+
+            if(this.integrity==1 && this.lexis_file.length==0){
+                this.$store.commit('snackNotify', {
+                    type: 'error',
+                    msg: "Please Upload Lexis Document"
+                });
+                return;
+            }
+
             this.$store.state.loading = true;
 
             let formData = new FormData();

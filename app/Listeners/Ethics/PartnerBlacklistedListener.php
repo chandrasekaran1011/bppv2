@@ -2,11 +2,11 @@
 
 namespace App\Listeners\Ethics;
 
-use App\Events\Ethics\PartnerBlacklisted;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+
 use Illuminate\Support\Facades\Log;
-use App\Models\Audit;
+
+use App\Models\Ethics\Audit;
 
 class PartnerBlacklistedListener implements ShouldQueue
 {
@@ -26,7 +26,7 @@ class PartnerBlacklistedListener implements ShouldQueue
      * @param  PartnerBlacklisted  $event
      * @return void
      */
-    public function handle(PartnerBlacklisted $event)
+    public function handle($event)
     {
         $a=new Audit;
         $a->partner_id=$event->partner->id;

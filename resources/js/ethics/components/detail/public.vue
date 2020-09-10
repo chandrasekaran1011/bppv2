@@ -1,7 +1,7 @@
 <template>
 <div>
 
-    <table class="tble table-bordered mt-2" v-if="data.type.value!=8" style="width:100%">
+    <table class="tble table-bordered mt-2"  style="width:100%">
         <tbody>
             <tr>
                 <td colspan="4" style="text-align:center;color: white;background-color: rgb(222, 51, 20);">
@@ -144,17 +144,137 @@
 
 
             <tr>
-                <td colspan="4" ><strong>Identified Red Flags</strong> <br><span style="white-space:pre-wrap">{{data.flag}}</span> </td>
+                <td colspan="4" ><strong>Identified Red Flags</strong> 
+                <p style="white-space:pre-wrap">{{data.flag}}</p> </td>
                 
             </tr>
             <tr>
-                <td colspan="4" ><strong>Proposed Mitigation Plan</strong> <br><span style="white-space:pre-wrap">{{data.mitigation}}</span> </td>
+                <td colspan="4" ><strong>Proposed Mitigation Plan</strong> 
+                <p style="white-space:pre-wrap">{{data.mitigation}}</p> </td>
                 
             </tr>
 
             <tr>
                 <td colspan="2">Approved By: &nbsp; {{data.pm_by}} </td>
                 <td colspan="2" style="vertical-align: middle;">Date: &nbsp;{{data.pm_at}}</td>
+            </tr>
+
+            <tr v-if="data.status>3">
+                 <td colspan="4" class="text-center" ><strong>COMPLIANCE OFFICER/MANAGER APPROVAL</strong></td>
+            </tr>
+
+            <tr v-if="data.comp_by!=null">
+                <td colspan="2" >Name of the Compliance Officer/Manager</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.comp_by}}</td>
+            </tr>
+
+            <tr v-if="data.comp_by!=null">
+                <td colspan="2" >Date</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.comp_at}}</td>
+            </tr>
+
+            <tr v-if="data.status>3">
+                <td colspan="2" >Enhanced integrity review performed? </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.integrity}}<span class="ml-3" v-if="data.files.lexis_file!=''"><a :href="data.files.lexis_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
+            </tr>
+
+            <tr v-if="data.status>3">
+                <td colspan="4" ><strong>Red flag identified from the enhanced integrity review and mitigating actions proposed:
+                Amended action plan, if any</strong> <br><span style="white-space:pre-wrap">{{data.flag_action}}</span> </td>
+            </tr>
+
+            <tr v-if="data.status>3">
+                <td colspan="2" >Decision</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.ims_decision.yn}}</td>
+            </tr>
+
+
+            <tr v-if="data.status>3">
+                <td colspan="2" >Reason for this Decision </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.ims_reason}}</td>
+            </tr>
+
+            <tr v-if="data.status>3 && data.ims_condition!=null">
+                <td colspan="2" >Condition </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.ims_condition}}</td>
+            </tr>
+
+            
+            <tr v-if="data.remarks!=null">
+                <td colspan="2"  >Additional information </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.ims_add}}</td>
+            </tr>
+
+            <!-- Group Compliance Manager -->
+
+            <tr v-if="Object.keys(data.l1).length!=0">
+                <td colspan="4" class="text-center"><strong>GROUP COMPLIANCE MANAGER APPROVAL</strong></td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l1).length!=0">
+                <td colspan="2">Name of the Group Compliance Manager</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_by}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l1).length!=0">
+                <td colspan="2">Date</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_at}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l1).length!=0">
+                <td colspan="2">Decision</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_decision.yn}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l1).length!=0">
+                <td colspan="2">Reason for this Decision </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_reason}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l1).length!=0 && data.l1.l1_condition!=null">
+                <td colspan="2">Condition </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_condition}}</td>
+            </tr>
+
+            <tr v-if="data.remarks!=null">
+                <td colspan="2">Additional information </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_add}}</td>
+            </tr>
+
+            <!-- Ethics Committe -->
+
+            <tr v-if="Object.keys(data.l2).length!=0">
+                <td colspan="4" class="text-center"><strong>ETHICS COMMITTEE APPROVAL</strong></td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l2).length!=0">
+                <td colspan="2">Name of the Compliance Manager</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_by}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l2).length!=0">
+                <td colspan="2">Date</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_at}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l2).length!=0">
+                <td colspan="2">Decision</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_decision.yn}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l2).length!=0">
+                <td colspan="2">Reason for this Decision </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_reason}}</td>
+            </tr>
+
+            <tr v-if="Object.keys(data.l2).length!=0 && data.l2.l2_condition!=null">
+                <td colspan="2">Condition </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_condition}}</td>
+            </tr>
+
+            <tr v-if="data.remarks!=null">
+                <td colspan="2">Additional information </td>
+                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_add}}</td>
             </tr>
 
         </tbody>
@@ -165,7 +285,7 @@
 
 <style>
 .spacing {
-    white-space: pre;
+    white-space: pre-wrap;
 }
 </style>
 

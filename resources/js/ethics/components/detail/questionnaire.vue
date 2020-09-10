@@ -79,13 +79,13 @@
 
             <tr>
                 <td colspan="2" style="background-color:#dee2e6;">Does your organization have external certifications regarding ethics? (e.g. ISO 37001)</td>
-                <td colspan="2" style="vertical-align: middle;">{{data.cert.yn}}<span class="ml-3" v-if="data.files.cert_file!==''"><a :href="data.files.cert_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
+                <td colspan="2" style="vertical-align: middle;">{{data.cert.yn}}<span class="ml-3" v-if="data.files.cert_file!=''"><a :href="data.files.cert_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
 
             </tr>
 
             <tr>
                 <td colspan="2" style="background-color:#dee2e6;">Last 3 years Annual Statement</td>
-                <td colspan="2" style="vertical-align: middle;"> <span class="ml-3" v-if="data.files.statement_file!==''"><a :href="data.files.statement_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
+                <td colspan="2" style="vertical-align: middle;"> <span class="ml-3" v-if="data.files.statement_file!=''"><a :href="data.files.statement_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
             </tr>
 
             <tr>
@@ -153,7 +153,7 @@
             </tr>
 
             <tr>
-                <td colspan="2" style=""> Submitted by: &nbsp;{{data.p_name}} ({{data.p_des}})</td>
+                <td colspan="2" style=""> Submitted by: &nbsp;{{data.p_name}}</td>
                 <td colspan="2" style="vertical-align: middle;">Date : {{data.submitted_on}}  </td>
             </tr>
            

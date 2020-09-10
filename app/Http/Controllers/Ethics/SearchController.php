@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Ethics;
 
+use App\Events\Ethics\GoogleSearchTrigger;
 use App\Http\Controllers\Controller;
 use App\Models\Ethics\Partner;
 use Illuminate\Http\Request;
@@ -60,5 +61,13 @@ class SearchController extends Controller
         }
         
         return response()->json($log,200);
+    }
+
+    public function googleSearch(Request $request){
+
+        $p = Partner::where('uuid', $request->id)->first();
+        event(new GoogleSearchTrigger($p));
+        return response()->json(['message'=>'Search Results will be Updated soon'], 200);
+
     }
 }

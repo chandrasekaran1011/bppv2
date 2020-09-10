@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes(['register' => false,'login'=>false]);
+Auth::routes(['register' => false]);
 
 // Route::get('/login',function(){
 //     return redirect('/login/azure');

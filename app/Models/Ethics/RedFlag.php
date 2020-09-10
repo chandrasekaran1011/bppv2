@@ -3,18 +3,23 @@
 namespace App\Models\Ethics;
 
 use Illuminate\Database\Eloquent\Model;
+use Cache;
 
 class RedFlag extends Model
 {
     protected $fillable=['flag'];
 
     public static function allFlagsArray(){
-        $flags=RedFlag::all();
-        $data=[];
-        foreach($flags as $f){
-            array_push($data,$f->flag);
-        }
+        $flags=Cache::remember('allFlags', 86400, function () {
+            $flgs= RedFlag::all();
+            $data=[];
+            foreach($flgs as $f){
+                array_push($data,$f->flag);
+            }
+            return $data;
 
-        return $data;
+        });
+        
+        return $flags;
     }
 }

@@ -29,6 +29,7 @@ class IndividualFormRequest extends FormRequest
     {
         return [
             'name'=>'required|max:50|string',
+            
             'address'=>'required|string',
             'cop_num'=>'required|string|max:50',
             'cop_juri'=>'required|string|max:50',
@@ -50,9 +51,10 @@ class IndividualFormRequest extends FormRequest
             's_detail'=>'required',
             'benefit_detail'=>'required',
             'p_name'=>'required|string',
-            'p_des'=>'required|string',
+            
 
             'statement_file'=>'sometimes|file|mimes:pdf|max:20000',
+            'signature'=>'required'
 
             
         ];
@@ -60,6 +62,7 @@ class IndividualFormRequest extends FormRequest
 
     public function attributes(){
         return [
+            
             'cop_num'=>'Tax Number and/or Business Identification Number',
             'cop_juri'=>'Jurisdiction of incorporation',
             'doi'=>'Date of Birth',
@@ -80,7 +83,7 @@ class IndividualFormRequest extends FormRequest
             'benefit_detail'=> ' Personal benefit',
 
             'p_name'=>'Person Name',
-            'p_des'=>'Designation',
+            
 
             'statement_file'=>'Financial statement file'
 

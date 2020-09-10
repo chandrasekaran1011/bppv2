@@ -34,10 +34,10 @@ class PartnerPolicy
             return true;
         }
         elseif($user->can('View Entity Records')){
-            return in_array($partner->project_id,$user->getprojectsArray());
+            return in_array($partner->project_id,$user->getProjectsIDs());
         }
         elseif($user->can('View Own Records')){
-            if($user->id==$partner->cuser || $user->id==$partner->ethics()->ims_assign){
+            if($user->id==$partner->cuser || $user->id==$partner->ethics->ims_assign || $user->id==$partner->ethics->l1_assign || $user->id==$partner->ethics->l2_assign){
                 return true;
             }
             
@@ -103,7 +103,7 @@ class PartnerPolicy
 
     public function imsApprove(User $user, Partner $partner)
     {
-        if($user->id==$partner->ims_assign && $partner->status==3 ){
+        if($user->id==$partner->ethics->ims_assign && $partner->status==3 ){
 
             return true;
 
@@ -120,7 +120,7 @@ class PartnerPolicy
 
     public function l1Approve(User $user, Partner $partner)
     {
-        if($user->id==$partner->l1_assign && $partner->status==8 ){
+        if($user->id==$partner->ethics->l1_assign && $partner->status==8 ){
 
             return true;
 
@@ -137,7 +137,7 @@ class PartnerPolicy
 
     public function l2Approve(User $user, Partner $partner)
     {
-        if($user->id==$partner->l2_assign && $partner->status==9 ){
+        if($user->id==$partner->ethics->l2_assign && $partner->status==9 ){
 
             return true;
 
@@ -146,6 +146,34 @@ class PartnerPolicy
             return true;
         }
         
+        else{
+            return false;
+        }
+
+    }
+
+    public function financeReview(User $user, Partner $partner)
+    {
+        if($user->id==$partner->ethics->finance_assigned && $partner->status==2 ){
+
+            return true;
+
+        }
+        elseif($user->isAdmin() && $partner->status==2 ){
+            return true;
+        }
+        
+        else{
+            return false;
+        }
+
+    }
+
+    public function renewPartner(User $user, Partner $partner)
+    {
+        if($user->can('Renew Partner')){
+            return true;
+        }
         else{
             return false;
         }

@@ -31,7 +31,7 @@ class ComplianceDecisionListener
         $a=new Audit;
             $a->partner_id=$event->partner->id;
             $a->user_id=$event->partner->ethics->ims_by;
-            $a->action="Partner : ".$event->partner->ethics->getdecision();
+            $a->action="Partner : ".$event->partner->ethics->decisionVal($event->partner->ethics->decision);
         $a->save();
         Log::info('Compliance Decision Made: '.$event->partner->name);
 

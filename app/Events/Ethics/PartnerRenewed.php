@@ -2,6 +2,7 @@
 
 namespace App\Events\Ethics;
 
+use App\Models\Ethics\Partner;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -19,9 +20,11 @@ class PartnerRenewed
      *
      * @return void
      */
-    public function __construct()
+    public $partner;
+    public function __construct(Partner $partner)
     {
-        //
+        
+        $this->partner=$partner;
     }
 
     /**

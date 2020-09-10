@@ -30,7 +30,7 @@
 
     <v-snackbar v-model="$store.state.snackbar" :color="$store.state.snackbarType" bottom :timeout="8000">
         {{$store.state.snackbarText}}
-        <v-btn color="white" text @click="snackbar = false">
+        <v-btn color="white" text @click="$store.state.snackbar = false">
             Close
         </v-btn>
     </v-snackbar>

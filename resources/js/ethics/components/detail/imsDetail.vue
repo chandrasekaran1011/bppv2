@@ -31,12 +31,12 @@
                 </tr>
 
                 <tr>
-                    <td colspan="2" class="spacing">Reason for Decision</td>
+                    <td colspan="2" class="spacing">Reason of this Decision</td>
                     <td colspan="2" style="vertical-align: middle;" class="spacing">{{data.ims_reason}}</td>
                 </tr>
 
                 <tr>
-                    <td colspan="2" class="spacing">Addition Info</td>
+                    <td colspan="2" class="spacing">Additional Information</td>
                     <td colspan="2" style="vertical-align: middle;" class="spacing">{{data.ims_add}}</td>
                 </tr>
 
@@ -141,7 +141,7 @@
 
 <style>
 .spacing {
-    white-space: pre;
+    white-space: pre-wrap;
 }
 </style>
 

@@ -5,7 +5,7 @@
         <v-col cols="12" :sm="12">
             <v-row :justify="'space-around'">
                 <v-col :md="4" cols="12">
-                    <v-card @click="dialog=true;" style="cursor:pointer;background-color: #a4508b;background-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);" class="mx-auto" max-width="300px">
+                    <v-card @click="nav(7);" style="cursor:pointer;background-color: #a4508b;background-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-chart-line</v-icon>
                         <v-card-text class="title white--text">
                             Dashboard
@@ -42,7 +42,7 @@
 
                 <v-col :md="4" cols="12">
 
-                    <v-card @click="nav(3)" style="cursor:pointer;background-color: #7f53ac;background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);color:white" class="mx-auto" max-width="300px">
+                    <v-card @click="nav(5)" style="cursor:pointer;background-color: #7f53ac;background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);color:white" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-check</v-icon>
                         <v-card-text class="title white--text">
                             Pending Approvals
@@ -52,7 +52,7 @@
                 </v-col>
 
                 <v-col :md="4" cols="12">
-                    <v-card @click="nav(2);" style="cursor:pointer;background-color: #bf3a30;background-image: linear-gradient(315deg, #bf3a30 0%, #864ba2 74%);" class="mx-auto" max-width="300px">
+                    <v-card @click="nav(6);" style="cursor:pointer;background-color: #bf3a30;background-image: linear-gradient(315deg, #bf3a30 0%, #864ba2 74%);" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-file-alt</v-icon>
                         <v-card-text class="title white--text">
                             Reports
@@ -133,6 +133,22 @@ export default {
                     name: 'SearchPartner'
                 })
 
+            }
+            else if (val == 5) {
+                this.$router.push({
+                    name: 'Pending'
+                })
+
+            }
+            else if(val==6){
+                this.$router.push({
+                    name: 'ReportIndex'
+                })
+            }
+            else if(val==7){
+                this.$router.push({
+                    name: 'BPDashboard'
+                })
             }
 
         }

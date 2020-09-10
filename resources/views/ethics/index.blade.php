@@ -147,6 +147,23 @@
                     'view'=>route('ethics.view'),
                     'entityData'=>route('ethics.entityData'),
                     'searchResult'=>route('ethics.searchResult'),
+                    'questionnaireNotSubmitted'=>route('ethics.questionnaireNotSubmitted'),
+                    'deletePartner'=>route('ethics.deletePartner'),
+                    'blacklistPartner'=>route('ethics.blacklistPartner'),
+                    'whitelistPartner'=>route('ethics.whitelistPartner'),
+                    'googleSearch'=>route('ethics.googleSearch'),
+                    'financeReview'=>route('ethics.financeReview'),
+                    'renew'=>route('ethics.renew'),
+                    'renewApprove'=>route('ethics.renewApprove'),
+                    'pendingApproval'=>route('ethics.pendingApproval'),
+                    'monthlyReport'=>route('ethics.monthlyReport'),
+                    'masterReport'=>route('ethics.masterReport'),
+                    'genrateReport'=>route('ethics.genrateReport'),
+                    'getDashboard'=>route('ethics.getDashboard'),
+                    'arrangementStore'=>route('ethics.arrangementStore'),
+                    'arrangementDelete'=>route('ethics.arrangementDelete'),
+                    
+                    
 
                 ], true) !!};
             
