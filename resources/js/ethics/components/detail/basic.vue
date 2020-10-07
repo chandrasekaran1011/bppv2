@@ -21,7 +21,7 @@
 
              <tr  v-if="data.status>1">
                 <td colspan="2" style="background-color:#dee2e6">Incorporation Number</td>
-                <td colspan="2">{{data.cop_num}} </td>
+                <td colspan="2">{{data.cop_num}} <span class="ml-3" v-if="data.files.incorp_file!==''"><a :href="data.files.incorp_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span> </td>
             </tr>
 
             <tr  v-if="data.status>1">
@@ -102,7 +102,7 @@
 
             <tr  v-if="data.status>1">
                 <td colspan="2" style="background-color:#dee2e6">Tax Number and/or Business Identification Number</td>
-                <td colspan="2">{{data.cop_num}} </td>
+                <td colspan="2">{{data.cop_num}} <span class="ml-3" v-if="data.files.incorp_file!==''"><a :href="data.files.incorp_file" target="_blank" style="text-decoration:none"><v-icon>fas fa-paperclip</v-icon></a></span></td>
             </tr>
 
             <tr  v-if="data.status>1">

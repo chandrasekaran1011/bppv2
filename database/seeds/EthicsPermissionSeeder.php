@@ -20,6 +20,7 @@ class EthicsPermissionSeeder extends Seeder
         Permission::create(['name' => 'Whitelist Partner','perm_group'=>'Functions']);
         Permission::create(['name' => 'Renew Partner','perm_group'=>'Functions']);
         Permission::create(['name' => 'Delete Partner','perm_group'=>'Functions']);
+        Permission::create(['name' => 'Upload Files','perm_group'=>'Functions']);
 
         Permission::create(['name' => 'Create Arrangements','perm_group'=>'Functions']);
         Permission::create(['name' => 'Generate Reports','perm_group'=>'Functions']);

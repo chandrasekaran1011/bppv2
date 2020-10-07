@@ -1,40 +1,49 @@
-@component('mail::message')
-# Business Partner Registration Complete
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail</title>
+</head>
+<body>
+    <div style="max-width: 600px;margin:auto;">
 
-<p>
-    Due diligence process has been carried out for the business partner {{$p->name}} for the project {{$p->ethics->contract}}
- 
+        <h3>Business Partner Registration Complete</h3>
+        <p>
+            Due diligence process has been carried out for the business partner {{$p->name}} for the project
+            {{$p->ethics->contract}}. <br>
+        
+            The following are the outcome of the process
+        
+            <ul>
+                <li>The Business partner registration status is <strong>{{$p->ethics->decisionVal($p->ethics->decision)}}</strong> </li>
+                <li><strong>Reason of this decision :</strong>  
+                    <p style="padding-left:20px">{{$p->ethics->reason}}</p>
+                </li>
+                
+                @if ($p->ethics->decision==2)
+                    <li><strong>Conditions for Approval:</strong> 
+                        <p style="padding-left:20px">{{$p->ethics->condition}}</p> 
+                    </li>
+                @endif
+          
+                <li><strong>Redflags Identified :</strong>  
+                    <p style="padding-left:20px">{{$p->ethics->flag}}</p>
+                </li>
+                <li><strong>Mitigation Action :</strong> 
+                    <p style="padding-left:20px">{{$p->ethics->mitigation}}</p>
+                </li>
+            </ul>
+        
+        
+            Business partner form and Business partner questionnaire are attached as reference.
+        
+        
+        </p>
+        Thanks,<br>
+        E&C Team
+        
+        </div>
+</body>
+</html>
 
-Compliance forms including KYP completed and are acceptable. The enhanced integrity and internet search have been carried out against the business partner.
-
-Following are the Red Flags Identified:
-    {{$p->ethics->flag}}
-
- 
-
-Hence compliance manager approved the business partner for two years (2 years) with the following condition:
-
-Conditions for Approval:
-
- 
-
-List down the approval conditions.
-
- 
-
-Business partner form, Business partner questionnaire, screenshot of internet search and lexis integrity search report are attached as reference.
-
- 
-</p>
-
-
-
-
-
-@component('mail::button', ['url' => ''])
-Button Text
-@endcomponent
-
-Thanks,<br>
-{{ config('app.name') }}
-@endcomponent

@@ -9,10 +9,13 @@
 
     <!-- Fonts -->
 
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <meta name="csrf-token" id="csrf" content="{{ csrf_token() }}" />
     
 <style>
+        html, body {
+        font-family: 'Lato', sans-serif;
+    }
     .lds-ellipsis {
         display: inline-block;
         position: relative;
@@ -162,7 +165,10 @@
                     'getDashboard'=>route('ethics.getDashboard'),
                     'arrangementStore'=>route('ethics.arrangementStore'),
                     'arrangementDelete'=>route('ethics.arrangementDelete'),
-                    
+                    'viewFiles'=>route('ethics.viewFiles'),
+                    'uploadFile'=>route('ethics.uploadFile'),
+                    'getEdit'=>route('ethics.getEdit'),
+                    'updatePartner'=>route('ethics.updatePartner'),
                     
 
                 ], true) !!};

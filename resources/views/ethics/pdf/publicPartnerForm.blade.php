@@ -97,7 +97,7 @@
             Business Partner name: {{$e->name}}
         </div>
         <div class="mt-3">
-            Position: {{$e->type->name}}
+            Position: {{$e->getType()}}
         </div>
 
     </div>

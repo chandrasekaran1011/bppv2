@@ -27,8 +27,9 @@ class ReportController extends Controller
         //$form=$request->input('form');
 
         $e = Partner::where('uuid',$id)->with('ethics')->first();
-       
+        
         if($form==1){
+
             $name='questionnaire.pdf';
             if($e->type_id!=8){
                 $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('ethics.pdf.questionnaire',[
@@ -43,6 +44,8 @@ class ReportController extends Controller
                 ]);
             }
 
+            Log::info('ques generated');
+
         }
         elseif($form==2){
             $name='BP Form.pdf';
@@ -52,6 +55,7 @@ class ReportController extends Controller
             ]);
         }
         //$time=(microtime(true)-LARAVEL_START);
+        return $pdf->stream();
         
         if(isset($pdf)){
             return $pdf->download($name);
@@ -172,7 +176,7 @@ class ReportController extends Controller
                     'date'=>$p->getTime($p->created_at),  
                     'Business partner name'=>$p->name,                
                     'contract'=>$p->ethics->contract,
-                    'type' => $p->type->name,
+                    'type' => $p->getType(),
                     'org_type'=>$p->org_type,
                     'q_submitted'=>$p->yn($p->questionnaireSubmitted()),
                     'q_date'=>$p->getTime($p->question_submitted_on),

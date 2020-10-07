@@ -44,7 +44,7 @@
         </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app :color="'#cc2228'" dark>
+    <v-app-bar app :color="'#003e4b '" dark>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title>Portal Admin</v-toolbar-title>
         <v-spacer></v-spacer>

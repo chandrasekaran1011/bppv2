@@ -16,7 +16,7 @@
             <div class="title1 text-left" for="name">Position</div>
         </v-col>
         <v-col cols="12" :md="6">
-            <div class="red--text font-weight-bold">{{data.partnerType}}</div>
+            <div class="red--text font-weight-bold">{{data.partnerType.name}}</div>
         </v-col>
     </v-row>
 

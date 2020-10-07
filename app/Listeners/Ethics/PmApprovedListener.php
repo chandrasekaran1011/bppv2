@@ -48,8 +48,8 @@ class PmApprovedListener implements ShouldQueue
         } 
 
         Log::info('PM/Bid Manager Approved: '.$event->partner->name);
-
-        if($event->partner->ethics->finance_assigned!=''){
+        Log::info('Financial approver is'.$event->partner->ethics->finance_assigned);
+        if($event->partner->ethics->finance_assigned!=null){
             $fin=User::where('id',$event->partner->ethics->finance_assigned)->first();
             Notification::route('mail',$fin->email)->notify(new  FinanceNotification($event->partner));
         }

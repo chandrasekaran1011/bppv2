@@ -55,7 +55,7 @@ class EthicsController extends Controller
     {
 
         $p = [];
-        $p = Cache::remember('partners', 864000, function () {
+        $p = Cache::remember('typeAll', 864000, function () {
             $partners = PartnerType::all();
             $list = [];
             foreach ($partners as $part) {
@@ -70,7 +70,7 @@ class EthicsController extends Controller
     public function getFormData(Request $r)
     {
         if (isset($r->id)) {
-            $partner = PartnerType::where('id', $r->id)->select('name')->first();
+            $partner = PartnerType::where('id', $r->id)->select('name', 'id')->first();
         } else {
             $partner = null;
         }
@@ -83,6 +83,17 @@ class EthicsController extends Controller
 
         $imsUsers = User::permission('Compliance Approver')->select(['id', 'name'])->get();
         $fin_Users = User::permission('Finance Approver')->select(['id', 'name'])->get();
+
+        $type = Cache::remember('typeIndividualAll', 864000, function () {
+            $partners = PartnerType::where('id', '!=', 8)->get();
+            $list = [];
+            foreach ($partners as $part) {
+                $list[] = ['id' => $part->id, 'name' => $part->name];
+            }
+            return $list;
+        });
+
+
 
         $userData = [];
         foreach ($imsUsers as $u) {
@@ -100,7 +111,7 @@ class EthicsController extends Controller
             ];
         }
 
-        return response()->json(['flags' => $flags, 'mitigations' => $mitigations, 'partner' => $partner, 'entity' => $entity, 'country' => $country, 'approver' => $userData, 'finance_approvers' => $financeUsers], 200);
+        return response()->json(['typeList' => $type, 'flags' => $flags, 'mitigations' => $mitigations, 'partner' => $partner, 'entity' => $entity, 'country' => $country, 'approver' => $userData, 'finance_approvers' => $financeUsers], 200);
     }
 
     public function storePublicForm(Request $request)
@@ -215,6 +226,10 @@ class EthicsController extends Controller
         $p->status = 1;
         $p->cuser = Auth::id();
 
+        if ($p->type_id == 8) {
+            $p->position = $request->type;
+        }
+
         $check = $p->save();
 
 
@@ -242,6 +257,7 @@ class EthicsController extends Controller
         if (!$request->hasValidSignature()) {
             return view('ethics.message')->with('success', false)->with('msg', "Form Expired");
         } else {
+            
             $e = Partner::where('uuid', $id)->where('status', 1)->first();
 
             if ($e) {
@@ -272,6 +288,15 @@ class EthicsController extends Controller
             $p->director = $request->director;
             $p->tp = $request->tp;
             $p->org_type = $request->org_type;
+
+            $incorp = $request->hasFile('incorp_file');
+            if ($incorp) {
+                $extension = $request->file('incorp_file')->extension();
+                $incorp_file = $p->uuid . '/incorp/' . md5(date('Y-m-d H:i:s')) . '.' . $extension;
+                Storage::disk('myDisk')->put($incorp_file, File::get($request->file('incorp_file')));
+                $p->incorp_file = $incorp_file;
+            }
+
 
             $p->status = 2;
 
@@ -345,18 +370,17 @@ class EthicsController extends Controller
             if ($check) {
                 event(new PartnerQuestionnaireSubmitted($p));
                 $file4 = $request->signature;
-                if($file4) {
-                    $file=$request->signature;
+                if ($file4) {
+                    $file = $request->signature;
                     $file = str_replace('data:image/png;base64,', '', $file);
                     $file = str_replace(' ', '+', $file);
-                    $fileData=base64_decode($file);
-        
-                    $filename=$p->uuid.'/signature.png';
-                    $public='signature/'.$p->uuid.'.png';
-                   
+                    $fileData = base64_decode($file);
+
+                    $filename = $p->uuid . '/signature.png';
+                    $public = 'signature/' . $p->uuid . '.png';
+
                     Storage::disk('myDisk')->put($filename, $fileData);
                     Storage::disk('public')->put($public, $fileData);
-                    
                 }
                 return view('ethics.message')->with('success', true)->with('msg', "Form Submitted Successfully");
             } else {
@@ -370,7 +394,7 @@ class EthicsController extends Controller
     public function individualPartnerstore($id, IndividualFormRequest $request)
     {
 
-       
+
         $p = Partner::where('uuid', $id)->where('status', 1)->first();
         if ($p) {
             $p->name = $request->name;
@@ -385,6 +409,14 @@ class EthicsController extends Controller
             $p->tp = $request->tp;
             $p->license = $request->license;
             // $p->org_type=$request->org_type;
+
+            $incorp = $request->hasFile('incorp_file');
+            if ($incorp) {
+                $extension = $request->file('incorp_file')->extension();
+                $incorp_file = $p->uuid . '/incorp/' . md5(date('Y-m-d H:i:s')) . '.' . $extension;
+                Storage::disk('myDisk')->put($incorp_file, File::get($request->file('incorp_file')));
+                $p->incorp_file = $incorp_file;
+            }
 
             $check = $p->save();
 
@@ -424,19 +456,18 @@ class EthicsController extends Controller
 
                 if ($check) {
                     $file4 = $request->signature;
-                    if($file4) {
-                        $file=$request->signature;
+                    if ($file4) {
+                        $file = $request->signature;
                         $file = str_replace('data:image/png;base64,', '', $file);
                         $file = str_replace(' ', '+', $file);
-                        $fileData=base64_decode($file);
-            
-                        $filename=$p->uuid.'/signature.png';
-                       
-                        $public='signature/'.$p->uuid.'.png';
-                   
+                        $fileData = base64_decode($file);
+
+                        $filename = $p->uuid . '/signature.png';
+
+                        $public = 'signature/' . $p->uuid . '.png';
+
                         Storage::disk('myDisk')->put($filename, $fileData);
                         Storage::disk('public')->put($public, $fileData);
-                        
                     }
                     event(new PartnerQuestionnaireSubmitted($p));
                     return view('ethics.message')->with('success', true)->with('msg', "Form Submitted Successfully");
@@ -461,19 +492,19 @@ class EthicsController extends Controller
             $partner = Partner::orderBy('created_at', 'desc')->with('type')->when($mode == 2, function ($query) {
                 return $query->where('status', 7);
             })->when($mode == 1, function ($query) {
-                return $query->where('status', 6)->where('is_renew',0)->where('can_renew',1);
+                return $query->where('status', 6)->where('is_renew', 0)->where('can_renew', 1);
             })->take(300)->get();
         } else if ($user->can('View Entity Records')) {
             $partner = Partner::whereIn('project_id', $user->getProjectsIDs())->with('type')->when($mode == 2, function ($query) {
                 return $query->where('status', 7);
             })->when($mode == 1, function ($query) {
-                return $query->where('status', 6)->where('is_renew',0)->where('can_renew',1);
+                return $query->where('status', 6)->where('is_renew', 0)->where('can_renew', 1);
             })->orderBy('created_at', 'desc')->take(300)->get();
         } else if ($user->can('View Own Records')) {
             $partner = Partner::where('cuser', $user->id)->orderBy('created_at', 'desc')->with('type')->when($mode == 2, function ($query) {
                 return $query->where('status', 7);
             })->when($mode == 1, function ($query) {
-                return $query->where('status', 6)->where('is_renew',0)->where('can_renew',1);
+                return $query->where('status', 6)->where('is_renew', 0)->where('can_renew', 1);
             })->take(300)->get();
         } else {
             return response()->json(['message' => 'Error in Permissions'], 500);
@@ -488,7 +519,8 @@ class EthicsController extends Controller
                     'id' => $p->uuid,
                     'name' => $p->name,
                     'status' => $p->getStatus(),
-                    'type' => $p->type->name,
+                    'type' => $p->getType(),
+                    // 
                 ];
                 $x++;
             }
@@ -522,7 +554,7 @@ class EthicsController extends Controller
             $lexis_file = !is_null($e->ethics->lexis_file) ? route('ethics.file', ['file' => $e->ethics->lexis_file, 'name' => 'Partner Lexis File']) : '';
             $screenshot_file = !is_null($e->ethics->screenshot_file) ? route('ethics.file', ['file' => $e->ethics->screenshot_file, 'name' => 'Partner screenshot']) : '';
             $need_file = !is_null($e->ethics->need_file) ? route('ethics.file', ['file' => $e->ethics->need_file, 'name' => 'Partner Need Validation']) : '';
-
+            $incorp_file = !is_null($e->incorp_file) ? route('ethics.file', ['file' => $e->incorp_file, 'name' => 'Partner Incorporation']) : '';
 
             $files = [
                 'policy_file' => $policy_file,
@@ -530,7 +562,8 @@ class EthicsController extends Controller
                 'cert_file' => $cert_file,
                 'lexis_file' => $lexis_file,
                 'screenshot_file' => $screenshot_file,
-                'need_file' => $need_file
+                'need_file' => $need_file,
+                'incorp_file' => $incorp_file
             ];
 
             //Renewal Process
@@ -554,7 +587,7 @@ class EthicsController extends Controller
                     'search' => $e->search($e->ethics->renew_search),
                     'breach' => $e->yn($e->ethics->renew_breach),
                     'flag' => $e->ethics->renew_flag,
-                    'mitigation' => $e->ethics->renew_flag,
+                    'mitigation' => $e->ethics->mitigation,
                     'screenshot_file' => !is_null($e->ethics->renew_screenshot_file) ? route('ethics.file', ['file' => $e->ethics->renew_screenshot_file, 'name' => 'Partner screenshot']) : '',
                     'lexis_file' => !is_null($e->ethics->renew_lexis_file) ? route('ethics.file', ['file' => $e->ethics->renew_lexis_file, 'name' => 'Partner Lexis Document']) : '',
                     'integrity' => $e->ethics->renew_integrity,
@@ -611,28 +644,35 @@ class EthicsController extends Controller
                 'blacklist_reason' => $e->blacklist_reason,
                 'blacklist_till' => $e->getTime($e->blacklist_till),
             ] : [];
-            $downloadQues=null;   
-            $exists = Storage::disk('myDisk')->exists($e->uuid.'/questionnaire.pdf');
-            if($exists){
-                $downloadQues=route('ethics.file', ['file' => $e->uuid.'/questionnaire.pdf', 'name' => 'Questionnaire']);
+            $downloadQues = null;
+            $exists = Storage::disk('myDisk')->exists($e->uuid . '/questionnaire.pdf');
+            if ($exists) {
+                $downloadQues = route('ethics.file', ['file' => $e->uuid . '/questionnaire.pdf', 'name' => 'Questionnaire']);
                 //$downloadQues=route('ethics.pdfDownload',['id'=>$e->uuid,'form'=>1]);
             }
-            $downloadForm=null;
-            $exists = Storage::disk('myDisk')->exists($e->uuid.'/BPForm.pdf');
-            if($exists){
-                $downloadForm=route('ethics.file', ['file' => $e->uuid.'/BPForm.pdf', 'name' => 'BPForm']);
+            $downloadForm = null;
+            $exists = Storage::disk('myDisk')->exists($e->uuid . '/BPForm.pdf');
+            if ($exists) {
+                $downloadForm = route('ethics.file', ['file' => $e->uuid . '/BPForm.pdf', 'name' => 'BPForm']);
+                //$downloadForm=route('ethics.pdfDownload',['id'=>$e->uuid,'form'=>2]);
+            }
+            $downloadRenew = null;
+            $exists = Storage::disk('myDisk')->exists($e->uuid . '/renewal.pdf');
+            if ($exists) {
+                $downloadRenew = route('ethics.file', ['file' => $e->uuid . '/renewal.pdf', 'name' => 'Renewal']);
                 //$downloadForm=route('ethics.pdfDownload',['id'=>$e->uuid,'form'=>2]);
             }
 
             $data = [
-                'downloadQues'=>$downloadQues,
-                'downloadForm'=>$downloadForm,
+                'downloadQues' => $downloadQues,
+                'downloadForm' => $downloadForm,
+                'downloadRenew'=>$downloadRenew,
                 'files' => $files,
                 'unique' => $e->uuid,
                 'org_type' => $e->org_type,
                 'q_submission' => $e->q_submission,
                 'name' => $e->name,
-                'type' => ['value' => $e->type_id, 'name' => $e->type->name],
+                'type' => ['value' => $e->type_id, 'name' => $e->getType()],
                 'address' => $e->address,
                 'status' => $e->status,
                 'doi' => $doi,
@@ -756,7 +796,7 @@ class EthicsController extends Controller
 
                 'is_renew' => $renew,
 
-                'arrangements'=>$e->arrangements->count(),
+                'arrangements' => $e->arrangements->count(),
 
                 //Approver conditions
                 'pmApprover' => $user->can('pmApprove', $e),
@@ -764,15 +804,15 @@ class EthicsController extends Controller
                 'l1Approver' => $user->can('l1Approve', $e) && $e->status == 8,
                 'l2Approver' => $user->can('l2Approve', $e) && $e->status == 9,
                 'financeReviewer' => $user->can('financeReview', $e),
-                'renew_partner' => ($user->can('Renew Partner')&& $e->status > 3 && $e->status < 7  && $e->status!=5 && now()->diffInDays($e->due_on,false) < 10 && now()->diffInDays($e->due_on,false) > -(config('ethics.renewal_expiry',90)) && !$e->is_renew),
+                'renew_partner' => ($user->can('Renew Partner') && $e->status > 3 && $e->status < 7  && $e->status != 5 && now()->diffInDays($e->due_on, false) < 10 && now()->diffInDays($e->due_on, false) > - (config('ethics.renewal_expiry', 90)) && !$e->is_renew),
             ];
 
             if ($renew) {
                 $data['renew'] = $renew_data;
             }
 
-            if($e->arrangements->count()>0){
-                $data['arrangementData']=$e->getArrangements();
+            if ($e->arrangements->count() > 0) {
+                $data['arrangementData'] = $e->getArrangements();
             }
 
 
@@ -848,7 +888,10 @@ class EthicsController extends Controller
 
                 $p->ims_assign = $request->ims_assign;
 
-                $p->finance_assigned = $request->fm_assign;
+                if (is_null($request->fm_assign)) {
+                    $p->finance_assigned = $request->fm_assign;
+                }
+
 
                 $p->save();
             });
@@ -905,8 +948,7 @@ class EthicsController extends Controller
                     $l1_approver = User::where('id', $request->approver)->first();
                     Log::info('Mail to' . $l1_approver->email);
                     Notification::route('mail', $l1_approver->email)->notify(new ApprovalNotification($e));
-                }
-                else{
+                } else {
                     //Trigger Event
                     event(new PartnerRegistered($e));
                 }
@@ -1004,7 +1046,7 @@ class EthicsController extends Controller
                         $l2_approver = User::where('id', $request->approver)->first();
                         Log::info('Mail to' . $l2_approver->email);
                         Notification::route('mail', $l2_approver->email)->notify(new ApprovalNotification($e));
-                    }else{
+                    } else {
                         //Trigger Event
                         event(new PartnerRegistered($e));
                     }
@@ -1079,7 +1121,7 @@ class EthicsController extends Controller
             event(new ComplianceDecision($e));
             //
 
-            
+
             $check = is_null($exception) ? true : false;
 
             if ($check) {
@@ -1096,7 +1138,7 @@ class EthicsController extends Controller
     {
         $calc_month = $p->created_at->format('m');
         $calc_year = $p->created_at->format('Y');
-        $month = Partner::whereRaw("to_char(created_at,'MM')='$calc_month'")->whereRaw("to_char(created_at,'YYYY')='$calc_year'")->whereNotNull('rno')->orderBy('rno', 'desc')->get();
+        $month = Partner::whereRaw("to_char(created_at,'MM')='$calc_month'")->whereRaw("to_char(created_at,'YYYY')='$calc_year'")->whereNotNull('rno')->where('project_id',$p->project_id)->orderBy('rno', 'desc')->get();
         $value = 1;
         if ($month->count() > 0) {
             $val = $month->first();
@@ -1147,11 +1189,15 @@ class EthicsController extends Controller
         $log = [];
         $x = 1;
         foreach ($e->getaudits as $o) {
-            $name ='';
-            if((!is_null($o->user_id) && $o->user_id!=0)){$name=$e->getUsername($o->user_id);} 
-            else if($o->user_id==0 && !is_null($o->user_id)) {$name='System';}
-            else{$name='Partner Representative';}
-            
+            $name = '';
+            if ((!is_null($o->user_id) && $o->user_id != 0)) {
+                $name = $e->getUsername($o->user_id);
+            } else if ($o->user_id == 0 && !is_null($o->user_id)) {
+                $name = 'System';
+            } else {
+                $name = 'Partner Representative';
+            }
+
             $date = $o->created_at->isoFormat('D MMM  YYYY, HH:mm');
             $log[] = [
                 'id' => $x,
@@ -1322,7 +1368,7 @@ class EthicsController extends Controller
                         'id' => $p->uuid,
                         'name' => $p->name,
                         'status' => $p->getStatus(),
-                        'type' => $p->type->name,
+                        'type' => $p->getType(),
                     ];
                     $x++;
                 }
@@ -1330,6 +1376,70 @@ class EthicsController extends Controller
             return response()->json($data, 200);
         } else {
             return response()->json(['message' => 'No Data Found'], 500);
+        }
+    }
+
+    public function viewFiles(Request $request)
+    {
+
+        $e = Partner::where('uuid', $request->id)->with('ethics')->with('arrangements')->with('type')->first();
+
+        if ($e) {
+            //Streamlining files
+            $policy_file = !is_null($e->ethics->policy_file) ? route('ethics.file', ['file' => $e->ethics->policy_file, 'name' => 'Partner Policy']) : '';
+            $statement_file = !is_null($e->ethics->statement_file) ? route('ethics.file', ['file' => $e->ethics->statement_file, 'name' => 'Partner statement']) : '';
+            $cert_file = !is_null($e->ethics->cert_file) ? route('ethics.file', ['file' => $e->ethics->cert_file, 'name' => 'Partner cert']) : '';
+            $lexis_file = !is_null($e->ethics->lexis_file) ? route('ethics.file', ['file' => $e->ethics->lexis_file, 'name' => 'Partner Lexis File']) : '';
+            $screenshot_file = !is_null($e->ethics->screenshot_file) ? route('ethics.file', ['file' => $e->ethics->screenshot_file, 'name' => 'Partner screenshot']) : '';
+            $need_file = !is_null($e->ethics->need_file) ? route('ethics.file', ['file' => $e->ethics->need_file, 'name' => 'Partner Need Validation']) : '';
+            $incorp_file = !is_null($e->incorp_file) ? route('ethics.file', ['file' => $e->incorp_file, 'name' => 'Partner Incorporation']) : '';
+            $renew_screenshot_file= !is_null($e->ethics->renew_screenshot_file) ? route('ethics.file', ['file' => $e->ethics->renew_screenshot_file, 'name' => 'Partner screenshot']) : '';
+            $renew_lexis_file = !is_null($e->ethics->renew_lexis_file) ? route('ethics.file', ['file' => $e->ethics->renew_lexis_file, 'name' => 'Partner Lexis Document']) : '';
+            
+            $files = [
+                'incorp_file' => ['name'=>'Incorporation File','file'=> $incorp_file],
+                'policy_file' => ['name'=>'Policy File','file'=>$policy_file],
+                'statement_file' =>  ['name'=>'Annunal Statement','file'=>$statement_file],
+                'cert_file' =>  ['name'=>'ISO Certificate','file'=>$cert_file],
+                'need_file' => ['name'=>'Need Validation','file'=> $need_file],
+                'lexis_file' =>  ['name'=>'Lexis File','file'=>$lexis_file],
+                'screenshot_file' =>  ['name'=>'Screenshots','file'=>$screenshot_file],
+                'renew_lexis_file' =>  ['name'=>'Renewal Lexis File','file'=>$renew_lexis_file],
+                'renew_screenshot_file' =>  ['name'=>'Renewal Screenshots','file'=>$renew_screenshot_file],
+                
+            ];
+
+            return response()->json($files, 200);
+        }
+        return response()->json(['message'=>'Something Went wrong'], 500);
+    }
+
+    public function uploadFile(Request $request){
+        $e = Partner::where('uuid', $request->id)->with('ethics')->with('arrangements')->with('type')->first();
+
+        if ($e) {
+            if($request->name=='incorp_file'){
+                $name=$request->name;
+                $file = $request->hasFile('file');
+                if ($file) {
+                    $extension = $request->file('file')->extension();
+                    $upload_file = $e->uuid . '/updated/' . md5(date('Y-m-d H:i:s')) . '.' . $extension;
+                    Storage::disk('myDisk')->put($upload_file, File::get($request->file('file')));
+                    $e->$name = $upload_file;
+                    $e->ethics->save();
+                }
+            }
+            else{
+                $name=$request->name;
+                $file = $request->hasFile('file');
+                if ($file) {
+                    $extension = $request->file('file')->extension();
+                    $upload_file = $e->uuid . '/updated/' . md5(date('Y-m-d H:i:s')) . '.' . $extension;
+                    Storage::disk('myDisk')->put($upload_file, File::get($request->file('file')));
+                    $e->ethics->$name = $upload_file;
+                    $e->ethics->save();
+                }
+            }
         }
     }
 }

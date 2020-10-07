@@ -10,6 +10,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
+use App\Models\Ethics\Partner;
+use PDF;
+use Illuminate\Support\Facades\Storage;
+
 
 
 
@@ -41,6 +45,25 @@ class PartnerRenewedListener implements ShouldQueue
 
         Log::info('Partner Renewal Approved: '.$event->partner->name);
 
+        $e = Partner::where('id',$event->partner->id)->with('ethics')->first();
+       
+        
+        if($e){
+            
+            $name='renwewal.pdf';
+            
+                $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('ethics.pdf.renewForm',[
+                    
+                    'e'=>$e
+                ]);
+                
+           
+            $content = $pdf->download()->getOriginalContent();
+
+           //$pdf->save(storage_path('app/myDisk/'.$e->uuid.'/questionnaire.pdf'));
+            
+            Storage::disk('myDisk')->put($e->uuid.'/renewal.pdf', $content);
+        } 
 
     }
 }

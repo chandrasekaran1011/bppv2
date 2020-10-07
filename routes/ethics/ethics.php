@@ -35,6 +35,17 @@ Route::post('questionnaireNotSubmitted','EthicsController@questionnaireNotSubmit
 
 Route::post('deletePartner','EthicsController@deletePartner')->name('deletePartner');
 
+
+Route::post('uploadFile','EthicsController@uploadFile')->name('uploadFile');
+
+Route::post('viewFiles','EthicsController@viewFiles')->name('viewFiles');
+
+//Edit
+
+Route::post('getEdit','EditController@getEdit')->name('getEdit');
+Route::post('updatePartner','EditController@updatePartner')->name('updatePartner');
+
+
 //BlackListing and WhiteListing
 Route::post('blacklistPartner','BlacklistController@blacklistPartner')->name('blacklistPartner');
 Route::post('whitelistPartner','BlacklistController@whitelistPartner')->name('whitelistPartner');

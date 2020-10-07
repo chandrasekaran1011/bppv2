@@ -3,9 +3,7 @@
     <v-card class="mx-auto mb-4" color="white" elevation-3 width="95%" max-width="1200px" height="100%" min-height="400px">
         <div>
 
-            <h1 class="font-weight-bold py-5 my-2 d-inline-block display-1 basil--text">
-            <img src="/images/systra.jpg" width="150px" style="position: absolute;left: 10px;top: 15px;" height="50px" alt="img">
-                <v-spacer></v-spacer>
+            <h1 class="font-weight-bold py-5 my-1 d-inline-block display-1 basil--text ">
                 <span>Business Partner Form</span>
             </h1>
         </div>
@@ -42,9 +40,10 @@ export default {
             approverList:[],
             countryList:[],
             entityList:[],
-            partnerType:'',
+            partnerType:[],
             flags:[],
             mitigations:[],
+            typeList:[]
             
         },
         dataLoading:true,
@@ -61,9 +60,10 @@ export default {
                     this.data.countryList=resp.data.country;
                     this.data.approverList=resp.data.approver;
                     this.data.entityList=resp.data.entity;
-                    this.data.partnerType=resp.data.partner.name;
+                    this.data.partnerType=resp.data.partner;
                     this.data.flags=resp.data.flags;
                     this.data.mitigations=resp.data.mitigations;
+                    this.data.typeList=resp.data.typeList;
             }).catch(() => {
                 this.$store.commit('snackNotify', {
                     type: 'error',

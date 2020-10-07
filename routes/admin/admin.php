@@ -6,6 +6,7 @@ Route::get('/admin', 'AdminController@index')->name('home');
 
 Route::get('/logout',function(){
     Auth::logout();
+    return redirect('/login');
     //return redirect('/logout/azure');
  })->name('logout');
 

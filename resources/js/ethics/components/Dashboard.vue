@@ -5,7 +5,7 @@
         <v-col cols="12" :sm="12">
             <v-row :justify="'space-around'">
                 <v-col :md="4" cols="12">
-                    <v-card @click="nav(7);" style="cursor:pointer;background-color: #a4508b;background-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);" class="mx-auto" max-width="300px">
+                    <v-card @click="nav(7);" style="cursor:pointer;background-color: #a20b38;color:white" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-chart-line</v-icon>
                         <v-card-text class="title white--text">
                             Dashboard
@@ -14,7 +14,7 @@
                 </v-col>
 
                 <v-col :md="4" cols="12" v-if="$can('Create Partner')">
-                    <v-card @click="dialog=true;" style="cursor:pointer;background-color: #3bb78f;background-image: linear-gradient(315deg, #3bb78f 0%, #0bab64 74%);" class="mx-auto" max-width="300px">
+                    <v-card @click="dialog=true;" style="cursor:pointer;background-color: #70368b;color:white" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-plus</v-icon>
                         <v-card-text class="title white--text" >
                             Create Business Partner
@@ -23,7 +23,7 @@
                 </v-col>
 
                 <v-col :md="4" cols="12" v-if="$can('View Partner')">
-                    <v-card @click="nav(2);" style="cursor:pointer;background-color: #f9484a;background-image: linear-gradient(315deg, #f9484a 0%, #fbd72b 74%);" class="mx-auto" max-width="300px">
+                    <v-card @click="nav(2);" style="cursor:pointer;background-color: #e18e04;color:white" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-users</v-icon>
                         <v-card-text class="title white--text">
                             View Partner
@@ -32,17 +32,17 @@
                 </v-col>
             </v-row>
         </v-col>
-        <v-col class="d-sm-none d-md-block">
+        <!-- <v-col class="d-sm-none d-md-block">
             <img src="/images/systra.jpg" width="250px" height="75px" alt="img">
             <div class="title">Business Partner Portal</div>
-        </v-col>
+        </v-col> -->
 
         <v-col cols="12" :sm="12">
             <v-row :justify="'space-around'">
 
                 <v-col :md="4" cols="12">
 
-                    <v-card @click="nav(5)" style="cursor:pointer;background-color: #7f53ac;background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);color:white" class="mx-auto" max-width="300px">
+                    <v-card @click="nav(5)" style="cursor:pointer;background-color: #ea4e1b;color:white" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-check</v-icon>
                         <v-card-text class="title white--text">
                             Pending Approvals
@@ -52,7 +52,7 @@
                 </v-col>
 
                 <v-col :md="4" cols="12">
-                    <v-card @click="nav(6);" style="cursor:pointer;background-color: #bf3a30;background-image: linear-gradient(315deg, #bf3a30 0%, #864ba2 74%);" class="mx-auto" max-width="300px">
+                    <v-card @click="nav(6);" style="cursor:pointer;background-color: #3d3171;color:white" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-file-alt</v-icon>
                         <v-card-text class="title white--text">
                             Reports
@@ -61,7 +61,7 @@
                 </v-col>
 
                 <v-col :md="4" cols="12">
-                    <v-card @click="nav(4);" style="cursor:pointer;background-color: #4dccc6;background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);" class="mx-auto" max-width="300px">
+                    <v-card @click="nav(4);" style="cursor:pointer;background-color: #589eb8;color:white" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-search</v-icon>
                         <v-card-text class="title white--text">
                             Search Partner
@@ -75,7 +75,7 @@
 
     <v-dialog v-model="dialog" width="500">
         <v-card>
-            <v-card-title class="headline indigo white--text lighten-2">
+            <v-card-title  style="background-color:#3d3171" class="headline  white--text ">
                 Select Partner Type
             </v-card-title>
 

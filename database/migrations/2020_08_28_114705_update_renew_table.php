@@ -26,7 +26,7 @@ class UpdateRenewTable extends Migration
            $table->boolean('mutual')->nullable();
            $table->boolean('recomm')->nullable();
 
-            $table->integer('decision')->nullable();
+            //$table->integer('decision')->nullable();
             $table->integer('pm_by')->nullable();
             $table->dateTime('pm_on')->nullable();
             $table->integer('ims_by')->nullable();

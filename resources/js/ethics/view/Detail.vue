@@ -28,8 +28,18 @@
                     <v-list-item-title>Generate Report</v-list-item-title>
                 </v-list-item>
 
+                <v-list-item  @click="viewFiles()" >
+                    <v-list-item-title>View/Upload Files</v-list-item-title>
+                </v-list-item>
+
                 <v-list-item v-if="data.status==1 && data.pmApprover" @click="nonSubmission()">
                     <v-list-item-title>Initiate Non Submission</v-list-item-title>
+                </v-list-item>
+               
+
+                
+                <v-list-item  @click="editMaster()">
+                    <v-list-item-title>Edit Data</v-list-item-title>
                 </v-list-item>
 
                 <v-list-item @click="deletePartner()" v-if="$can('Delete Partner')">
@@ -45,7 +55,6 @@
 
             <h1 class="font-weight-bold py-5 my-2 px-3 d-inline-block display-1 text-left basil--text">
                 <span>Business Partner Form</span>
-
             </h1>
             <v-spacer></v-spacer>
             <img src="/images/systra.jpg" width="200px" style="position: absolute;right: 10px;top: 25px;" height="50px" alt="img">
@@ -63,7 +72,11 @@
                     </v-tab>
 
                     <v-tab v-if="data.is_renew" class="red--text font-weight-bold">
-                        Renewal
+
+
+                        Renewal<v-spacer></v-spacer>
+                                                <a :href="data.downloadRenew" class="mr-3" v-if="data.downloadRenew!=null" target="blank" style="text-decoration:none">
+                            <v-icon color="primary">fas fa-download</v-icon></a>
                     </v-tab>
 
                     <v-tab v-if="data.arrangements>0" class="red--text font-weight-bold">
@@ -118,7 +131,10 @@
                         </a>
                     </v-tab>
                     <v-tab v-if="data.is_renew" class="red--text font-weight-bold">
-                        Renewal
+                       
+                        Renewal<v-spacer></v-spacer>
+                        <a :href="data.downloadRenew" class="mr-3" v-if="data.downloadRenew!=null" target="blank" style="text-decoration:none">
+                            <v-icon color="primary">fas fa-download</v-icon></a>
                     </v-tab>
 
                     <v-tab v-if="data.arrangements>0" class="red--text font-weight-bold">
@@ -244,6 +260,44 @@
         </v-card>
     </v-dialog>
 
+    <!-- File Uploads -->
+        <v-dialog v-model="fileBar" fullscreen hide-overlay transition="dialog-bottom-transition">
+
+        <v-card>
+            <v-toolbar dark color="primary">
+                <v-btn icon dark @click="fileBar = false">
+                    <v-icon>fas fa-times</v-icon>
+                </v-btn>
+                <v-toolbar-title>View/Upload Files</v-toolbar-title>
+
+            </v-toolbar>
+          
+               <file-upload :files="filesData" :partner_id="data.unique" @refresh="viewFiles()" ></file-upload>
+            
+        </v-card>
+    </v-dialog>
+
+    <!-- End of File Upload -->
+        <!-- Edit Bar -->
+        <v-dialog v-model="editBar" max-width="800" transition="dialog-bottom-transition">
+
+        <v-card>
+            <v-toolbar dark color="primary">
+                <v-btn icon dark @click="editBar = false">
+                    <v-icon>fas fa-times</v-icon>
+                </v-btn>
+                <v-toolbar-title>Master Edit</v-toolbar-title>
+
+            </v-toolbar>
+          
+               <master-edit :data="editData" :partner_id="data.unique" @refresh="getData()"></master-edit>
+            
+        </v-card>
+    </v-dialog>
+
+    <!-- End of Edit Bar -->
+
+    <!-- Audit Bar -->
     <v-dialog v-model="auditBar" fullscreen hide-overlay transition="dialog-bottom-transition">
 
         <v-card>
@@ -265,6 +319,8 @@
             </v-card>
         </v-card>
     </v-dialog>
+
+    <!-- End of Audit Bar -->
 
 </div>
 </template>
@@ -292,6 +348,8 @@ import WhitelistPartner from '../components/detail/whitelistPartner'
 
 import RenewalInitiation from '../components/detail/renewalInitiation'
 import RenewalApproval from '../components/detail/renewalApproval'
+import FileUpload from '../components/detail/fileUpload'
+import MasterEdit from '../components/detail/masterEdit'
 
 export default {
     components: {
@@ -314,6 +372,8 @@ export default {
         'renew-pm-detail': PmDetailRenew,
         'create-arrangement': CreateArrangement,
         'arrangement-detail': ArrangementDetail,
+        'file-upload':FileUpload,
+        'master-edit':MasterEdit
 
     },
     data: () => ({
@@ -366,10 +426,15 @@ export default {
             },
 
         ],
+        fileBar:false,
+        filesData:[],
+        editBar:false,
+        editData:[]
 
     }),
     methods: {
         getData() {
+            this.editBar = false;
             this.$store.state.loading = true;
             let formData = {};
             formData._token = document.getElementById('csrf').content;
@@ -460,6 +525,48 @@ export default {
             }).then(() => {
                 this.$store.state.loading = false;
                 this.auditBar = true;
+
+            })
+
+        },
+        viewFiles() {
+            
+            this.$store.state.loading = true;
+            let formData = {};
+            formData._token = document.getElementById('csrf').content;
+            formData.id = this.$route.params.id;
+            axios.post(window.links.viewFiles, formData).then((resp) => {
+                this.filesData = resp.data;
+
+            }).catch(() => {
+                this.$store.commit('snackNotify', {
+                    type: 'error',
+                    msg: 'Error Fetching Data'
+                });
+            }).then(() => {
+                this.$store.state.loading = false;
+                this.fileBar = true;
+
+            })
+
+        },
+        editMaster() {
+            this.editBar = false;
+            this.$store.state.loading = true;
+            let formData = {};
+            formData._token = document.getElementById('csrf').content;
+            formData.id = this.$route.params.id;
+            axios.post(window.links.getEdit, formData).then((resp) => {
+                this.editData = resp.data;
+
+            }).catch(() => {
+                this.$store.commit('snackNotify', {
+                    type: 'error',
+                    msg: 'Error Fetching Data'
+                });
+            }).then(() => {
+                this.$store.state.loading = false;
+                this.editBar = true;
 
             })
 

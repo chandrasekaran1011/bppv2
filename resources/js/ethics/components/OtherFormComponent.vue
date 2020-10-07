@@ -11,7 +11,7 @@
         </v-col>
     </v-row>
 
-        <v-row :justify="'center'" class="px-4 py-2" no-gutters>
+    <v-row :justify="'center'" class="px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
             <div class="title1 text-left reqFields" for="name">SYSTRA’s Group Contract concerned</div>
         </v-col>
@@ -22,12 +22,23 @@
 
     <v-row :justify="'center'" class=" px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
+            <div class="title1 text-left" for="name">Type</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <div class="red--text font-weight-bold">{{data.partnerType.name}}</div>
+        </v-col>
+    </v-row>
+
+    <v-row v-if="data.partnerType.id==8"  :justify="'center'" class=" px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
             <div class="title1 text-left" for="name">Position</div>
         </v-col>
         <v-col cols="12" :md="6">
-            <div class="red--text font-weight-bold">{{data.partnerType}}</div>
+            <v-select :items="data.typeList" item-text="name" item-value="id" v-model="type" label="Partner Postion"></v-select>
         </v-col>
     </v-row>
+
+    
 
     <v-row :justify="'center'" class="px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
@@ -94,7 +105,7 @@ import {
 
 } from 'vuelidate/lib/validators';
 export default {
-    
+
     props: {
         data: {
             required: true,
@@ -106,41 +117,49 @@ export default {
         partnerCountry: '',
         cpi: '',
         email: '',
-        entity:'',
+        entity: '',
+        type:''
     }),
-    methods:{
-        sumform(){
+    methods: {
+        sumform() {
             if (this.$store.state.loading == true) return;
             this.$store.state.loading = true;
 
-            let formData={};
+            if(this.data.partnerType.id==8 && this.type==''){
+                    this.$store.commit('snackNotify', {
+                        type: 'error',
+                        msg: 'Select position of the Business Partner'
+                    });
+                    return ;
+            }
 
+            let formData = {};
 
-            formData._token= document.getElementById('csrf').content
-            formData.type_id= this.$route.params.id
-            formData.name= this.name
-            formData.email= this.email
-            formData.country= this.partnerCountry
-            formData.cpi= this.cpi
-            formData.project=this.entity;
+            formData._token = document.getElementById('csrf').content
+            formData.type_id = this.$route.params.id
+            formData.name = this.name
+            formData.email = this.email
+            formData.country = this.partnerCountry
+            formData.cpi = this.cpi
+            formData.project = this.entity;
+            formData.type = this.type;
 
-            axios.post(window.links.storeOtherForm,formData).then((resp) => {
+            axios.post(window.links.storeOtherForm, formData).then((resp) => {
                 this.$store.commit('snackNotify', {
                     type: 'success',
                     msg: resp.data.message
                 });
-                
+
             }).catch((err) => {
                 let errText = '';
                 if (err.response) {
-                        this.$store.commit('snackNotify', {
-                            type: 'error',
-                            msg: err.response.data.message
-                        });
-                        
-                    
+                    this.$store.commit('snackNotify', {
+                        type: 'error',
+                        msg: err.response.data.message
+                    });
+
                 }
-            }).then(()=>{
+            }).then(() => {
                 this.$store.state.loading = false;
             })
         }
@@ -179,7 +198,7 @@ export default {
 
             return errors
         },
-                entityErrors() {
+        entityErrors() {
             const errors = []
             if (!this.$v.entity.$dirty) {
                 return errors
@@ -232,9 +251,9 @@ export default {
             if (!this.$v.email.required) {
                 errors.push('Partner email is required.')
 
-            if (!this.$v.email.email) {
-                errors.push('Partner email is invalid.')
-            }
+                if (!this.$v.email.email) {
+                    errors.push('Partner email is invalid.')
+                }
 
                 return errors
             }
@@ -245,11 +264,14 @@ export default {
     watch: {
         partnerCountry: function (val) {
             let arr = this.data.countryList;
-
+            console.log(val);
             arr.forEach((item, index) => {
-
+                
                 if (item.unique == val) {
                     this.cpi = item.cpi
+                    console.log(item)
+                    
+                    return false
                 }
             })
         },

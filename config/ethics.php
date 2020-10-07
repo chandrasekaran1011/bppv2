@@ -8,7 +8,7 @@ return [
     'partner_validity'=>24,
 
     //Python file Location
-    'python_search_location'=>'ethics.py',
+    'python_search_location'=>'python ethics.py',
 
     //Partner Renewal Expiration in days (Intital 90 days as per procedure)
     'renewal_expiry'=>90

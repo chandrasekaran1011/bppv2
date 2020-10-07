@@ -34,7 +34,7 @@ class PublicPartnerRegistrationInitiatedListener implements ShouldQueue
      */
     public function handle(PublicPartnerRegistrationInitiated $event)
     {
-        $exe='python '.config('python_search_location','ethics.py').' '.$event->partner->id. ' "'.$event->partner->name.'"';
+        $exe=config('ethics.python_search_location','ethics.py').' '.$event->partner->id. ' "'.$event->partner->name.'"';
         exec($exe);
 
         $a=new Audit;

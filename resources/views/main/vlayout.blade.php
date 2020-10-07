@@ -9,11 +9,9 @@
     <link rel="apple-touch-icon" href="">
     <link rel="shortcut icon" href="">
 
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.0/normalize.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"> --}}
-
+    
     <link rel="stylesheet" href="{{asset('assets/css/normalize.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/font-awesome.min.css')}}">
@@ -24,6 +22,9 @@
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
 
     <style>
+                html, body {
+        font-family: 'Lato', sans-serif;
+    }
         .reqFields::after{
             content: "*";
             color: red;
@@ -36,10 +37,10 @@
 <body>
     <div id="right-panel" style="background-color:white" class="right-panel ml-2">
         <!-- Header-->
-        <header id="header" class="header">
-            <div class="top-left">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="./">Business Partner Portal</a>
+        <header id="header" style="background-color:#003e4b " class="header">
+            <div class="top-left" style="background-color:#003e4b ">
+                <div class="navbar-header" style="color:white;background-color:#003e4b ">
+                    <a class="navbar-brand" style="color:white;background-color:#003e4b " href="./">Business Partner Portal</a>
                 </div>
             </div>
 

@@ -4,7 +4,7 @@
 <div class="container rounded" style="border:solid 2px black;background-color:#ffffff;">
     <div class="h2 mt-4 mb-5">
     <strong>BUSINESS PARTNER QUESTIONNAIRE - {{$ethics->type->name}}</strong> 
-       <img class="float-right" width="150px" height="50px" src="{{asset('images/systra.jpg')}}"  alt="systra">
+        <img class="float-right" style="margin-top: -5px" width="150px" height="40px" src="{{asset('images/systra.jpg')}}" alt="systra">
     </div>
 
     <div class="p-3" style="border:2px solid red">
@@ -64,6 +64,17 @@
                 <small class="form-text text-muted">Mention "NA" if not applicable</small>
             </div>  
         </div>  
+
+        <div class="form-group d-flex mt-3">
+            <div class="col-md-6">
+                <label >Incorporation Certificate</label>
+            </div>
+            <div class="col-md-6">
+                <input type="file" class="form-input" name="incorp_file" id="incorp_file"
+                onchange="Filevalidation('incorp_file')" accept=".pdf" aria-describedby="incorp_file" min="1" placeholder="Certificate (PDF Only,Max 20 MB)">
+
+            </div>
+        </div>
 
         <div class="form-group d-flex mt-3">
             <div class="col-md-6">
@@ -508,5 +519,26 @@
 </div>
 
 </form>
+
+<script>
+    function Filevalidation(id){ 
+        var fi = document.getElementById(id); 
+        console.log(fi);
+        if (fi.files.length > 0) { 
+            for (let i = 0; i <= fi.files.length - 1; i++) { 
+  
+                let fsize = fi.files.item(i).size; 
+                let file = Math.round((fsize / 1024)); 
+                // The size of the file. 
+                console.log(fi);
+                if (file >= 20000) { 
+                    fi.value='';
+                    alert( 
+                      "File too Big, please select a file less than 20MB"); 
+                } 
+            } 
+        } 
+    } 
+</script>
 
 @endsection

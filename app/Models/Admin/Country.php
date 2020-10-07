@@ -10,7 +10,7 @@ class Country extends Model
     public static function getArray(){
 
         $country=Cache::remember('allCountries', 860000, function () {
-            return Country::select(['id','name'])->get();
+            return Country::all();
         });
         
 

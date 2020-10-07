@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Ethics;
 
+use App\Events\Ethics\PartnerRenewalInitiated;
+use App\Events\Ethics\PartnerRenewed;
 use App\Http\Controllers\Controller;
+use App\Listeners\Ethics\PartnerRenewalInitiatedListener;
 use App\Models\Ethics\Ethics;
 use App\Models\Ethics\Partner;
 use App\Models\Ethics\Renew;
@@ -114,7 +117,7 @@ class RenewalController extends Controller
             $check = is_null($exception) ? true : false;
 
             if ($check) {
-                
+                event(new PartnerRenewalInitiated($e));
                 return response()->json(['success'=>true,'message'=>'Renewal Initiated'],200);
             }
             else{
@@ -198,6 +201,7 @@ class RenewalController extends Controller
 
                 $check = is_null($exception) ? true : false;
                 if ($check) {
+                    event(new PartnerRenewed($e));
                     return response()->json(['message'=>'Renewal Completed'],200);
                 }
                 else{

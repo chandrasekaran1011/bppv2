@@ -250,6 +250,24 @@ class Partner  extends Model implements Auditable
         return $data;
     }
 
+    public function getType(){
+        
+            $type_id=$this->type_id;
+            
+            if($type_id!=8){
+                return $this->type->name;
+            }
+            else{
+                $pos='';
+                if(!is_null($this->position)){
+                    $pos=PartnerType::where('id',$this->position)->first()->name;
+                }
+                return 'Individual ('.$pos.')';
+            }
+        
+
+    }
+
     
 
 

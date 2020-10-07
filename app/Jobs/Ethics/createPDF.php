@@ -20,6 +20,9 @@ class createPDF implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 5;
+
+    public $timeout = 300;
     /**
      * Create a new job instance.
      *
@@ -38,6 +41,8 @@ class createPDF implements ShouldQueue
      */
     public function handle()
     {
+        
+        Log::info('Create PDF start time - '.now());
         $e = Partner::where('id',$this->id)->with('ethics')->first();
 
         if($e->status>3 && $e->type_id!=1){
@@ -53,6 +58,9 @@ class createPDF implements ShouldQueue
             
             Storage::disk('myDisk')->put($e->uuid.'/BPForm.pdf', $content);
         }
+
+        Log::info('Create PDF Partner End time - '.now());
+
         if($e->status>2 && $e->type_id!=1){
             
             $name='questionnaire.pdf';
@@ -87,6 +95,8 @@ class createPDF implements ShouldQueue
             
             Storage::disk('myDisk')->put($e->uuid.'/BPForm.pdf', $content);
         }
+
+        Log::info('Create PDF End time - '.now());
 
     }
 }
