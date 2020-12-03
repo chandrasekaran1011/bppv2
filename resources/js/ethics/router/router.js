@@ -10,6 +10,7 @@ import SearchPartner from "../view/SearchPartner.vue";
 import ReportIndex from "../view/ReportIndex.vue";
 import MonthlyReport from "../view/reports/MonthlyReport.vue";
 import MasterReport from "../view/reports/MasterReport.vue";
+import CDOReport from "../view/reports/CDOReport.vue";
 import BPDashboard from "../view/BPDashboard.vue";
 
 import PendingPartner from "../view/PendingApproval.vue";
@@ -96,6 +97,15 @@ const routes = [
         path: "/reports/master",
         name: "MasterReport",
         component: MasterReport,
+        beforeEnter(to, from, next) {
+            // store.state.isLoading = true;
+            next();
+        }
+    },
+    {
+        path: "/reports/cdo",
+        name: "CDOReport",
+        component: CDOReport,
         beforeEnter(to, from, next) {
             // store.state.isLoading = true;
             next();

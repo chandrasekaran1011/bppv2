@@ -48,14 +48,40 @@ class UserController extends Controller
                 'email'=>$u->email,
                 'uniqueId'=>$u->uuid,
                 'active'=>$u->active,
+                // 'permission'=>$u->getPermissionNames(),
+                // 'roles'=>$u->getRoleNames(),
+                // 'actPerm'=>$actPerm,
+                // 'projects'=>$u->getProjectsIDs(),
+
+            ];
+        }
+
+        return response()->json($data, 200);
+    }
+
+    public function getUserData(Request $request ){
+        $u=User::where('uuid',$request->id)->first();
+
+        $data=[];
+
+        if($u){
+            $actPerm=true;
+            if(Auth::id()==$u->id){
+                $actPerm=false;
+            }
+            $data=[
+                'name'=>$u->name,
+                'email'=>$u->email,
+                'uniqueId'=>$u->uuid,
+                'active'=>$u->active,
                 'permission'=>$u->getPermissionNames(),
                 'roles'=>$u->getRoleNames(),
                 'actPerm'=>$actPerm,
                 'projects'=>$u->getProjectsIDs(),
 
             ];
+        
         }
-
         return response()->json($data, 200);
     }
 

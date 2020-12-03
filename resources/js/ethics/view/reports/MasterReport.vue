@@ -8,7 +8,7 @@
             <v-card-text>
                 <v-row no-gutters class="mt-2">
                     <v-col cols="12" :sm="12" :md="3" class="pa-2">
-                        <v-select :error-messages="entityErrors" @input="$v.entity.$touch()" @blur="$v.entity.$touch()" :items="entityList" v-model="entity" item-text="name" item-value="unique" label="Select Project" outlined></v-select>
+                        <v-select :error-messages="entityErrors" @input="$v.entity.$touch()" @blur="$v.entity.$touch()" :items="entityList" v-model="entity" item-text="name" item-value="unique" label="Select Entity" outlined></v-select>
 
                     </v-col>
                     <v-col cols="12" :sm="12"  :md="3" class="pa-2">
@@ -89,6 +89,7 @@ export default {
                 })
         },
         search() {
+            this.results=[];
             if (this.dataLoading) {
                 return;
             }
@@ -109,10 +110,17 @@ export default {
                     
                 })
                 .catch(err => {
-                    this.$store.commit('snackNotify', {
-                        type: 'error',
-                        msg: 'Something went wrong'
-                    });
+                     if (err.status == 204) {
+                        this.$store.commit('snackNotify', {
+                            type: 'error',
+                            msg: 'No Data Found'
+                        });
+                    } else {
+                        this.$store.commit('snackNotify', {
+                            type: 'error',
+                            msg: 'Something went wrong'
+                        });
+                    }
                 }).then(() => {
                     this.dataLoading = false;
                     this.defaultview = false;

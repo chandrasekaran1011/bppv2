@@ -8,6 +8,7 @@ use App\Models\Admin\Project;
 
 use App\Models\Admin\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -49,7 +50,7 @@ class RoleController extends Controller
 
     public function getRoles()
     {
-        $roles = Role::all();
+        $roles = Role::with('permissions')->get();
         $permission = Permission::all();
 
         $perm = [];
@@ -81,12 +82,19 @@ class RoleController extends Controller
 
         $log = [];
         $count = 1;
+        $roleCount=DB::table('model_has_roles')->selectRaw('role_id,count(model_id)')->groupBy('role_id')->get();
         foreach ($roles as $r) {
-            $users = User::role($r->name)->count();
+            $modelUsers=$roleCount->where('role_id',$r->id);
+            $users=0;
+            if($modelUsers->count()){
+                //$users = User::role($r->name)->count();
+                $users =$modelUsers->first()->count ;
+            }
+            
             $log[] = [
                 'sno' => $count,
                 'name' => $r->name,
-                'permission' => $this->getRolePermissions($r),
+                // 'permission' => $this->getRolePermissions($r),
                 'parray' => $this->getRolePermissions($r, 0),
                 'users' => $users,
 
@@ -102,7 +110,7 @@ class RoleController extends Controller
         'projects' => $projects, ], 200);
     }
 
-    public function getRolePermissions(Role $r, $format = 1)
+    public function getRolePermissions($r, $format = 1)
     {
         $permission = $r->permissions()->select('name')->get();
 

@@ -2,7 +2,7 @@
 <div>
     <div class="text-center my-3">
         <v-btn class="ma-2" :loading="dataLoading" :disabled="dataLoading" color="success" @click="blacklistDialog=true">
-            Blacklist Partner
+            Debar Partner
             <template v-slot:loader>
                 <span class="custom-loader">
                     <v-icon light>fas fa-sync</v-icon>
@@ -17,12 +17,12 @@
                 <v-btn icon dark @click="blacklistDialog = false">
                     <v-icon>fas fa-times</v-icon>
                 </v-btn>
-                <v-toolbar-title>Blacklist Business Partner</v-toolbar-title>
+                <v-toolbar-title>Debar Partner</v-toolbar-title>
 
             </v-toolbar>
 
             <v-card class="mx-auto" color="white" elevation-3 width="100%" max-width="900px" min-width="600px" height="100%" min-height="400px">
-                <div class="title grad text-left mt-3 pa-3">Blacklisting Form</div>
+                <div class="title grad text-left mt-3 pa-3">Debar Partner Form</div>
 
                 <v-row :justify="'center'" class="px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
@@ -35,12 +35,12 @@
 
                 <v-row :justify="'center'" class="px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
-                        <div class="title1 text-left reqFields" for="name">Blacklist Till </div>
+                        <div class="title1 text-left reqFields" for="name">Debar Till </div>
                     </v-col>
                     <v-col cols="12" :md="6">
                         <v-menu ref="menu" v-model="dateMenu" :close-on-content-click="false"  transition="scale-transition" offset-y min-width="290px">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="date" label="Blacklist Till" prepend-icon="fas fa-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                                <v-text-field v-model="date" label="Debar Till" prepend-icon="fas fa-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                             </template>
                             <v-date-picker v-model="date" no-title scrollable>
                                 <v-spacer></v-spacer>
@@ -124,7 +124,7 @@ export default {
                 let errText = '';
                 if (err.response) {
                     console.log(err.response);
-                    if (err.response.status = 422) {
+                    if (err.response.status == 422) {
                         Object.values(err.response.data.errors).forEach(val => {
                             errText += val + '\n';
                         });

@@ -158,7 +158,7 @@
             </tr>
             <tr>
                 <td scope="row" class="w-50 text-wrap " style="padding:5px;">Date of incorporation</td>
-                <td class="w-50 text-wrap " style="padding:5px;">{{$e->doi->toFormattedDateString()}}</td>
+                <td class="w-50 text-wrap " style="padding:5px;">{{$e->getTime($e->doi)}}</td>
 
             </tr>
             <tr>

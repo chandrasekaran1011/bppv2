@@ -68,8 +68,8 @@
                         <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
                     </v-card-title>
                     <v-card-text>
-                        <v-data-table :headers="headers" :search="search" :items="roles" :items-per-page="5" class="elevation-1">
-                            <template v-slot:item.action="{ item }">
+                        <v-data-table :headers="headers" :search="search" :items="roles" :items-per-page="15" class="elevation-1">
+                            <template v-slot:[`item.action`]="{ item }">
                                 <v-btn fab x-small dark class="mr-2" @click="editRole(item)" color="primary">
                                     <v-icon>
                                         fas fa-pencil-alt
@@ -184,7 +184,7 @@ export default {
                     this.$store.state.loading = false;
                 })
         },
-        createRole() {
+     createRole() {
             this.name = '';
             this.permissions = [];
             this.dialogTitle = 'Create Role';

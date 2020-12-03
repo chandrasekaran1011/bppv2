@@ -37,7 +37,7 @@
 
                 <v-row :justify="'center'" class=" px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
-                        <div class="title1 text-left reqFields  mt-3" for="name"> Attach Lexis Document</div>
+                        <div class="title1 text-left mt-3" for="name"> Attach Lexis Document</div>
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
                         <v-file-input :rules="rules" v-model="lexis_file" accept=".pdf" placeholder="Attach Lexis Document" prepend-icon="fas fa-file" label="Lexis Document"></v-file-input>
@@ -144,6 +144,7 @@ export default {
         lexis_file: null,
 
 
+
     }),
     methods: {
 
@@ -159,6 +160,8 @@ export default {
             formData.append('flag_action', this.action)
             formData.append('decision', this.decision)
             formData.append('condition', this.condition)
+
+
 
 
             formData.append('reason', this.reason)
@@ -179,7 +182,7 @@ export default {
                 let errText = '';
                 if (err.response) {
                     console.log(err.response);
-                    if (err.response.status = 422) {
+                    if (err.response.status == 422) {
                         Object.values(err.response.data.errors).forEach(val => {
                             errText += val + '\n';
                         });

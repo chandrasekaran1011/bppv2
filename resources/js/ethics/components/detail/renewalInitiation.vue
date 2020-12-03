@@ -95,6 +95,24 @@
                     </v-col>
                 </v-row>
 
+                                <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
+                    <v-col cols="12" :md="6">
+                        <div class="title1 text-left" for="name">SPOT Code </div>
+                    </v-col>
+                    <v-col cols="12" :md="6">
+                        <v-text-field label="SPOT Code"  name="spot" v-model="spot"></v-text-field>
+                    </v-col>
+                </v-row>
+
+                <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters id="bviewElement">
+                    <v-col cols="12" :md="6">
+                        <div class="title1 text-left" for="name">Bview Number</div>
+                    </v-col>
+                    <v-col cols="12" :md="6">
+                        <v-text-field label="Bview Number"  name="bview" v-model="bview"></v-text-field>
+                    </v-col>
+                </v-row>
+
                                 <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
                         <div class="title1 text-left reqFields mt-3" for="name">Method of selection of the Business Partner</div>
@@ -223,6 +241,10 @@ export default {
             required: true,
             type: String,
         },
+        dt: {
+            required: true,
+            type: Object
+        }
 
     },
     data: () => ({
@@ -260,6 +282,9 @@ export default {
         phase: '',
         projectCountry: '',
         pcpi: '',
+
+        spot:'',
+        bview:'',
 
         cdo: '0',
         cdo_date: '',
@@ -309,6 +334,14 @@ export default {
         sumform() {
 
             if (this.$store.state.loading == true) return;
+            if (this.cdo == '1' && this.bview == '') {
+                this.$store.commit('snackNotify', {
+                    type: 'error',
+                    msg: "Please enter the Bview Number"
+                });
+                document.getElementById('bviewElement').scrollIntoView();
+                return;
+            }
             this.$store.state.loading = true;
 
             let formData = new FormData();
@@ -323,6 +356,9 @@ export default {
             formData.append('dcdo', this.cdo_date)
             formData.append('mutual', this.mutual)
             formData.append('recomm', this.recomm)
+
+            formData.append('spot', this.spot)
+            formData.append('bview', this.bview)
 
             formData.append('search', this.search)
             formData.append('screenshot_file', this.screenshot_file)
@@ -352,7 +388,7 @@ export default {
                 let errText = '';
                 if (err.response) {
                     console.log(err.response);
-                    if (err.response.status = 422) {
+                    if (err.response.status == 422) {
                         Object.values(err.response.data.errors).forEach(val => {
                             errText += val + '\n';
                         });
@@ -629,7 +665,8 @@ export default {
 
     },
     created() {
-
+        this.bview=this.dt.bview;
+        this.spot=this.dt.spot
     }
 
 }

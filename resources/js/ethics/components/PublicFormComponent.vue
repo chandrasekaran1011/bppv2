@@ -76,6 +76,24 @@
 
     <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
+            <div class="title1 text-left" for="name">SPOT Code </div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-text-field label="SPOT Code" name="spot" v-model="spot"></v-text-field>
+        </v-col>
+    </v-row>
+
+    <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters id="bviewElement">
+        <v-col cols="12" :md="6">
+            <div class="title1 text-left" for="name">Bview Number</div>
+        </v-col>
+        <v-col cols="12" :md="6">
+            <v-text-field label="Bview Number" name="bview" v-model="bview"></v-text-field>
+        </v-col>
+    </v-row>
+
+    <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
+        <v-col cols="12" :md="6">
             <div class="title1 text-left" for="name">Project/Contract Concern </div>
         </v-col>
         <v-col cols="12" :md="6">
@@ -210,7 +228,7 @@
             <div class="title1 text-left reqFields" for="name">Names of main directors</div>
         </v-col>
         <v-col cols="12" :md="6">
-            <v-textarea outlined label="Names of Directors and Senior Management" name="director" id="director" :error-messages="directorErrors" @input="$v.director.$touch()" @blur="$v.director.$touch()" v-model="director"></v-textarea>
+            <v-textarea outlined label="Names of Directors and Senior Management" name="director" id="director" :error-messages="directorErrors" @input="$v.director.$touch()" @blur="$v.director.$touch()" v-model="director" hint="Enter the fullname of directors"></v-textarea>
         </v-col>
     </v-row>
 
@@ -422,10 +440,10 @@
     <div class="title grad text-left pa-3 ">Approval</div>
     <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
-            <div class="title1 text-left reqFields mt-3" for="name">Name of Compliance Approval Manager:</div>
+            <div class="title1 text-left reqFields mt-3" for="name">Name of Local Compliance Approval Officer/Manager:</div>
         </v-col>
         <v-col cols="12" :md="6" class="pl-md-3">
-            <v-autocomplete v-model="approver" :error-messages="approverErrors" @input="$v.approver.$touch()" @blur="$v.approver.$touch()" :items="data.approverList" item-text="name" item-value="unique" label="Compliance Approval Manager" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>
+            <v-autocomplete v-model="approver" :error-messages="approverErrors" @input="$v.approver.$touch()" @blur="$v.approver.$touch()" :items="data.approverList" item-text="name" item-value="unique" label="Compliance Approval Officer/Manager" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>
         </v-col>
     </v-row>
 
@@ -484,7 +502,8 @@ export default {
             {
                 name: 'Miscellaneous',
                 id: 3
-            }],
+            }
+        ],
         nowDate: new Date().toISOString().slice(0, 10),
         datepicker: false,
         datepicker2: false,
@@ -502,6 +521,9 @@ export default {
         director: '',
         company: '',
         employee: '',
+
+        spot:'',
+        bview:'',
 
         scope: '',
         entity: '',
@@ -549,6 +571,15 @@ export default {
         },
         sumform() {
             if (this.$store.state.loading == true) return;
+
+            if (this.cdo == '1' && this.bview == '') {
+                this.$store.commit('snackNotify', {
+                    type: 'error',
+                    msg: "Please enter the Bview Number"
+                });
+                document.getElementById('bviewElement').scrollIntoView();
+                return;
+            }
             this.$store.state.loading = true;
             let formData = new FormData();
             formData.append('_token', document.getElementById('csrf').content);
@@ -574,6 +605,8 @@ export default {
             formData.append('pcpi', this.pcpi)
             formData.append('cdo', this.cdo)
             formData.append('dcdo', this.cdo_date)
+            formData.append('spot', this.spot)
+            formData.append('bview', this.bview)
             // formData.append('mutual', this.mutual)
             // formData.append('recomm', this.recomm)
             formData.append('search', this.search)
@@ -606,7 +639,7 @@ export default {
             }).catch((err) => {
                 let errText = '';
                 if (err.response.status) {
-                    if (err.response.status = 422) {
+                    if (err.response.status == 422) {
                         Object.values(err.response.data.errors).forEach(val => {
                             errText += val + '\n';
                         });
@@ -615,7 +648,7 @@ export default {
                             msg: errText
                         });
                     } else {
-                        console.log(err.response);
+                        
                         this.$store.commit('snackNotify', {
                             type: 'error',
                             msg: err.response.data.message
@@ -925,7 +958,7 @@ export default {
 
         },
         companyErrors() {
-            console.log('c3')
+            
             const errors = []
             if (!this.$v.company.$dirty) {
                 return errors

@@ -136,7 +136,7 @@
 
             window.links = {!! json_encode([
 
-                    'logout'=>route('admin.logout'),
+                    'logout'=>route('logout'),
                     'getFormData'=>route('ethics.getFormData'),
                     'storePublicForm'=>route('ethics.storePublicForm'),
                     'storeOtherForm'=>route('ethics.storeOtherForm'),
@@ -160,6 +160,7 @@
                     'renewApprove'=>route('ethics.renewApprove'),
                     'pendingApproval'=>route('ethics.pendingApproval'),
                     'monthlyReport'=>route('ethics.monthlyReport'),
+                    'cdoReport'=>route('ethics.cdoReport'),
                     'masterReport'=>route('ethics.masterReport'),
                     'genrateReport'=>route('ethics.genrateReport'),
                     'getDashboard'=>route('ethics.getDashboard'),
@@ -169,6 +170,7 @@
                     'uploadFile'=>route('ethics.uploadFile'),
                     'getEdit'=>route('ethics.getEdit'),
                     'updatePartner'=>route('ethics.updatePartner'),
+                    'pursuance'=>route('ethics.pursuance'),
                     
 
                 ], true) !!};

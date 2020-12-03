@@ -9,7 +9,7 @@ export default new Vuex.Store({
         snackbarText: "",
         snackbarType: "success",
         loading: false,
-        tabId: 1
+        tabId: 0
     },
     mutations: {
         snackNotify(state, payload) {

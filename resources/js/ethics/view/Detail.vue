@@ -28,21 +28,19 @@
                     <v-list-item-title>Generate Report</v-list-item-title>
                 </v-list-item>
 
-                <v-list-item  @click="viewFiles()" >
+                <v-list-item @click="viewFiles()">
                     <v-list-item-title>View/Upload Files</v-list-item-title>
                 </v-list-item>
 
                 <v-list-item v-if="data.status==1 && data.pmApprover" @click="nonSubmission()">
                     <v-list-item-title>Initiate Non Submission</v-list-item-title>
                 </v-list-item>
-               
 
-                
-                <v-list-item  @click="editMaster()">
+                <v-list-item v-if="$can('Edit Data')" @click="editMaster()">
                     <v-list-item-title>Edit Data</v-list-item-title>
                 </v-list-item>
 
-                <v-list-item @click="deletePartner()" v-if="$can('Delete Partner')">
+                <v-list-item @click="delDialog = true;" v-if="$can('Delete Partner')">
                     <v-list-item-title>Delete Partner</v-list-item-title>
                 </v-list-item>
 
@@ -65,25 +63,24 @@
             <v-card v-if="data.type.value==1">
                 <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
                     <v-tab class="red--text font-weight-bold">
-                        
+
                         <a :href="data.downloadForm" class="mr-3" v-if="data.downloadForm!=null" target="blank" style="text-decoration:none">
-                            <v-icon color="primary">fas fa-download</v-icon></a>
-                        Business Partner Form 
+                            <v-icon color="primary">fas fa-download</v-icon>
+                        </a>
+                        Business Partner Form
                     </v-tab>
 
                     <v-tab v-if="data.is_renew" class="red--text font-weight-bold">
 
-
                         Renewal<v-spacer></v-spacer>
-                                                <a :href="data.downloadRenew" class="mr-3" v-if="data.downloadRenew!=null" target="blank" style="text-decoration:none">
-                            <v-icon color="primary">fas fa-download</v-icon></a>
+                        <a :href="data.downloadRenew" class="mr-3" v-if="data.downloadRenew!=null" target="blank" style="text-decoration:none">
+                            <v-icon color="primary">fas fa-download</v-icon>
+                        </a>
                     </v-tab>
 
                     <v-tab v-if="data.arrangements>0" class="red--text font-weight-bold">
                         Arrangements
                     </v-tab>
-
-
 
                 </v-tabs>
 
@@ -116,7 +113,6 @@
                     </v-tab-item>
                 </v-tabs-items>
             </v-card>
-            
 
             <v-card v-if="data.type.value!=1">
                 <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
@@ -131,10 +127,11 @@
                         </a>
                     </v-tab>
                     <v-tab v-if="data.is_renew" class="red--text font-weight-bold">
-                       
+
                         Renewal<v-spacer></v-spacer>
                         <a :href="data.downloadRenew" class="mr-3" v-if="data.downloadRenew!=null" target="blank" style="text-decoration:none">
-                            <v-icon color="primary">fas fa-download</v-icon></a>
+                            <v-icon color="primary">fas fa-download</v-icon>
+                        </a>
                     </v-tab>
 
                     <v-tab v-if="data.arrangements>0" class="red--text font-weight-bold">
@@ -192,6 +189,8 @@
             <!-- <ims-detail class="mybreak" v-if="data.status>3" :data="data"></ims-detail> -->
             <finance-detail :data="data" v-if="data.finance.remark!=null"></finance-detail>
 
+            <pursuance-detail :data="data" v-if="data.pursuance"></pursuance-detail>
+
             <v-row no-gutters :align="'center'" :justify="'space-between'">
                 <v-col v-if="data.pmApprover && data.status==2">
                     <pm-approval class="mybreak" :id="data.unique" @reset="getData()"></pm-approval>
@@ -205,11 +204,15 @@
                     <escalation-approval :data="data" :id="data.unique" @reset="getData()"></escalation-approval>
                 </v-col>
 
-                <v-col v-if="data.status==4">
-                    <blacklist-partner :data="data" :id="data.unique" @reset="getData()"></blacklist-partner>
+                <v-col v-if="data.status==11 && data.pursuanceApprover">
+                    <pursuance-approval :data="data" :id="data.unique" @reset="getData()"></pursuance-approval>
                 </v-col>
 
-                <v-col v-if="data.status==7">
+                <v-col v-if="data.status==4 && data.canBlacklist">
+                    <blacklist-partner :data="data" :id="data.unique" @reset="getData()"></blacklist-partner>
+                </v-col>
+                
+                <v-col v-if="data.status==7 && data.canWhitelist">
                     <whitelist-partner :data="data" :id="data.unique" @reset="getData()"></whitelist-partner>
                 </v-col>
 
@@ -218,10 +221,10 @@
                 </v-col>
 
                 <v-col v-if="data.renew_partner">
-                    <renewal-initiation :data="data" :id="data.unique" @reset="getData()"></renewal-initiation>
+                    <renewal-initiation :dt="data" :id="data.unique" @reset="getData()"></renewal-initiation>
                 </v-col>
 
-                <v-col v-if="data.status==10">
+                <v-col v-if="data.status==10 && data.renewApprover">
                     <renewal-approval :data="data" :id="data.unique" @reset="getData()"></renewal-approval>
                 </v-col>
 
@@ -261,7 +264,7 @@
     </v-dialog>
 
     <!-- File Uploads -->
-        <v-dialog v-model="fileBar" fullscreen hide-overlay transition="dialog-bottom-transition">
+    <v-dialog v-model="fileBar" fullscreen hide-overlay transition="dialog-bottom-transition">
 
         <v-card>
             <v-toolbar dark color="primary">
@@ -271,15 +274,15 @@
                 <v-toolbar-title>View/Upload Files</v-toolbar-title>
 
             </v-toolbar>
-          
-               <file-upload :files="filesData" :partner_id="data.unique" @refresh="viewFiles()" ></file-upload>
-            
+
+            <file-upload :files="filesData" :partner_id="data.unique" @refresh="viewFiles()"></file-upload>
+
         </v-card>
     </v-dialog>
 
     <!-- End of File Upload -->
-        <!-- Edit Bar -->
-        <v-dialog v-model="editBar" max-width="800" transition="dialog-bottom-transition">
+    <!-- Edit Bar -->
+    <v-dialog v-model="editBar" max-width="800" transition="dialog-bottom-transition">
 
         <v-card>
             <v-toolbar dark color="primary">
@@ -289,9 +292,9 @@
                 <v-toolbar-title>Master Edit</v-toolbar-title>
 
             </v-toolbar>
-          
-               <master-edit :data="editData" :partner_id="data.unique" @refresh="getData()"></master-edit>
-            
+
+            <master-edit :data="editData" :partner_id="data.unique" @refresh="getData()"></master-edit>
+
         </v-card>
     </v-dialog>
 
@@ -322,6 +325,27 @@
 
     <!-- End of Audit Bar -->
 
+    <!-- Delete Dialog -->
+        
+        <v-dialog v-model="delDialog" max-width="500">
+            <v-card>
+                <v-card-title class="title">Are you sure to delete this partner?</v-card-title>
+
+  
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red darken-1" text @click="deletePartner()">
+                        Delete
+                    </v-btn>
+                    <v-btn color="green darken-1" text @click="delDialog = false">
+                        close
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    <!-- End of Delete Dialog -->
+
 </div>
 </template>
 
@@ -332,6 +356,7 @@ import CreateArrangement from '../components/CreateArrangementComponent'
 import Question from '../components/detail/questionnaire'
 import NonSubmission from '../components/detail/nonSubmission'
 import FinanceDetail from '../components/detail/financeDetail'
+import PursuanceDetail from '../components/detail/pursuanceDetail'
 import PmApproval from '../components/detail/pmApproval'
 import ImsApproval from '../components/detail/imsApproval'
 import PmDetail from '../components/detail/pmDetail'
@@ -343,6 +368,7 @@ import PublicDetail from '../components/detail/public'
 import FinanceApproval from '../components/detail/financeApproval'
 
 import EscalationApproval from '../components/detail/escalationApproval'
+import PursuanceApproval from '../components/detail/pursuanceApproval'
 import BlacklistPartner from '../components/detail/blacklistPartner'
 import WhitelistPartner from '../components/detail/whitelistPartner'
 
@@ -372,14 +398,17 @@ export default {
         'renew-pm-detail': PmDetailRenew,
         'create-arrangement': CreateArrangement,
         'arrangement-detail': ArrangementDetail,
-        'file-upload':FileUpload,
-        'master-edit':MasterEdit
+        'file-upload': FileUpload,
+        'master-edit': MasterEdit,
+        'pursuance-approval': PursuanceApproval,
+        'pursuance-detail': PursuanceDetail,
 
     },
     data: () => ({
         tab: 0,
         data: {},
         loading: true,
+        delDialog:false,
         searchBar: false,
         searchData: [],
         findSearchResults: '',
@@ -426,10 +455,10 @@ export default {
             },
 
         ],
-        fileBar:false,
-        filesData:[],
-        editBar:false,
-        editData:[]
+        fileBar: false,
+        filesData: [],
+        editBar: false,
+        editData: []
 
     }),
     methods: {
@@ -530,7 +559,7 @@ export default {
 
         },
         viewFiles() {
-            
+
             this.$store.state.loading = true;
             let formData = {};
             formData._token = document.getElementById('csrf').content;
@@ -571,9 +600,9 @@ export default {
             })
 
         },
-        generateReport(){
+        generateReport() {
             this.$store.state.loading = true;
-            
+
             let formData = {};
             formData._token = document.getElementById('csrf').content;
             formData.id = this.$route.params.id;
@@ -595,7 +624,7 @@ export default {
         },
         regenerate() {
             this.$store.state.loading = true;
-            
+
             let formData = {};
             formData._token = document.getElementById('csrf').content;
             formData.id = this.$route.params.id;

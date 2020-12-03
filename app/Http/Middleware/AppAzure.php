@@ -29,8 +29,9 @@ class AppAzure extends Azure
 
         if($user){
             if(Auth::guard('web')->loginUsingId($user->id)){
-                return parent::success($request, $access_token, $refresh_token, $profile);
-                  // return redirect()->route('ethics.index');
+                //return parent::success($request, $access_token, $refresh_token, $profile);
+                return redirect()->route('ethics.index');
+                  
             } 
         }
         else{
@@ -39,10 +40,10 @@ class AppAzure extends Azure
 
     }
 
-    // public function getLogoutUrl()
-    // {
-    //     return $this->baseUrl . "common" . $this->route . "logout?post_logout_redirect_uri=".env('APP_URL');
-    // }
+    public function getLogoutUrl()
+    {
+        return $this->baseUrl . "common" . $this->route . "logout?post_logout_redirect_uri=".env('APP_URL');
+    }
 
 
 

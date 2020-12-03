@@ -19,7 +19,7 @@ class Ethics  extends Model implements Auditable
 {
     use  \OwenIt\Auditing\Auditable, SoftDeletes;
 
-    protected $dates = ['pm_at', 'ims_at', 'cdo_date','l1_at','l2_at','finance_approved_on','renew_pm_at','renew_ims_at'];
+    protected $dates = ['pm_at', 'ims_at', 'cdo_date','l1_at','l2_at','finance_approved_on','renew_pm_at','renew_ims_at','head_at','renew_cdo_date'];
 
     public function getphase()
     {

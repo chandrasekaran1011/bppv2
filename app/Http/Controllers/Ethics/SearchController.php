@@ -26,14 +26,20 @@ class SearchController extends Controller
         elseif($criteria==3){
             $field='cop_num';
         }
+        elseif($criteria==4){
+            $field='spot_code';
+        }
+        elseif($criteria==5){
+            $field='bview';
+        }
         else{
             return abort(502);
         }
         if($entity==0){
-            $partner=Partner::select(['uuid','created_at','name','status','reg'])->where("$field",'ILIKE','%'.$v.'%')->limit(5000)->get();
+            $partner=Partner::where("$field",'ILIKE','%'.$v.'%')->limit(5000)->get();
         }
         else{
-            $partner=Partner::select(['uuid','created_at','name','status','reg'])->where('project_id',$entity)->where("$field",'ILIKE','%'.$v.'%')->limit(5000)->get();
+            $partner=Partner::where('project_id',$entity)->where("$field",'ILIKE','%'.$v.'%')->limit(5000)->get();
         }
         
         
@@ -42,8 +48,11 @@ class SearchController extends Controller
         foreach($partner as $o){
             $id=encrypt($o->id);
             $detail=false;
+            
+           
+
             if($user->can('view',$o)){$detail=true;};
-                                           
+                                         
             $x++;     
                 $log[]=[
                 'sno'=>$x,

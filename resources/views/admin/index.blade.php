@@ -111,13 +111,15 @@
     <script>
         window.links = {!! json_encode([
 
-                    'logout'=>route('admin.logout'),
+                    'logout'=>route('logout'),
 
                     'getRoles'=> route('admin.getRoles'),
+                    'dashboard'=> route('admin.dashboard'),
                     'createRole'=> route('admin.createRole'),
                     'updateRole'=>route('admin.updateRole'),
                     'createUser'=>route('admin.createUser'),
                     'getUser'=>route('admin.getUser'),
+                    'getUserData'=>route('admin.getUserData'),
                     'actionUser'=>route('admin.actionUser'),
                     'updateUser'=>route('admin.updateUser'),
                     //Projects

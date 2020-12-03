@@ -35,9 +35,9 @@ class FinanceNotification extends Notification implements ShouldQueue
         return (new MailMessage)
                     ->subject('Business Partner Review')
                     ->greeting('Dear Sir/Madam,')
-                    ->line('Business Partner Registration requires your review.Click on the following link to review')
+                    ->line('Business Partner Registration requires your review. Click on the following link to review')
                     ->action('Click here', $url)
-                    ->line('This is an automatically generated mail from Business Partner Portal.');
+                    ->line('This is an automatically generated mail from Business Partner E&C Portal.');
     }
 
     public function toArray($notifiable)

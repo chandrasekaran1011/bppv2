@@ -63,7 +63,7 @@
 
                 <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
-                        <div class="title1 text-left" for="name">Project/Contract Concern </div>
+                        <div class="title1 text-left reqFields" for="name">Project/Contract Concern </div>
                     </v-col>
                     <v-col cols="12" :md="6">
                         <v-text-field label="Project Concern" :error-messages="contractErrors" @input="$v.contract.$touch()" @blur="$v.contract.$touch()" name="contract" v-model="contract"></v-text-field>
@@ -72,7 +72,7 @@
 
                 <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
-                        <div class="title1 text-left mt-2" for="name">Contract phase </div>
+                        <div class="title1 text-left mt-2 reqFields" for="name">Contract phase </div>
                     </v-col>
                     <v-col cols="12" :md="6">
 
@@ -95,6 +95,24 @@
                     </v-col>
                     <v-col cols="12" :md="6">
                         <v-text-field label="CPI Score" name="pcpi" :error-messages="pcpiErrors" @input="$v.pcpi.$touch()" @blur="$v.pcpi.$touch()" v-model="pcpi"></v-text-field>
+                    </v-col>
+                </v-row>
+
+                <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters>
+                    <v-col cols="12" :md="6">
+                        <div class="title1 text-left" for="name">SPOT Code </div>
+                    </v-col>
+                    <v-col cols="12" :md="6">
+                        <v-text-field label="SPOT Code"  name="spot" v-model="spot"></v-text-field>
+                    </v-col>
+                </v-row>
+
+                <v-row :justify="'center'" class="mt-2 px-4 py-2" no-gutters id="bviewElement">
+                    <v-col cols="12" :md="6">
+                        <div class="title1 text-left" for="name">Bview Number</div>
+                    </v-col>
+                    <v-col cols="12" :md="6">
+                        <v-text-field label="Bview Number"  name="bview" v-model="bview"></v-text-field>
                     </v-col>
                 </v-row>
 
@@ -235,10 +253,10 @@
                 <div class="title grad text-left pa-3 ">Approval</div>
                 <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
-                        <div class="title1 text-left reqFields mt-3" for="name">Name of Compliance Approval Manager:</div>
+                        <div class="title1 text-left reqFields mt-3" for="name">Name of Local Compliance Approval Officer/Manager:</div>
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
-                        <v-autocomplete v-model="approver" :error-messages="approverErrors" @input="$v.approver.$touch()" @blur="$v.approver.$touch()" :items="data.approverList" item-text="name" item-value="unique" label="Compliance Approval Manager" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>
+                        <v-autocomplete v-model="approver" :error-messages="approverErrors" @input="$v.approver.$touch()" @blur="$v.approver.$touch()" :items="data.approverList" item-text="name" item-value="unique" label="Compliance Approval Officer/Manager" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>
                     </v-col>
                 </v-row>
 
@@ -314,6 +332,8 @@ export default {
         phase: '',
         projectCountry: '',
         pcpi: '',
+        spot:'',
+        bview:'',
 
         cdo: '0',
         cdo_date: '',
@@ -376,11 +396,12 @@ export default {
                 return;
             }
 
-            if (this.search == 1 && this.screenshot_file.length == 0) {
+            if (this.cdo == '1' && this.bview == '') {
                 this.$store.commit('snackNotify', {
                     type: 'error',
-                    msg: "Please Upload Screenshot Document"
+                    msg: "Please enter the Bview Number"
                 });
+                document.getElementById('bviewElement').scrollIntoView();
                 return;
             }
             this.$store.state.loading = true;
@@ -390,6 +411,9 @@ export default {
             formData.append('unique', this.id)
             formData.append('scope', this.scope)
             formData.append('contract', this.contract)
+            formData.append('spot', this.spot)
+            formData.append('bview', this.bview)
+
             formData.append('phase', this.phase)
             formData.append('pcountry', this.projectCountry)
             formData.append('pcpi', this.pcpi)
@@ -426,7 +450,7 @@ export default {
                 let errText = '';
                 if (err.response) {
                     console.log(err.response);
-                    if (err.response.status = 422) {
+                    if (err.response.status == 422) {
                         Object.values(err.response.data.errors).forEach(val => {
                             errText += val + '\n';
                         });

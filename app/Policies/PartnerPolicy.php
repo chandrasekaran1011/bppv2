@@ -37,7 +37,7 @@ class PartnerPolicy
             return in_array($partner->project_id,$user->getProjectsIDs());
         }
         elseif($user->can('View Own Records')){
-            if($user->id==$partner->cuser || $user->id==$partner->ethics->ims_assign || $user->id==$partner->ethics->l1_assign || $user->id==$partner->ethics->l2_assign){
+            if($user->id==$partner->cuser || $user->id==$partner->ethics->ims_assign || $user->id==$partner->ethics->l1_assign || $user->id==$partner->ethics->l2_assign || $user->id==$partner->ethics->head_assign ||$user->id==$partner->renew_assign ||$user->id==$partner->ethics->finance_assigned ){
                 return true;
             }
             
@@ -179,5 +179,62 @@ class PartnerPolicy
         }
 
     }
+
+    public function pursuanceApprove(User $user, Partner $partner)
+    {
+        if($user->id==$partner->ethics->head_assign && $partner->status==11 ){
+
+            return true;
+
+        }
+        elseif($user->isAdmin() && $partner->status==11 ){
+            return true;
+        }
+        
+        else{
+            return false;
+        }
+
+    }
+
+    public function renewApprove(User $user, Partner $partner)
+    {
+        if($user->id==$partner->renew_assign && $partner->status==10 ){
+
+            return true;
+
+        }
+        elseif($user->isAdmin() && $partner->status==10 ){
+            return true;
+        }
+        
+        else{
+            return false;
+        }
+
+    }
+
+    public function blackListPartner(User $user, Partner $partner)
+    {
+        if($user->can('Blacklist Partner')){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    public function whiteListPartner(User $user, Partner $partner)
+    {
+        if($user->can('Whitelist Partner')){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
 
 }

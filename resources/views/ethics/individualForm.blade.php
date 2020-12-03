@@ -37,7 +37,7 @@
                 </div>        
                 <div class="col-md-6">    
                     <input type="text" class="form-control" name="name" id="name" aria-describedby="name" value="{{old('name',$ethics->name)}}" placeholder="Name of the Business Partner" required='required'>
-                    
+                    <small>Enter the Full name of the individual</small>
                 </div>  
         </div>
 
@@ -380,10 +380,11 @@
             </div>        
             <div class="col-md-6">    
                 <input type="text" class="form-control" name="p_name" id="p_name" aria-describedby="p_name" value="{{old('p_name')}}" placeholder="Your Name" required='required'>
+                <small>Enter your Full name </small>
             </div>  
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+        <script src="/assets/js/signature_pad.min.js"></script>
 
         <div class="form-group d-flex mt-3">
             <div class="col-md-6">
@@ -459,7 +460,10 @@
         <div class="p-3 mt-4 mb-4" style="border:2px solid red">
             <strong>Any modification of the information contained in this questionnaire shall be notified to SYSTRA at the latest thirty (30) days after the day on which the modification occurred.</strong> 
             <br><br>
-            <strong>Personal Data Information:</strong> SYSTRA’s collection of personal data is limited to data that are proportionate and necessary to evaluate the integrity of its business partners, and limited to the duration necessary to this purpose or provided by law. SYSTRA applies technical and organizational measures to protect personal data. The individuals concerned by this processing have the right to access their personal data and to rectify data that are inaccurate. In the cases provided for by law (UE General Data Protection Regulation), such individuals have also the right to erasure, the right to data portability, the right to object, the right to restriction of processing and the right to file a complaint with the competent supervisory authority. To exercise these rights, please contact SYSTRA’s DPO:  <a style="text-decorations:none;color:blue;" href="mailto:personaldata@systra.com">personaldata@systra.com</a>
+            <strong>Personal Data Information:</strong> SYSTRA’s collection of personal data is limited to data that are proportionate and necessary to evaluate the integrity of its business partners, and limited to the duration necessary to this purpose or provided by law. SYSTRA applies technical and organizational measures to protect your personal data. You have the right to access your personal data and to rectify data that are inaccurate. In the cases provided for by law (UE General Data Protection Regulation), you have also the right to erasure, the right to data portability, the right to object and the right to restriction of processing. To exercise your rights, please contact SYSTRA’s DPO:<a style="text-decorations:none;color:blue;" href="mailto:personaldata@systra.com">personaldata@systra.com</a>. You also have the right to file a complaint with the competent supervisory authority. 
+       
+       
+       
         </div>
       
 </div>

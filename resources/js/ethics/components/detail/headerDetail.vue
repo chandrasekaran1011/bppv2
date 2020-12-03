@@ -22,27 +22,27 @@
                 <td  style="vertical-align: middle;"> {{data.status_name}} </td>
             </tr>
 
-            <tr v-if="data.status>3">
+            <tr v-if="data.status>3 && data.validity!=''">
                 <td  style="width:50%;"><strong>Registration Valid till</strong> </td>
                 <td  style="vertical-align: middle;"> {{data.validity}} </td>
             </tr>
 
             <tr v-if="data.status==7">
-                <td  style="width:50%;"><strong>Blacklisted Reason</strong> </td>
+                <td  style="width:50%;"><strong>Debarred Reason</strong> </td>
                 <td  style="vertical-align: middle;"> {{data.blacklistDetail.blacklist_reason}} </td>
             </tr> 
             <tr v-if="data.status==7">
-                <td  style="width:50%;"><strong>Blacklisted up to</strong> </td>
+                <td  style="width:50%;"><strong>Debarred up to</strong> </td>
                 <td  style="vertical-align: middle;">{{data.blacklistDetail.blacklist_till}}  </td>
             </tr>
 
             <tr v-if="data.status==7">
-                <td  style="width:50%;"><strong>Blacklisted By</strong> </td>
+                <td  style="width:50%;"><strong>Debarred By</strong> </td>
                 <td  style="vertical-align: middle;"> {{data.blacklistDetail.blacklist_by}} </td>
             </tr>
 
             <tr v-if="data.status==7">
-                <td  style="width:50%;"><strong>Blacklisted On</strong> </td>
+                <td  style="width:50%;"><strong>Debarred On</strong> </td>
                 <td  style="vertical-align: middle;">{{data.blacklistDetail.blacklist_on}}</td>
             </tr>
 

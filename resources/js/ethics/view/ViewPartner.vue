@@ -3,7 +3,7 @@
     <div class="display-1 text-left mb-2">
         <span v-if="mode==0">View Business Partners</span>
         <span v-if="mode==1">View Expired Partners</span>
-        <span v-if="mode==2">View Blacklisted Partners</span>
+        <span v-if="mode==2">View Dedarred Partners</span>
     </div>
 
     <v-divider>
@@ -19,7 +19,7 @@
                 <v-btn title="Expired Partners" color="warning" @click="changeView(1)">
                     <v-icon color="white">fas fa-calendar-times</v-icon>
                 </v-btn>
-                <v-btn title="Blacklisted Partners" color="error" @click="changeView(2)">
+                <v-btn title="Dedarred Partners" color="error" @click="changeView(2)">
                     <v-icon color="white">fas fa-ban</v-icon>
                 </v-btn>
 

@@ -116,16 +116,17 @@ class Partner  extends Model implements Auditable
         $stat='';
         if($this->status==1){$stat='Registration Initiated';}
         elseif($this->status==2){$stat='Partner Responded';}
-        elseif($this->status==3){$stat='Compliance Approval pending';}
+        elseif($this->status==3){$stat='Local Compliance Officer Approval Pending';}
         elseif($this->status==4){$stat='Partner Approved';}
         elseif($this->status==5){$stat='Partner Rejected';}
         
         elseif($this->status==6){$stat='Partner Expired';}
-        elseif($this->status==7){$stat='Partner Blacklisted';}
+        elseif($this->status==7){$stat='Partner Debarred';}
 
-        elseif($this->status==8){$stat='Approval Pending with Group Head';}
-        elseif($this->status==9){$stat='Approval Pending with Ethics Committee';}
-        elseif($this->status==10){$stat='Partner Renewal pending';}
+        elseif($this->status==8){$stat='Group Compliance Officer Approval Pending';}
+        elseif($this->status==9){$stat='Ethics Committee Approval Pending';}
+        elseif($this->status==10){$stat='Partner Renewal Pending';}
+        elseif($this->status==11){$stat='Awaiting Entity Head Pursuance';}
                        
         return $stat;
     }
@@ -260,7 +261,13 @@ class Partner  extends Model implements Auditable
             else{
                 $pos='';
                 if(!is_null($this->position)){
-                    $pos=PartnerType::where('id',$this->position)->first()->name;
+                    if($this->position<8){
+                        $pos=PartnerType::where('id',$this->position)->first()->name;
+                    }
+                    else{
+                        $pos='Freelancer';
+                    }
+                    
                 }
                 return 'Individual ('.$pos.')';
             }

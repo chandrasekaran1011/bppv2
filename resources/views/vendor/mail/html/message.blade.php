@@ -2,6 +2,7 @@
 {{-- Header --}}
 @slot('header')
 @component('mail::header', ['url' => config('app.url')])
+<img class="float-left" style="margin-top: 5px" width="120px" height="30px" src="{{asset('images/systra.jpg')}}" alt="systra"><br>
 {{ config('app.name') }}
 @endcomponent
 @endslot

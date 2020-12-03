@@ -2,7 +2,7 @@
 <div>
     <div class="text-center my-3">
         <v-btn class="ma-2" :loading="dataLoading" :disabled="dataLoading" color="success" @click="whitelistDialog=true">
-            Whitelist Partner
+            Non-Debar Partner
             <template v-slot:loader>
                 <span class="custom-loader">
                     <v-icon light>fas fa-sync</v-icon>
@@ -17,12 +17,12 @@
                 <v-btn icon dark @click="whitelistDialog = false">
                     <v-icon>fas fa-times</v-icon>
                 </v-btn>
-                <v-toolbar-title>Whitelist Business Partner</v-toolbar-title>
+                <v-toolbar-title>Non-Debar Partner</v-toolbar-title>
 
             </v-toolbar>
 
             <v-card class="mx-auto" color="white" elevation-3 width="100%" max-width="900px" min-width="600px" height="100%" min-height="400px">
-                <div class="title grad text-left mt-3 pa-3">Whitelisting Form</div>
+                <div class="title grad text-left mt-3 pa-3">Non-Debar Form</div>
 
                 <v-row :justify="'center'" class="px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
@@ -142,7 +142,7 @@ export default {
                 let errText = '';
                 if (err.response) {
                     console.log(err.response);
-                    if (err.response.status = 422) {
+                    if (err.response.status == 422) {
                         Object.values(err.response.data.errors).forEach(val => {
                             errText += val + '\n';
                         });

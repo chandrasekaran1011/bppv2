@@ -218,6 +218,7 @@
                     <textarea class="form-control" name="director" id="director" height="90px"
                         aria-describedby="director" maxlength="60" placeholder="John Abraham, Micheal Scofield"
                         required="required">{{old('director')}}</textarea>
+                        <small>Please enter the Full name of directors </small>
 
                 </div>
             </div>
@@ -776,7 +777,8 @@
             <div class="col-md-6">
                 <input type="text" class="form-control" name="p_name" id="p_name" aria-describedby="p_name"
                     value="{{old('p_name')}}" placeholder="Your Name" required='required'>
-            </div>
+                    <small>Enter your Full name</small>
+                </div>
         </div>
 
         <div class="form-group d-flex mt-3">
@@ -789,7 +791,7 @@
             </div>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+        <script src="/assets/js/signature_pad.min.js"></script>
 
         <div class="form-group d-flex mt-3">
             <div class="col-md-6">

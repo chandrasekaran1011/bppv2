@@ -137,8 +137,8 @@
                         <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
                     </v-card-title>
                     <v-card-text>
-                        <v-data-table :headers="headers" :search="search" :items="users" :items-per-page="5" class="elevation-1">
-                            <template v-slot:item.action="{ item }">
+                        <v-data-table :headers="headers" :search="search" :items="users" :items-per-page="15" class="elevation-1">
+                            <template v-slot:[`item.action`]="{ item }">
                                 <v-btn fab x-small dark class="mr-2" @click.prevent="editUser(item)" title="Edit User" color="primary">
                                     <v-icon>
                                         fas fa-pencil-alt
@@ -157,11 +157,11 @@
 
                             </template>
 
-                            <template v-slot:item.sno="{ item }">
+                            <template v-slot:[`item.sno`]="{ item }">
                                 {{users.map(function(x) {return x.name; }).indexOf(item.name) + 1}}
                             </template>
 
-                            <template v-slot:item.active="{ item }">
+                            <template v-slot:[`item.active`]="{ item }">
                                 <v-chip class="ma-2" v-if="item.active==1" color="green" text-color="white">
                                     Active
                                 </v-chip>
@@ -302,16 +302,29 @@ export default {
             this.projects=[];
         },
         editUser(item) {
-            this.name = item.name;
-            this.permissions = item.permission;
-            this.email = item.email;
-            this.assignedRole = item.roles;
-            this.dialogTitle = 'Update User';
-            this.projects = item.projects;
-            this.mode = 'update';
-            this.editUserId = item.uniqueId;
-            this.Createdialog = true;
-            this.validationErrors = '';
+            this.$store.state.loading = true
+            this.userData=[]
+            var formData = {};
+            formData.id=item.uniqueId;
+            axios.post(window.links.getUserData, formData)
+                .then((res) => {
+                    this.userData = res.data;
+                })
+                .catch(() => {
+                    console.log('Something went wrong with getting Users');
+                }).then(()=>{
+                    this.name = this.userData.name;
+                    this.permissions = this.userData.permission;
+                    this.email = this.userData.email;
+                    this.assignedRole = this.userData.roles;
+                    this.dialogTitle = 'Update User';
+                    this.projects = this.userData.projects;
+                    this.mode = 'update';
+                    this.editUserId = this.userData.uniqueId;
+                    this.Createdialog = true;
+                    this.validationErrors = '';
+                    this.$store.state.loading = false;
+                })
         },
 
         actionUser(item, action) {
@@ -372,6 +385,7 @@ export default {
 
         ],
         users: [],
+        userData:[],
         roles: [],
         search: '',
         validationErrors: '',

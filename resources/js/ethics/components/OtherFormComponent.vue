@@ -7,7 +7,7 @@
             <div class="title1 text-left reqFields" for="name">Business Partner Name</div>
         </v-col>
         <v-col cols="12" :md="6">
-            <v-text-field label="Business Partner Name" :error-messages="nameErrors" @input="$v.name.$touch()" @blur="$v.name.$touch()" name="name" id="name" v-model="name"></v-text-field>
+            <v-text-field label="Business Partner Name" :hint="nameHint" :error-messages="nameErrors" @input="$v.name.$touch()" @blur="$v.name.$touch()" name="name" id="name" v-model="name"></v-text-field>
         </v-col>
     </v-row>
 
@@ -29,7 +29,7 @@
         </v-col>
     </v-row>
 
-    <v-row v-if="data.partnerType.id==8"  :justify="'center'" class=" px-4 py-2" no-gutters>
+    <v-row v-if="data.partnerType.id==8" :justify="'center'" class=" px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
             <div class="title1 text-left" for="name">Position</div>
         </v-col>
@@ -37,8 +37,6 @@
             <v-select :items="data.typeList" item-text="name" item-value="id" v-model="type" label="Partner Postion"></v-select>
         </v-col>
     </v-row>
-
-    
 
     <v-row :justify="'center'" class="px-4 py-2" no-gutters>
         <v-col cols="12" :md="6">
@@ -101,6 +99,7 @@ import {
     required,
     integer,
     maxLength,
+    minLength,
     email
 
 } from 'vuelidate/lib/validators';
@@ -118,19 +117,20 @@ export default {
         cpi: '',
         email: '',
         entity: '',
-        type:''
+        type: '',
+        nameHint:'Name of the partner',
     }),
     methods: {
         sumform() {
             if (this.$store.state.loading == true) return;
             this.$store.state.loading = true;
 
-            if(this.data.partnerType.id==8 && this.type==''){
-                    this.$store.commit('snackNotify', {
-                        type: 'error',
-                        msg: 'Select position of the Business Partner'
-                    });
-                    return ;
+            if (this.data.partnerType.id == 8 && this.type == '') {
+                this.$store.commit('snackNotify', {
+                    type: 'error',
+                    msg: 'Select position of the Business Partner'
+                });
+                return;
             }
 
             let formData = {};
@@ -166,7 +166,8 @@ export default {
     },
     validations: {
         name: {
-            required
+            required,
+            minLength: minLength(8)
         },
         partnerCountry: {
             required,
@@ -194,6 +195,10 @@ export default {
 
             if (!this.$v.name.required) {
                 errors.push('Partner name is required.')
+            }
+
+            if (!this.$v.name.minLength) {
+                errors.push('Enter full name.Aleast 8 characters.')
             }
 
             return errors
@@ -266,15 +271,26 @@ export default {
             let arr = this.data.countryList;
             console.log(val);
             arr.forEach((item, index) => {
-                
+
                 if (item.unique == val) {
                     this.cpi = item.cpi
                     console.log(item)
-                    
+
                     return false
                 }
             })
         },
+    },
+    created() {
+        
+        if (this.data.partnerType.id == 8) {
+            this.nameHint='Enter fullname of the Individual.'
+            this.data.typeList.push({
+                id: 9,
+                name: 'Freelancer'
+            });
+        }
+
     }
 
 }

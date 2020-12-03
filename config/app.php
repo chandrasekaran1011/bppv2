@@ -181,6 +181,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
         ZanySoft\Zip\ZipServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -233,9 +234,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
-        'Zip' => ZanySoft\Zip\ZipFacade::class,
+        // 'Zip' => ZanySoft\Zip\ZipFacade::class,
         'Carbon'=>Carbon\Carbon::class,
-
+        
     ],
 
 ];

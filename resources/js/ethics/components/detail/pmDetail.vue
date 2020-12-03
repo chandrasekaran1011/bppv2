@@ -17,7 +17,7 @@
 
             <tr>
                 <td colspan="2" style="width:50%">Scope to be performed by Business Partner</td>
-                <td colspan="2" style="width:50%;vertical-align: middle;">{{data.scope}}</td>
+                <td colspan="2" style="width:50%;vertical-align: middle;"><p style="white-space:pre-wrap;">{{data.scope}}</p></td>
 
             </tr>
 
@@ -25,6 +25,16 @@
                 <td colspan="2">SYSTRA’s Group Contract concerned</td>
                 <td colspan="2" style="vertical-align: middle;">{{data.entity}}</td>
 
+            </tr>
+
+            <tr v-if="data.spot!=null">
+                <td colspan="2">SPOT Code</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.spot}}</td>
+            </tr>
+
+            <tr v-if="data.bview!=null">
+                <td colspan="2">BView Number</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.bview}}</td>
             </tr>
 
             <tr>
@@ -147,11 +157,11 @@
 
             
             <tr v-if="data.status>3">
-                 <td colspan="4" class="text-center" ><strong>COMPLIANCE OFFICER/MANAGER APPROVAL</strong></td>
+                 <td colspan="4" class="text-center" ><strong>LOCAL COMPLIANCE OFFICER/MANAGER APPROVAL</strong></td>
             </tr>
 
             <tr v-if="data.comp_by!=null">
-                <td colspan="2" >Name of the Compliance Officer/Manager</td>
+                <td colspan="2" >Name of the Local Compliance Officer/Manager</td>
                 <td colspan="2" style="vertical-align: middle;">{{data.comp_by}}</td>
             </tr>
 
@@ -195,11 +205,11 @@
             <!-- Group Compliance Manager -->
 
             <tr v-if="Object.keys(data.l1).length!=0">
-                 <td colspan="4" class="text-center" ><strong>GROUP COMPLIANCE MANAGER APPROVAL</strong></td>
+                 <td colspan="4" class="text-center" ><strong>GROUP COMPLIANCE OFFICER/MANAGER APPROVAL</strong></td>
             </tr>
 
             <tr v-if="Object.keys(data.l1).length!=0">
-                <td colspan="2" >Name of the Group Compliance Manager</td>
+                <td colspan="2" >Name of the Group Compliance Officer/Manager</td>
                 <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_by}}</td>
             </tr>
 
@@ -216,12 +226,12 @@
 
             <tr v-if="Object.keys(data.l1).length!=0">
                 <td colspan="2" >Reason for this Decision </td>
-                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_reason}}</td>
+                <td colspan="2" style="vertical-align: middle;"><p style="white-space:pre-wrap;">{{data.l1.l1_reason}}</p></td>
             </tr>
 
             <tr v-if="Object.keys(data.l1).length!=0 && data.l1.l1_condition!=null">
                 <td colspan="2" >Condition </td>
-                <td colspan="2" style="vertical-align: middle;">{{data.l1.l1_condition}}</td>
+                <td colspan="2" style="vertical-align: middle;"><p style="white-space:pre-wrap;">{{data.l1.l1_condition}}</p></td>
             </tr>
 
             
@@ -237,7 +247,7 @@
             </tr>
 
             <tr v-if="Object.keys(data.l2).length!=0">
-                <td colspan="2" >Name of the Group Compliance Manager</td>
+                <td colspan="2" >Name of the Ethics Committee Approver</td>
                 <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_by}}</td>
             </tr>
 
@@ -254,12 +264,12 @@
 
             <tr v-if="Object.keys(data.l2).length!=0">
                 <td colspan="2" >Reason for this Decision </td>
-                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_reason}}</td>
+                <td colspan="2" style="vertical-align: middle;"><p style="white-space:pre-wrap;">{{data.l2.l2_reason}}</p></td>
             </tr>
 
             <tr v-if="Object.keys(data.l2).length!=0 && data.l2.l2_condition!=null">
                 <td colspan="2" >Condition </td>
-                <td colspan="2" style="vertical-align: middle;">{{data.l2.l2_condition}}</td>
+                <td colspan="2" style="vertical-align: middle;"><p style="white-space:pre-wrap;">{{data.l2.l2_condition}}</p></td>
             </tr>
 
             

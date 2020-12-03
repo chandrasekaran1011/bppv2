@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\DB;
 class RenewalController extends Controller
 {
     public function renew(Request $request){
-              
+             // dd($request);
         $user=Auth::user();
               
         $e=Partner::where('uuid',$request->unique)->with('ethics')->whereIn('status',[4,6])->first();

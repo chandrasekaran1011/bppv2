@@ -106,9 +106,9 @@
 
         <div class="content">
 
-            <a class="navbar-brand" href="{{route('home')}}"><img src="{{asset('images/systra.jpg')}}" alt="systra"></a>
+            <a class="navbar-brand" href="{{route('home')}}"><img max-width="800px" width="100%" src="{{asset('images/systra.jpg')}}" alt="systra"></a>
             <div class="title m-b-md">
-                Business Partner Portal
+                Business Partner E&C Portal
             </div>
             {{-- 
             <div class="links">

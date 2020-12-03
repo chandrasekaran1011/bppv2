@@ -9,7 +9,7 @@
                         <v-icon>fas fa-search</v-icon>
                     </v-btn>
 
-                    <v-btn fab x-small :color="'error'" class="mr-2" @click="deleteItem(item)">
+                    <v-btn fab x-small :color="'error'" v-if="$can('Delete Arrangements')" class="mr-2" @click="deleteItem(item)">
                         <v-icon>fas fa-trash</v-icon>
                     </v-btn>
 

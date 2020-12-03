@@ -34,9 +34,9 @@ class ApprovalNotification extends Notification implements ShouldQueue
         $url = url('/ethics?q=detail/'.$this->partner->uuid);
         return (new MailMessage)
                     ->greeting('Dear Sir/Madam,')
-                    ->line('Business Partner Registration requires your approval.Click on the following link to approve')
+                    ->line('Business Partner Registration requires your approval. Click on the following link to approve')
                     ->action('Click here', $url)
-                    ->line('This is an automatically generated mail from Business Partner Portal.');
+                    ->line('This is an automatically generated mail from Business Partner E&C Portal.');
     }
 
     public function toArray($notifiable)

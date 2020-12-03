@@ -2,13 +2,13 @@
 <div>
     <v-app-bar app dark :color="'#003e4b'">
 
-        <img src="https://www.systrausa.com/IMG/siteon0.png?1580122516" width="160px" height="30px" alt="img" />
+        <img src="images/systralogo.png" width="160px" height="30px" alt="img" />
         <v-toolbar-title class="ml-2 d-none ml-3 d-sm-none d-md-flex " style=" font-size: 2.1rem;font-weight: 900;">
-            Business Partner Portal
+            Business Partner E&C Portal
         </v-toolbar-title>
 
         <v-toolbar-title class="ml-2 d-xs-flex ml-3 d-sm-flex d-md-none  " style="font-size: 2.1rem;font-weight: 900;">
-            BPP
+            BPECP
         </v-toolbar-title>
         <v-spacer></v-spacer>
 

@@ -18,6 +18,23 @@
                 <td colspan="2">{{data.type.name}}</td>
             </tr>
 
+
+            <tr>
+                <td colspan="2">SYSTRA’s Group Contract concerned</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.entity}}</td>
+
+            </tr>
+
+            <tr v-if="data.spot!=null">
+                <td colspan="2">SPOT Code</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.spot}}</td>
+            </tr>
+
+            <tr v-if="data.bview!=null">
+                <td colspan="2">BView Number</td>
+                <td colspan="2" style="vertical-align: middle;">{{data.bview}}</td>
+            </tr>
+
             <tr>
                 <td colspan="2">Business Partner Country (CPI)</td>
                 <td colspan="2" style="vertical-align: middle;">{{data.country}}({{data.cpi}})</td>

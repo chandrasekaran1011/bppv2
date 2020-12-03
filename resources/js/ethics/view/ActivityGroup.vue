@@ -190,7 +190,7 @@ export default {
                     let errText = '';
                     console.log(err);
                     if (err.response.status) {
-                        if (err.response.status = 422) {
+                        if (err.response.status == 422) {
                             Object.values(err.response.data.errors).forEach(val => {
                                 errText += val + '\n';
                             });

@@ -20,7 +20,7 @@ class CreateRenewsTable extends Migration
             $table->boolean('integrity');
             $table->boolean('breach')->nullable();      
             $table->text('flag_action')->nullable();
-            $table->integer('decision');
+            $table->integer('decision')->default(1);
             $table->text('condition')->nullable();
             $table->text('reason')->nullable();
             $table->text('add')->nullable(); 

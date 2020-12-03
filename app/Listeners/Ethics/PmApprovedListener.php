@@ -52,6 +52,11 @@ class PmApprovedListener implements ShouldQueue
         if($event->partner->ethics->finance_assigned!=null){
             $fin=User::where('id',$event->partner->ethics->finance_assigned)->first();
             Notification::route('mail',$fin->email)->notify(new  FinanceNotification($event->partner));
+        
+        }
+
+        if(config('ethics.accounts_notification')){
+            Notification::route('mail','tresorerie@systra.com')->notify(new  FinanceNotification($event->partner));
         }
 
         $e = Partner::where('id',$event->partner->id)->with('ethics')->first();

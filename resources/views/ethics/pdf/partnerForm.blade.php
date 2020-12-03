@@ -242,11 +242,11 @@
 
         <div class="page-break"></div>
         <div class="h5 mt-4 mb-5" style="color:#de3314;">
-            <strong>FOR USE OF COMPLIANCE OFFICER/MANAGER</strong>
+            <strong>FOR USE OF LOCAL COMPLIANCE OFFICER/MANAGER</strong>
         </div>
         <div class="pl-2 ml-2">
             <div>
-                Name of the Compliance Manager who reviewed this Form: {{$e->ethics->complaince_by()}}
+                Name of the person who reviewed this Form: {{$e->ethics->complaince_by()}}
             </div>
             <div>
                 Date: {{$e->getTime($e->ethics->ims_at)}}
@@ -299,7 +299,7 @@
     @if($e->ethics->l1_by!=null )
         <div class="page-break"></div>
         <div class="h5 mt-4 mb-5" style="color:#de3314;">
-            <strong>FOR USE OF Group Compliance Head</strong>
+            <strong>FOR USE OF GROUP COMPLIANCE OFFICER/MANAGER</strong>
         </div>
         <div class="pl-2 ml-2">
             <div>
@@ -347,7 +347,7 @@
     @if($e->ethics->l2_by!=null )
     <div class="page-break"></div>
     <div class="h5 mt-4 mb-5" style="color:#de3314;">
-        <strong>FOR USE OF Ethics Committee</strong>
+        <strong>FOR USE OF ETHICS COMMITTEE</strong>
     </div>
     <div class="pl-2 ml-2">
         <div>

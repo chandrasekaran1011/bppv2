@@ -17,12 +17,12 @@
                 <v-btn icon dark @click="imsDialog = false">
                     <v-icon>fas fa-times</v-icon>
                 </v-btn>
-                <v-toolbar-title>Business Partner Registration - Compliance Approval</v-toolbar-title>
+                <v-toolbar-title>Business Partner Registration - Local Compliance Officer/Manager Approval</v-toolbar-title>
 
             </v-toolbar>
 
             <v-card class="mx-auto" color="white" elevation-3 width="100%" max-width="900px" min-width="600px" height="100%" min-height="400px">
-                <div class="title grad text-left mt-3 pa-3">Compliance Manager Approval Form</div>
+                <div class="title grad text-left mt-3 pa-3">Local Compliance Officer/Manager Approval Form</div>
                 <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
                         <div class="title1 text-left reqFields mt-3" for="name">Enhanced integrity review performed? </div>
@@ -117,10 +117,10 @@
                 
                 <v-row v-if="decision=='0'" :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
-                        <div class="title1 text-left reqFields mt-3" for="name">Group Ethics Head Approval</div>
+                        <div class="title1 text-left reqFields mt-3" for="name">Group Compliance Officer Approval</div>
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
-                        <v-autocomplete v-model="approver" :error-messages="approverErrors" @input="$v.approver.$touch()" @blur="$v.approver.$touch()" :items="data.groupUsers" item-text="name" item-value="unique" label="Compliance Approval Manager" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>
+                        <v-autocomplete v-model="approver" :error-messages="approverErrors" @input="$v.approver.$touch()" @blur="$v.approver.$touch()" :items="data.groupUsers" item-text="name" item-value="unique" label="Group Compliance Officer" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>
                     </v-col>
                 </v-row>
                 <v-row :justify="'center'" class="mt-2 mb-4  px-4 py-2" no-gutters>
@@ -180,13 +180,13 @@ export default {
             if (this.$store.state.loading == true) return;
             
 
-            if(this.integrity==1 && this.lexis_file.length==0){
-                this.$store.commit('snackNotify', {
-                    type: 'error',
-                    msg: "Please Upload Lexis Document"
-                });
-                return;
-            }
+            // if(this.integrity==1 && this.lexis_file.length==0){
+            //     this.$store.commit('snackNotify', {
+            //         type: 'error',
+            //         msg: "Please Upload Lexis Document"
+            //     });
+            //     return;
+            // }
 
             this.$store.state.loading = true;
 
@@ -220,7 +220,7 @@ export default {
                 let errText = '';
                 if (err.response) {
                     console.log(err.response);
-                    if (err.response.status = 422) {
+                    if (err.response.status == 422) {
                         Object.values(err.response.data.errors).forEach(val => {
                             errText += val + '\n';
                         });

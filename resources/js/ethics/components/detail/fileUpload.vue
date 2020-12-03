@@ -70,6 +70,8 @@
 </template>
 
 <script>
+
+import axios from "../../axios/axios";
 export default {
     props: {
         partner_id: {
@@ -119,7 +121,7 @@ export default {
             },
             {
                 name: 'Renewal Lexis File',
-                value: 'renewal_lexis_file'
+                value: 'renew_lexis_file'
             }
 
         ],
@@ -127,27 +129,42 @@ export default {
     }),
     methods: {
         subForm() {
-
-            if (this.name && this.file) {
+            if(this.file.length==0){return ;}
+            if (this.name !='') {
                 let formData = new FormData();
                 formData.append('file', this.file);
                 formData.append('name', this.name);
                 formData.append('id', this.partner_id);
 
-                this.$http.post(window.links.uploadFile, formData, {
+                axios.post(window.links.uploadFile, formData, {
                         headers: {
                             "Content-Type": "multipart/form-data"
                         }
                     }).then(res => {
-                        this.$store.commit('snackNotify', {
-                            type: 'success',
-                            msg: 'File Uploaded'
-                        })
-                        this.$emit('refresh');
+                        
+                        if(res.status==200){
+                            console.log(res);
+                            this.$emit('refresh');
+
+                            this.formdialog=false;
+
+                            this.file=[];
+                            this.name='';
+
+                            this.$store.commit('snackNotify', {
+                                type: 'success',
+                                msg: 'File Uploaded'
+                            })
+                        }else{
+                            console.log('here it is'+res);
+                            this.$store.commit('errorFunction', res);
+                        }
+
  
                     })
                     .catch(err => {
-                        this.$store.commit('errorFunction', err);
+                        console.log('error called');
+                        this.$store.commit('errorFunction', err.response);
 
                     })
             } else {

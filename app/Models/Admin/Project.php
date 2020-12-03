@@ -50,7 +50,7 @@ class Project extends Model
     }
 
     public static function getActiveArray(){
-        $projects=Project::all();
+        $projects=Project::with('country')->get();
         
         $data=[];
         $x=1;

@@ -17,7 +17,7 @@
     <v-skeleton-loader v-if="dataLoading" ref="skeleton" :boilerplate="true" :type="'table'" class="mx-auto"></v-skeleton-loader>
 
     <v-data-table v-else :headers="headers" :search="search" :items="partnerList" :items-per-page="10" class="elevation-1">
-        <template v-slot:item.action="{ item }">
+        <template v-slot:[`item.action`]="{ item }">
             <v-btn fab x-small :color="'success'" class="mr-2" @click="partnerDetail(item.id)">
                 <v-icon>fas fa-search</v-icon>
             </v-btn>

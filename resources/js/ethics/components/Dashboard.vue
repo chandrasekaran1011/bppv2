@@ -1,10 +1,9 @@
 <template>
 <div>
 
-    <v-row class="mt-lg-6 pt-lg-6">
-        <v-col cols="12" :sm="12">
-            <v-row :justify="'space-around'">
-                <v-col :md="4" cols="12">
+
+            <v-row justify="center" class="mt-lg-6 pt-lg-6">
+                <v-col :md="3" cols="12" class="mx-2 my-lg-3" v-if="$can('View Dashboard')">
                     <v-card @click="nav(7);" style="cursor:pointer;background-color: #a20b38;color:white" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-chart-line</v-icon>
                         <v-card-text class="title white--text">
@@ -13,7 +12,7 @@
                     </v-card>
                 </v-col>
 
-                <v-col :md="4" cols="12" v-if="$can('Create Partner')">
+                <v-col :md="3" cols="12" class="mx-2 my-lg-3" v-if="$can('Create Partner')">
                     <v-card @click="dialog=true;" style="cursor:pointer;background-color: #70368b;color:white" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-plus</v-icon>
                         <v-card-text class="title white--text" >
@@ -22,7 +21,7 @@
                     </v-card>
                 </v-col>
 
-                <v-col :md="4" cols="12" v-if="$can('View Partner')">
+                <v-col :md="3" cols="12" class="mx-2 my-lg-3" v-if="$can('View Partner')">
                     <v-card @click="nav(2);" style="cursor:pointer;background-color: #e18e04;color:white" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-users</v-icon>
                         <v-card-text class="title white--text">
@@ -30,17 +29,8 @@
                         </v-card-text>
                     </v-card>
                 </v-col>
-            </v-row>
-        </v-col>
-        <!-- <v-col class="d-sm-none d-md-block">
-            <img src="/images/systra.jpg" width="250px" height="75px" alt="img">
-            <div class="title">Business Partner Portal</div>
-        </v-col> -->
 
-        <v-col cols="12" :sm="12">
-            <v-row :justify="'space-around'">
-
-                <v-col :md="4" cols="12">
+                <v-col :md="3" cols="12" class="mx-2 my-lg-3">
 
                     <v-card @click="nav(5)" style="cursor:pointer;background-color: #ea4e1b;color:white" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-check</v-icon>
@@ -51,7 +41,7 @@
 
                 </v-col>
 
-                <v-col :md="4" cols="12">
+                <v-col :md="3" cols="12" v-if="$can('Generate Reports')" class="my-lg-3 mx-2">
                     <v-card @click="nav(6);" style="cursor:pointer;background-color: #3d3171;color:white" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-file-alt</v-icon>
                         <v-card-text class="title white--text">
@@ -60,7 +50,7 @@
                     </v-card>
                 </v-col>
 
-                <v-col :md="4" cols="12">
+                <v-col :md="3" cols="12" v-if="$can('Search Partner')" class="mx-2 my-lg-3">
                     <v-card @click="nav(4);" style="cursor:pointer;background-color: #589eb8;color:white" class="mx-auto" max-width="300px">
                         <v-icon class="pa-3 mt-3 white--text" :size="64">fas fa-search</v-icon>
                         <v-card-text class="title white--text">
@@ -69,9 +59,7 @@
                     </v-card>
                 </v-col>
             </v-row>
-        </v-col>
 
-    </v-row>
 
     <v-dialog v-model="dialog" width="500">
         <v-card>

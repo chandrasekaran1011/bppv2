@@ -40,7 +40,7 @@ class PartnerRenewedListener implements ShouldQueue
         $a=new Audit;
         $a->partner_id=$event->partner->id;
         $a->user_id=$event->partner->ethics->renew_ims_by;
-        $a->action="Partner Renewal Approved ";
+        $a->action="Partner Renewal Decision ";
         $a->save();
 
         Log::info('Partner Renewal Approved: '.$event->partner->name);

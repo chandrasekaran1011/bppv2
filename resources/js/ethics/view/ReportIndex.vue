@@ -1,7 +1,7 @@
 <template>
 <div>
     <h1>
-        BPP Reports
+        Ethics & Compliance Reports
     </h1>
     <v-row justify="center" no-gutters class="mt-3">
         <v-col cols="12" style="cursor:pointer" sm="12" md="3" class="pa-2">
@@ -31,7 +31,7 @@
         </v-col>
 
         <v-col cols="12" sm="12" style="cursor:pointer" md="3" class="pa-2">
-            <v-card class="pt-3">
+            <v-card class="pt-3" @click="nav(2)">
                 <div justify="center" class="ma-2 text-center red--text display-1">
                     <v-icon  color="warning" size="72">fas fa-handshake</v-icon>
                 </div>
@@ -51,7 +51,7 @@
 export default {
     methods:{
         nav(id){
-            let arr=["MasterReport","MonthlyReport"];
+            let arr=["MasterReport","MonthlyReport","CDOReport"];
 
             this.$router.push({name:arr[id]});
         }

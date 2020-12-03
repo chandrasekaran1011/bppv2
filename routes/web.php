@@ -18,17 +18,25 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes(['register' => false]);
+    if(config('ethics.authentication')=="local"){
+        Auth::routes(['register' => false]);
+    }
+    else{
+        Route::get('/login',function(){
+            return redirect('/login/azure');
+        })->name('login');
 
-// Route::get('/login',function(){
-//     return redirect('/login/azure');
-// })->name('login');
+        Route::get('/login/azure', '\App\Http\Middleware\AppAzure@azure');
+        Route::get('/login/azurecallback', '\App\Http\Middleware\AppAzure@azurecallback');
+        Route::get('/logout/azure', '\App\Http\Middleware\AppAzure@azurelogout');
 
-// Route::get('/login/azure', '\App\Http\Middleware\AppAzure@azure');
-// Route::get('/login/azurecallback', '\App\Http\Middleware\AppAzure@azurecallback');
-// Route::get('/logout/azure', '\App\Http\Middleware\AppAzure@azurelogout');
+        Route::get('/logout',function(){
+            Auth::logout();
+            return redirect('/login');
+            //return redirect('/logout/azure');
+        })->name('logout');
 
-
+    }
 
 
 
@@ -45,6 +53,10 @@ Route::group(['namespace' => 'Ethics', 'as' => 'ethics.','middleware'=>['auth']]
 });
 
 Route::get('ethics/partnerQuestionForm/{id}', 'Ethics\EthicsController@PartnerQuestion')->name('partnerQuestionForm');
-Route::post('partnerform/store/{id}','Ethics\EthicsController@partnerstore')->name('partnerStore');
-Route::post('individualform/store/{id}','Ethics\EthicsController@individualPartnerstore')->name('individualStore');
+Route::post('partnerform/store/{id}','Ethics\EthicsController@partnerStore')->name('partnerStore');
+Route::post('individualform/store/{id}','Ethics\EthicsController@individualPartnerStore')->name('individualStore');
+
+Route::get('/maintenance', 'MaintenanceController@maintenance')->name('maintenance');
+
+Route::get('/queueRetry', 'MaintenanceController@queueRetry')->name('queueRetry');
 

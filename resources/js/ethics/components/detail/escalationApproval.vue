@@ -17,12 +17,19 @@
                 <v-btn icon dark @click="imsDialog = false">
                     <v-icon>fas fa-times</v-icon>
                 </v-btn>
-                <v-toolbar-title>Business Partner Registration - Compliance Approval</v-toolbar-title>
+                <v-toolbar-title>
+                    <span v-if="data.status==8">Business Partner Registration - Group Compliance Officer Approval</span>
+                    <span v-else>Business Partner Registration - Ethics Committee Approval</span>
+                    </v-toolbar-title>
 
             </v-toolbar>
 
             <v-card class="mx-auto" color="white" elevation-3 width="100%" max-width="900px" min-width="600px" height="100%" min-height="400px">
-                <div class="title grad text-left mt-3 pa-3">Compliance Manager Approval Form</div>
+                <div class="title grad text-left mt-3 pa-3">
+
+                    <span v-if="data.status==8">Group Compliance Officer Approval Form</span>
+                    <span v-else>Ethics Committee Approval Form</span>
+                </div>
                 
                 <v-row :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
                     <v-col cols="12" :md="4">
@@ -69,10 +76,19 @@
                 
                 <v-row v-if="decision=='0' && data.status==8" :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
                     <v-col cols="12" :md="6">
-                        <div class="title1 text-left reqFields mt-3" for="name">Approver</div>
+                        <div class="title1 text-left reqFields mt-3" for="name">Confers with the Entity Head</div>
                     </v-col>
                     <v-col cols="12" :md="6" class="pl-md-3">
-                        <v-autocomplete v-model="approver" :error-messages="approverErrors" @input="$v.approver.$touch()" @blur="$v.approver.$touch()" :items="data.status==3?data.groupUsers:data.committeUsers" item-text="name" item-value="unique" label="Compliance Approval Manager" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>
+                        <v-autocomplete v-model="head" :error-messages="headErrors" @input="$v.head.$touch()" @blur="$v.head.$touch()" :items="data.headUsers" item-text="name" item-value="unique" label="Entity Head" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>
+                    </v-col>
+                </v-row>
+
+                <v-row v-if="decision=='0' && data.status==8" :justify="'center'" class="mt-2  px-4 py-2" no-gutters>
+                    <v-col cols="12" :md="6">
+                        <div class="title1 text-left reqFields mt-3" for="name">Approver (Ethics Committee)</div>
+                    </v-col>
+                    <v-col cols="12" :md="6" class="pl-md-3">
+                        <v-autocomplete v-model="approver" :error-messages="approverErrors" @input="$v.approver.$touch()" @blur="$v.approver.$touch()" :items="data.status==3?data.groupUsers:data.committeUsers" item-text="name" item-value="unique" label="Ethics Committee Member" placeholder="Start typing to Search" prepend-icon="fas fa-user"></v-autocomplete>
                     </v-col>
                 </v-row>
                 <v-row :justify="'center'" class="mt-2 mb-4  px-4 py-2" no-gutters>
@@ -117,7 +133,8 @@ export default {
         condition: '',
         reason: '',
         add: '',
-        approver:''
+        approver:'',
+        head:'',
 
     }),
     methods: {
@@ -136,6 +153,7 @@ export default {
             formData.append('reason', this.reason)
             formData.append('add', this.add)
             formData.append('approver', this.approver)
+            formData.append('head', this.head)
 
 
             axios.post(window.links.escalationForm, formData, {
@@ -152,12 +170,13 @@ export default {
                 this.reason= '';
                 this.add= '';
                 this.approver='';
+                this.head=''
 
             }).catch((err) => {
                 let errText = '';
                 if (err.response) {
                     console.log(err.response);
-                    if (err.response.status = 422) {
+                    if (err.response.status == 422) {
                         Object.values(err.response.data.errors).forEach(val => {
                             errText += val + '\n';
                         });
@@ -201,9 +220,25 @@ export default {
                 return this.decision == '0' && this.data.status==8
             })
         },
+        head: {
+            required: requiredIf(function () {
+                return this.decision == '0' && this.data.status==8
+            })
+        },
 
     },
     computed: {
+                headErrors() {
+            const errors = []
+            if (!this.$v.head.$dirty) {
+                return errors
+            }
+
+            if (!this.$v.head.required) {
+                errors.push('Field is required.')
+            }
+            return errors
+        },
 
         
         approverErrors() {

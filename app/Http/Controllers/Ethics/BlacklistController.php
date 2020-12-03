@@ -42,7 +42,7 @@ class BlacklistController extends Controller
                 
                 event(new PartnerBlacklisted($p));
                 
-                return response()->json(['message'=>'Business Partner Blacklisted'],200);
+                return response()->json(['message'=>'Business Partner Debarred'],200);
             }
             else{
                 return response()->json(['message'=>'Error in Blacklisting'],500);

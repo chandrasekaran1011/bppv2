@@ -4,11 +4,11 @@ Route::get('/ethics', 'EthicsController@index')->name('index');
 
 Route::post('/getFormData', 'EthicsController@getFormData')->name('getFormData');
 
-Route::post('storePublicForm','EthicsController@storePublicForm')->name('storePublicForm');
+Route::post('storePublicForm','EthicsController@storePublicForm')->name('storePublicForm')->middleware('can:Create Partner');
 
-Route::post('storeOtherForm','EthicsController@storeOtherForm')->name('storeOtherForm');
+Route::post('storeOtherForm','EthicsController@storeOtherForm')->name('storeOtherForm')->middleware('can:Create Partner');;
 
-Route::post('storePmForm','EthicsController@storePmForm')->name('storePmForm');
+Route::post('storePmForm','EthicsController@storePmForm')->name('storePmForm')->middleware('can:Create Partner');;
 Route::post('compForm','EthicsController@compForm')->name('compForm');
 
 Route::post('view','EthicsController@view')->name('view');
@@ -29,11 +29,11 @@ Route::post('/resendNotification/', 'EthicsController@resendNotification')->name
 
 Route::post('entityData','EthicsController@entityData')->name('entityData');
 
-Route::post('searchResult','SearchController@searchResult')->name('searchResult');
+Route::post('searchResult','SearchController@searchResult')->name('searchResult')->middleware('can:Search Partner');
 
 Route::post('questionnaireNotSubmitted','EthicsController@questionnaireNotSubmitted')->name('questionnaireNotSubmitted');
 
-Route::post('deletePartner','EthicsController@deletePartner')->name('deletePartner');
+Route::post('deletePartner','EthicsController@deletePartner')->name('deletePartner')->middleware('can:Delete Partner');
 
 
 Route::post('uploadFile','EthicsController@uploadFile')->name('uploadFile');
@@ -65,9 +65,11 @@ Route::post('renewApprove','RenewalController@renewApprove')->name('renewApprove
 
 Route::get('pdfDownload/{id}/{form?}','ReportController@index')->name('pdfDownload');
 
-Route::post('monthlyReport','ReportController@monthlyReport')->name('monthlyReport');
+Route::post('monthlyReport','ReportController@monthlyReport')->name('monthlyReport')->middleware('can:Generate Reports');
 
-Route::post('masterReport','ReportController@masterReport')->name('masterReport');
+Route::post('masterReport','ReportController@masterReport')->name('masterReport')->middleware('can:Generate Reports');
+
+Route::post('cdoReport','ReportController@cdoReport')->name('cdoReport')->middleware('can:Generate Reports');
 
 Route::post('genrateReport','ReportController@genrateReport')->name('genrateReport');
 
@@ -79,3 +81,5 @@ Route::post('getDashboard','ReportController@dashboard')->name('getDashboard');
 Route::post('arrangementStore','ArrangementController@store')->name('arrangementStore');
 Route::post('arrangementDelete','ArrangementController@delete')->name('arrangementDelete');
 
+//Pursuance
+Route::post('pursuance','EthicsController@pursuance')->name('pursuance');

@@ -2,7 +2,7 @@
 <div>
     <v-container max-width="1400px" class="mx-auto">
         <v-card>
-            <v-card-title class="indigo darken-1 white--text"  >
+            <v-card-title class="indigo darken-1 white--text">
                 Search Business Partner
             </v-card-title>
             <v-card-text>
@@ -19,28 +19,29 @@
                         <v-text-field name="keyword" :error-messages="keywordErrors" @input="$v.keyword.$touch()" @blur="$v.keyword.$touch()" v-model="keyword" label="Search Keyword"></v-text-field>
                     </v-col>
                     <v-col cols="12" :sm="12" align="center" :md="3" class="pa-2">
-                        <v-btn class="mt-md-3" @click="search()" color="success">Submit</v-btn>
+                        <v-btn class="mt-md-3" @click="search()" :disabled="$v.$invalid" color="success">Submit</v-btn>
 
                     </v-col>
                 </v-row>
+
             </v-card-text>
         </v-card>
 
         <v-card class="mt-md-3" v-if="!defaultview">
-            <v-card-title class="indigo darken-1 white--text"  >
+            <v-card-title class="indigo darken-1 white--text">
                 Search Results
             </v-card-title>
 
             <v-card-text>
                 <v-card-text>
 
-                     <v-skeleton-loader v-if="dataLoading" ref="skeleton" :boilerplate="true" :type="'table'" class="mx-auto"></v-skeleton-loader>
+                    <v-skeleton-loader v-if="dataLoading" ref="skeleton" :boilerplate="true" :type="'table'" class="mx-auto"></v-skeleton-loader>
 
-                    <v-data-table v-else  :headers="headers" :items="results" :items-per-page="10" class="elevation-1">
-                        <template v-slot:item.action="{ item }">
+                    <v-data-table v-else :headers="headers" :items="results" :items-per-page="10" class="elevation-1">
+                        <template v-slot:[`item.action`]="{ item }">
 
                             <v-btn v-if="item.detail" fab x-small :color="'success'" class="mr-2" @click="partnerDetail(item.uuid)">
-                                
+
                                 <v-icon>fas fa-search</v-icon>
                             </v-btn>
 
@@ -67,8 +68,8 @@ export default {
             unique: 0,
             name: 'All'
         }],
-        dataLoading:false,
-        defaultview:true,
+        dataLoading: false,
+        defaultview: true,
         searchList: [{
                 unique: 1,
                 name: 'Business Partner Name'
@@ -80,6 +81,14 @@ export default {
             {
                 unique: 3,
                 name: 'Incorporation Number'
+            },
+            {
+                unique: 4,
+                name: 'SPOT Code'
+            },
+            {
+                unique: 5,
+                name: 'Bview Number'
             }
         ],
         headers: [{
@@ -110,7 +119,7 @@ export default {
                 value: 'action'
             },
         ],
-        results:[],
+        results: [],
 
         entity: '',
         criteria: '',
@@ -123,18 +132,23 @@ export default {
             formData._token = document.getElementById('csrf').content;
             axios.post(window.links.entityData, formData)
                 .then(res => {
-                    console.log(res.data);
+
                     var arr = this.entityList.concat(res.data);
                     this.entityList = arr;
-                    console.log(this.entityList);
+
                 })
                 .catch(err => {
                     console.error(err);
                 })
         },
         search() {
-            if(this.dataLoading){return ;}
-            this.dataLoading=true;
+            if (this.dataLoading) {
+                return;
+            }
+            if (this.$v.$invalid) {
+                return
+            }
+            this.dataLoading = true;
 
             let formData = {};
             formData._token = document.getElementById('csrf').content;
@@ -144,20 +158,28 @@ export default {
 
             axios.post(window.links.searchResult, formData)
                 .then(res => {
-                    this.results=res.data;
+                    this.results = res.data;
                     console.log(this.results)
                 })
                 .catch(err => {
-                    console.error(err);
-                }).then(()=>{
-                    this.dataLoading=false;
-                    this.defaultview=false;
+                    this.$store.commit('snackNotify', {
+                        type: 'error',
+                        msg: err.response.data.message
+                    });
+                }).then(() => {
+                    this.dataLoading = false;
+                    this.defaultview = false;
                 })
 
         },
-        partnerDetail(id){
-           
-            this.$router.push({name:'Detail',params:{id:id}});
+        partnerDetail(id) {
+
+            this.$router.push({
+                name: 'Detail',
+                params: {
+                    id: id
+                }
+            });
         }
     },
     created() {

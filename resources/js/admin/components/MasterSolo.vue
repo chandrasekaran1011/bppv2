@@ -213,7 +213,7 @@ export default {
                 })
                 .catch(err => {
                     let errText = '';
-                    if (err.response.status = 422) {
+                    if (err.response.status == 422) {
                         Object.values(err.response.data.errors).forEach(val => {
                             errText += val + '<br>';
                         });

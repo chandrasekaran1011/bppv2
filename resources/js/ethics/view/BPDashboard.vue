@@ -3,10 +3,12 @@
     <v-row>
         <v-col :md="3" :sm="12">
             <div class="display-1 font"> BPP Dashboard </div>
-            <span>Update at : </span>
         </v-col>
-        <v-col :md="4" min-width="300" :sm="12" offset-md="4">
+        <v-col :md="3" min-width="300" :sm="12" offset-md="3">
             <v-select :min-width="300" :items="projectList" item-text="name" item-value="unique" @change="projectChange()" label="Project List" solo v-model="project" height="30"></v-select>
+        </v-col>
+        <v-col :md="3" min-width="300" :sm="12">
+            <v-select :min-width="300" :items="periodList" item-text="name" item-value="unique" @change="periodChange()" label="List Period" solo v-model="period" height="30"></v-select>
         </v-col>
     </v-row>
 
@@ -71,7 +73,7 @@
 
                     <v-icon class="mr-sm-3" color="error">fa-ban</v-icon>
                     <span class=" ml-md-2 mt-md-1 py-sm-0 font ">
-                        Blacklisted Partners
+                        Debarred Partners
                     </span>
                 </v-card-title>
                 <v-divider dark class="mb-sm-1"></v-divider>
@@ -87,13 +89,14 @@
 
     <v-row no-gutters class="mt-3">
         <v-col>
-            <v-data-table :headers="headers" item-class="text-center"  :items="data.statusReport" :items-per-page="10" class="elevation-1"></v-data-table>
+            <v-data-table :headers="headers" item-class="text-center" :items="data.statusReport" :items-per-page="10" class="elevation-1"></v-data-table>
         </v-col>
     </v-row>
 </div>
 </template>
 
 <script>
+import axios from "../axios/axios";
 export default {
 
     data: () => ({
@@ -102,6 +105,8 @@ export default {
 
         projectList: [],
         project: 0,
+        periodList: [],
+        period:1,
 
         data: [],
 
@@ -112,34 +117,33 @@ export default {
             {
                 text: 'Name',
                 value: 'name',
-                class:'text-center',
-                
+                class: 'text-center',
 
             },
             {
                 text: 'Approved',
                 value: 'approved',
-                class:'text-center',
+                class: 'text-center',
                 align: 'center',
             },
             {
                 text: 'Approved with Condition',
                 value: 'approvedwithcond',
-                class:'text-center',
+                class: 'text-center',
                 align: 'center',
-                
+
             },
 
             {
                 text: 'Declined',
                 value: 'declined',
-                class:'text-center',
+                class: 'text-center',
                 align: 'center',
             },
             {
                 text: 'Total',
                 value: 'total',
-                class:'text-center',
+                class: 'text-center',
                 align: 'center',
             },
         ]
@@ -154,10 +158,10 @@ export default {
 
             formData._token = document.getElementById('csrf').content;
             formData.entity = this.project;
+            formData.period = this.period;
 
-            this.$http.post(window.links.getDashboard, formData).then((response) => {
+            axios.post(window.links.getDashboard, formData).then((response) => {
                 this.data = response.data;
-                
 
             }).catch(
                 (error) => {
@@ -175,12 +179,15 @@ export default {
         projectChange() {
             this.getDashboard();
         },
+        periodChange() {
+            this.getDashboard();
+        },
         getData() {
             this.$store.state.loading = true;
             let formData = {};
             formData._token = document.getElementById('csrf').content;
             formData.id = this.$route.params.id;
-            this.$http.post(window.links.getFormData, formData).then((resp) => {
+            axios.post(window.links.getFormData, formData).then((resp) => {
                 this.projectList = resp.data.entity;
 
                 this.projectList.push({
@@ -200,16 +207,38 @@ export default {
         }
     },
     created() {
-        //this.$store.state.isLoading = true;
 
-        // if (this.$can('View Dashboard')) {
-        //     this.getDashboard();
-        // } else {
-        //     this.$router.push({
-        //         name: 'CreateVendor'
-        //     })
-        // }
+        let monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        let d = new Date();
+        let thisMonth =monthNames[d.getMonth()]+' - ' + d.getFullYear();
+        let lm=new Date();
+        lm.setMonth(d.getMonth() - 1);
+        let lastMonth=monthNames[lm.getMonth()]+' - ' + lm.getFullYear();
+        
+        let tm=new Date();
+        tm.setMonth(d.getMonth() -  2);
+        let thirdMonth=monthNames[tm.getMonth()]+' - ' + tm.getFullYear();
 
+
+            this.periodList = [{
+                    name: 'Overall',
+                    unique: 1
+                },
+                {
+                    name: 'Only ' + thisMonth.toString(),
+                    unique: 2
+                },
+                {
+                    name: 'Only ' +lastMonth.toString(),
+                    unique: 3
+                },
+                {
+                    name: 'Only ' +thirdMonth.toString(),
+                    unique: 4
+                }
+            ];
         this.getData();
 
     }
@@ -244,10 +273,12 @@ export default {
 }
 
 .hgrad {
-    background-color: #a4508b;
+    /* background-color: #a4508b;
     background-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);
-
+    */
     color: white !important;
+
+    background-color: rgb(112, 54, 139);
 }
 
 .bgrad {
@@ -272,4 +303,3 @@ export default {
     color: white !important;
 }
 </style>
-

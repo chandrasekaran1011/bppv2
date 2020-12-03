@@ -3,12 +3,14 @@
     <v-container max-width="1400px" class="mx-auto">
         <v-card>
             <v-card-title class="indigo darken-1 white--text">
-               <v-btn icon @click="$router.push({name:'ReportIndex'})"><v-icon color="white">fas fa-arrow-left</v-icon> </v-btn> Download Monthly Report
+                <v-btn icon @click="$router.push({name:'ReportIndex'})">
+                    <v-icon color="white">fas fa-arrow-left</v-icon>
+                </v-btn> Download Monthly Report
             </v-card-title>
             <v-card-text>
                 <v-row no-gutters class="mt-2">
                     <v-col cols="12" :sm="12" :md="3" class="pa-2">
-                        <v-select :error-messages="entityErrors" @input="$v.entity.$touch()" @blur="$v.entity.$touch()" :items="entityList" v-model="entity" item-text="name" item-value="unique" label="Select Project" outlined></v-select>
+                        <v-select :error-messages="entityErrors" @input="$v.entity.$touch()" @blur="$v.entity.$touch()" :items="entityList" v-model="entity" item-text="name" item-value="unique" label="Select Entity" outlined></v-select>
 
                     </v-col>
                     <v-col cols="12" :sm="12" :md="3" class="pa-2">
@@ -18,7 +20,7 @@
                     <v-col cols="12" :sm="12" :md="3" class="pa-2">
                         <v-menu ref="datemenu" v-model="datemenu2" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="290px">
                             <template v-slot:activator="{ on }">
-                                <v-text-field v-model="keyword" readonly label="Month" :error-messages="keywordErrors"  @blur="$v.keyword.$touch()" persistent-hint prepend-icon="fas fa-calendar" v-on="on"></v-text-field>
+                                <v-text-field v-model="keyword" readonly label="Month" :error-messages="keywordErrors" @blur="$v.keyword.$touch()" persistent-hint prepend-icon="fas fa-calendar" v-on="on"></v-text-field>
                             </template>
                             <v-date-picker v-model="keyword" landscape type="month" no-title @input="datemenu2 = false"></v-date-picker>
                         </v-menu>
@@ -78,7 +80,7 @@ export default {
     }),
     methods: {
 
-                getEntityData() {
+        getEntityData() {
             let formData = {};
             formData._token = document.getElementById('csrf').content;
             axios.post(window.links.entityData, formData)
@@ -96,6 +98,7 @@ export default {
             if (this.dataLoading) {
                 return;
             }
+            this.results=[];
             this.dataLoading = true;
 
             let formData = {};
@@ -107,16 +110,25 @@ export default {
             console.log(formData);
             axios.post(window.links.monthlyReport, formData)
                 .then(res => {
-                  
-
+                    console.log('Here you there0');
+                    if (res.status == 200) {
                         this.results = res.data.file;
-                    
+                    }
+
                 })
                 .catch(err => {
-                    this.$store.commit('snackNotify', {
-                        type: 'error',
-                        msg: 'Something went wrong'
-                    });
+                   
+                    if (err.status == 204) {
+                        this.$store.commit('snackNotify', {
+                            type: 'error',
+                            msg: 'No Data Found'
+                        });
+                    } else {
+                        this.$store.commit('snackNotify', {
+                            type: 'error',
+                            msg: 'Something went wrong'
+                        });
+                    }
                 }).then(() => {
                     this.dataLoading = false;
                     this.defaultview = false;
